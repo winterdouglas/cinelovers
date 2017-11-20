@@ -1,6 +1,8 @@
 ﻿{
   "dependencies": {
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
+    "reactiveui-events-xamforms": "7.4.0",
+    "reactiveui-xamforms": "7.4.0",
     "Xamarin.Forms": "2.4.0.280"
   },
   "frameworks": {
