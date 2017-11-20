@@ -163,6 +163,18 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Cinelovers.Core\Cinelovers.Core.csproj">
+      <Project>{696940b0-0661-4cdd-9a48-4fe5606f0333}</Project>
+      <Name>Cinelovers.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cinelovers.Infrastructure\Cinelovers.Infrastructure.csproj">
+      <Project>{196a9b35-29e8-4e43-939c-9b5e8de01d79}</Project>
+      <Name>Cinelovers.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cinelovers.ViewModels\Cinelovers.ViewModels.csproj">
+      <Project>{ed4bc787-e909-49e3-8053-7cc5262e2b8b}</Project>
+      <Name>Cinelovers.ViewModels</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Cinelovers\Cinelovers.csproj">
       <Project>{a321080e-c732-4968-a7ec-63849ecd807b}</Project>
       <Name>Cinelovers</Name>
