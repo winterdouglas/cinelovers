@@ -1,4 +1,5 @@
-﻿using Cinelovers.ViewModels.Movies;
+﻿using Cinelovers.Core.Caching;
+using Cinelovers.ViewModels.Movies;
 using Cinelovers.Views.Movies;
 using ReactiveUI;
 using ReactiveUI.XamForms;
@@ -31,10 +32,14 @@ namespace Cinelovers
 
         private void RegisterDependencies()
         {
-            Locator.CurrentMutable.RegisterConstant(this, typeof(IScreen));
+            var cache = new AkavacheCache();
+            cache.Initialize(App.CacheKey);
 
-            Locator.CurrentMutable.Register(() => new UpcomingMoviesView(), typeof(IViewFor<UpcomingMoviesViewModel>));
-            Locator.CurrentMutable.Register(() => new MovieDetailsView(), typeof(IViewFor<MovieDetailsViewModel>));
+            Locator.CurrentMutable.RegisterConstant<ICache>(cache);
+            Locator.CurrentMutable.RegisterConstant<IScreen>(this);
+
+            Locator.CurrentMutable.Register<IViewFor<UpcomingMoviesViewModel>>(() => new UpcomingMoviesView());
+            Locator.CurrentMutable.Register<IViewFor<MovieDetailsViewModel>>(() => new MovieDetailsView());
         }
     }
 }

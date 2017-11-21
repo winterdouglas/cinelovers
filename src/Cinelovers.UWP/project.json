@@ -1,9 +1,13 @@
 ﻿{
   "dependencies": {
+    "akavache": "5.0.0",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
+    "Newtonsoft.Json": "9.0.1",
     "reactiveui-core": "7.3.0",
     "reactiveui-events-xamforms": "7.3.0",
     "reactiveui-xamforms": "7.3.0",
+    "refit": "2.4.1",
+    "Splat": "1.6.2",
     "Xamarin.Forms": "2.4.0.280"
   },
   "frameworks": {

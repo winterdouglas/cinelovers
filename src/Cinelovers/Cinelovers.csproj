@@ -63,8 +63,8 @@
     <Reference Include="ReactiveUI.XamForms, Version=7.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\reactiveui-xamforms.7.3.0\lib\portable-net45+netcore45+wp8+wpa81+UAP10+MonoAndroid403+MonoTouch10+Xamarin.iOS10\ReactiveUI.XamForms.dll</HintPath>
     </Reference>
-    <Reference Include="Splat, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Splat.1.4.0\lib\Portable-net45+win+wpa81+wp80\Splat.dll</HintPath>
+    <Reference Include="Splat, Version=1.6.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Splat.1.6.2\lib\Portable-net45+win+wpa81+wp80\Splat.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Rx-Core.2.2.5\lib\portable-windows8+net45+wp8\System.Reactive.Core.dll</HintPath>
@@ -92,16 +92,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cinelovers.Core\Cinelovers.Core.csproj">
       <Project>{696940b0-0661-4cdd-9a48-4fe5606f0333}</Project>
       <Name>Cinelovers.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Cinelovers.Infrastructure\Cinelovers.Infrastructure.csproj">
-      <Project>{196a9b35-29e8-4e43-939c-9b5e8de01d79}</Project>
-      <Name>Cinelovers.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Cinelovers.ViewModels\Cinelovers.ViewModels.csproj">
       <Project>{ed4bc787-e909-49e3-8053-7cc5262e2b8b}</Project>

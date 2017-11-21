@@ -1,9 +1,13 @@
-﻿using Xamarin.Forms;
+﻿using Cinelovers.Core.Caching;
+using Splat;
+using Xamarin.Forms;
 
 namespace Cinelovers
 {
     public partial class App : Application
     {
+        public const string CacheKey = "Cinelovers";
+
         public App()
         {
             InitializeComponent();
@@ -19,12 +23,14 @@ namespace Cinelovers
 
         protected override void OnSleep()
         {
-            // Handle when your app sleeps
+            var cache = Locator.Current.GetService<ICache>();
+            cache.Shutdown();
         }
 
         protected override void OnResume()
         {
-            // Handle when your app resumes
+            var cache = Locator.Current.GetService<ICache>();
+            cache.Initialize(CacheKey);
         }
     }
 }
