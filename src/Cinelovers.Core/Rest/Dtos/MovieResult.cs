@@ -2,7 +2,7 @@
 
 namespace Cinelovers.Core.Rest.Dtos
 {
-    public class MovieListResult
+    public class MovieResult
     {
         public int Id { get; set; }
         public string PosterPath { get; set; }

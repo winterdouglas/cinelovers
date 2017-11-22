@@ -4,11 +4,11 @@ using SnakeCase.JsonNet;
 
 namespace Cinelovers.Core.Rest
 {
-    public class TmdbApiService
+    public class TmdbApiService : ITmdbApiService
     {
-        public string BaseAddress => "https://api.themoviedb.org/3";
+        const string BaseAddress = "https://api.themoviedb.org/3";
 
-        public ITmdbApiClient Client => RestService
+        public ITmdbApiClient GetClient() => RestService
             .For<ITmdbApiClient>(
                 BaseAddress,
                 new RefitSettings

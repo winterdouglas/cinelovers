@@ -1,10 +1,11 @@
 ﻿using Cinelovers.Core.Services.Models;
 using System;
+using System.Collections.Generic;
 
 namespace Cinelovers.Core.Services
 {
     public interface IMovieService
     {
-        IObservable<Movie> FetchUpcomingMovies(int page);
+        IObservable<IEnumerable<Movie>> GetUpcomingMovies(int page);
     }
 }

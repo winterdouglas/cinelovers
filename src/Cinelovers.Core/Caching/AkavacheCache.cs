@@ -14,31 +14,40 @@ namespace Cinelovers.Core.Caching
 
         public IObservable<TResult> GetAndFetchLatest<TResult>(string cacheKey, Func<IObservable<TResult>> fetchFunction)
         {
-            return BlobCache.LocalMachine.GetAndFetchLatest(cacheKey, fetchFunction, offset =>
-            {
-                var ellapsed = DateTimeOffset.Now - offset;
-                return ellapsed > TimeSpan.FromSeconds(30);
-            });
+            return BlobCache
+                .LocalMachine
+                .GetAndFetchLatest(
+                    cacheKey, 
+                    fetchFunction, 
+                    offset => (DateTimeOffset.UtcNow - offset) > TimeSpan.FromHours(1));
         }
 
         public IObservable<Unit> InvalidateAll()
         {
-            return BlobCache.LocalMachine.InvalidateAll();
+            return BlobCache
+                .LocalMachine
+                .InvalidateAll();
         }
 
         public IObservable<Unit> InvalidateAllObjects<T>() where T : class
         {
-            return BlobCache.LocalMachine.InvalidateAllObjects<T>();
+            return BlobCache
+                .LocalMachine
+                .InvalidateAllObjects<T>();
         }
 
 		public IObservable<Unit> Invalidate(string key)
         {
-            return BlobCache.LocalMachine.Invalidate(key);
+            return BlobCache
+                .LocalMachine
+                .Invalidate(key);
         }
 
         public void Shutdown()
         {
-            BlobCache.Shutdown().Wait();
+            BlobCache
+                .Shutdown()
+                .Wait();
         }
     }
 }
