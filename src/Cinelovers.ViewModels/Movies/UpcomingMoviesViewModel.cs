@@ -1,4 +1,6 @@
-﻿using ReactiveUI;
+﻿using Cinelovers.Core.Services;
+using ReactiveUI;
+using System;
 
 namespace Cinelovers.ViewModels.Movies
 {
@@ -6,6 +8,9 @@ namespace Cinelovers.ViewModels.Movies
     {
         public UpcomingMoviesViewModel(IScreen hostScreen = null) : base(hostScreen)
         {
+            new MovieService()
+                .GetUpcomingMovies(1)
+                .Subscribe();
         }
     }
 }

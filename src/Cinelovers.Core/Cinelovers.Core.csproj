@@ -39,6 +39,7 @@
     <Compile Include="Caching\ICache.cs" />
     <Compile Include="Mappers\MovieMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rest\TmdbHttpClientHandler.cs" />
     <Compile Include="Rest\ITmdbApiClient.cs" />
     <Compile Include="Rest\Dtos\MovieResult.cs" />
     <Compile Include="Rest\Dtos\MoviePagingInfo.cs" />

@@ -14,7 +14,6 @@ namespace Cinelovers.Core.Services
     public class MovieService : IMovieService
     {
         const string Language = "en-US";
-        const string ApiKey = "1f54bd990f1cdfb230adb312546d765d";
 
         private readonly ITmdbApiService _apiService;
         private readonly ITmdbApiClient _client;
@@ -37,7 +36,7 @@ namespace Cinelovers.Core.Services
             return _cache
                 .GetAndFetchLatest(
                     GetUpComingMoviesCacheKey(page),
-                    () => _client.FetchUpcomingMovies(ApiKey, page, Language))
+                    () => _client.FetchUpcomingMovies(page, Language))
                 .Select(pagingInfo => pagingInfo == null 
                     ? Enumerable.Empty<Movie>()    
                     : pagingInfo.Results.Select(result => movieMapper.ToMovie(result)));

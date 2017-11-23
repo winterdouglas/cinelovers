@@ -18,13 +18,11 @@ namespace Cinelovers.Core.UnitTests.Services
         public void GetUpcomingMovies_PagingInfoIsNull_ReturnsEmpty()
         {
             int expectedPage = 2;
-            var expectedLanguage = "en-US";
             MoviePagingInfo pagingInfo = null;
 
             var apiClientMock = new Mock<ITmdbApiClient>();
             apiClientMock
                 .Setup(x => x.FetchUpcomingMovies(
-                    It.IsAny<string>(),
                     It.IsAny<int>(),
                     It.IsAny<string>()))
                 .Returns(() => Observable.Return(pagingInfo));
@@ -64,7 +62,6 @@ namespace Cinelovers.Core.UnitTests.Services
             var apiClientMock = new Mock<ITmdbApiClient>();
             apiClientMock
                 .Setup(x => x.FetchUpcomingMovies(
-                    It.IsAny<string>(),
                     It.IsAny<int>(),
                     It.IsAny<string>()))
                 .Returns(() => Observable.Return(pagingInfo));
@@ -90,7 +87,6 @@ namespace Cinelovers.Core.UnitTests.Services
             apiServiceMock.Verify(x => x.GetClient(), Times.Once);
             apiClientMock.Verify(
                 x => x.FetchUpcomingMovies(
-                    It.IsAny<string>(),
                     It.Is<int>(page => page == expectedPage),
                     It.Is<string>(language => language == expectedLanguage)),
                 Times.Once);
@@ -105,7 +101,6 @@ namespace Cinelovers.Core.UnitTests.Services
             var apiClientMock = new Mock<ITmdbApiClient>();
             apiClientMock
                 .Setup(x => x.FetchUpcomingMovies(
-                    It.IsAny<string>(),
                     It.IsAny<int>(),
                     It.IsAny<string>()))
                 .Returns(() => Observable.Return(pagingInfo));
