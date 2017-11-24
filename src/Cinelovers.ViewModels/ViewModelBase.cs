@@ -1,5 +1,6 @@
 ﻿using ReactiveUI;
 using Splat;
+using System.Reactive.Concurrency;
 
 namespace Cinelovers.ViewModels
 {
@@ -11,8 +12,17 @@ namespace Cinelovers.ViewModels
 
         public ViewModelActivator Activator => new ViewModelActivator();
 
-        public ViewModelBase(IScreen hostScreen = null)
+        protected IScheduler TaskPoolScheduler { get; }
+
+        protected IScheduler MainScheduler { get; }
+
+        public ViewModelBase(
+            IScheduler mainScheduler = null, 
+            IScheduler taskPoolScheduler = null, 
+            IScreen hostScreen = null)
         {
+            MainScheduler = mainScheduler ?? Locator.Current.GetService<IScheduler>("MainScheduler");
+            TaskPoolScheduler = taskPoolScheduler ?? Locator.Current.GetService<IScheduler>("TaskPoolScheduler");
             HostScreen = hostScreen ?? Locator.Current.GetService<IScreen>();
         }
     }

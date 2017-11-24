@@ -8,7 +8,26 @@ namespace Cinelovers.Core.Mappers
     {
         public Movie ToMovie(MovieResult source)
         {
-            throw new NotImplementedException();
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            var result = new Movie()
+            {
+                BackdropUrl = source.BackdropPath,
+                //Genres = source.GenreIds,
+                Id = source.Id,
+                Overview = source.Overview,
+                Popularity = source.Popularity,
+                PosterUrl = source.PosterPath,
+                //ReleaseDate = source.ReleaseDate,
+                Title = source.Title,
+                VoteAverage = source.VoteAverage,
+                VoteCount = source.VoteCount
+            };
+
+            return result;
         }
     }
 }

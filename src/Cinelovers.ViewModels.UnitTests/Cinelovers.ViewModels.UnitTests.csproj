@@ -66,6 +66,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Movies\MovieCellViewModelTests.cs" />
     <Compile Include="Movies\MovieDetailsViewModelTests.cs" />
     <Compile Include="Movies\UpcomingMoviesViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -74,6 +75,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Cinelovers.Core\Cinelovers.Core.csproj">
+      <Project>{696940B0-0661-4CDD-9A48-4FE5606F0333}</Project>
+      <Name>Cinelovers.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Cinelovers.ViewModels\Cinelovers.ViewModels.csproj">
       <Project>{ed4bc787-e909-49e3-8053-7cc5262e2b8b}</Project>
       <Name>Cinelovers.ViewModels</Name>

@@ -1,11 +1,13 @@
 ﻿using Cinelovers.Core.Caching;
 using Cinelovers.Core.Rest;
+using Cinelovers.Core.Services;
 using Cinelovers.ViewModels.Movies;
 using Cinelovers.Views.Movies;
 using ReactiveUI;
 using ReactiveUI.XamForms;
 using Splat;
 using System;
+using System.Reactive.Concurrency;
 using Xamarin.Forms;
 
 namespace Cinelovers
@@ -36,9 +38,13 @@ namespace Cinelovers
             var cache = new AkavacheCache();
             cache.Initialize(App.CacheKey);
 
+            Locator.CurrentMutable.RegisterConstant(RxApp.MainThreadScheduler, "MainScheduler");
+            Locator.CurrentMutable.RegisterConstant(RxApp.TaskpoolScheduler, "TaskPoolScheduler");
             Locator.CurrentMutable.RegisterConstant<IScreen>(this);
             Locator.CurrentMutable.RegisterConstant<ICache>(cache);
             Locator.CurrentMutable.Register<ITmdbApiService>(() => new TmdbApiService());
+            Locator.CurrentMutable.Register<IMovieService>(() => new MovieService());
+
             Locator.CurrentMutable.Register<IViewFor<UpcomingMoviesViewModel>>(() => new UpcomingMoviesView());
             Locator.CurrentMutable.Register<IViewFor<MovieDetailsViewModel>>(() => new MovieDetailsView());
         }

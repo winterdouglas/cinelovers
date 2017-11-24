@@ -129,5 +129,110 @@ namespace Cinelovers.Core.UnitTests.Services
                     It.IsAny<Func<IObservable<MoviePagingInfo>>>()),
                 Times.Once);
         }
+
+        [Test]
+        public void GetMovieGenres_GenreInfoIsNull_ReturnsEmpty()
+        {
+            GenreInfo genreInfo = null;
+
+            var apiClientMock = new Mock<ITmdbApiClient>();
+            apiClientMock
+                .Setup(x => x.FetchMovieGenres(It.IsAny<string>()))
+                .Returns(() => Observable.Return(genreInfo));
+
+            var apiServiceMock = new Mock<ITmdbApiService>();
+            apiServiceMock
+                .Setup(x => x.GetClient())
+                .Returns(apiClientMock.Object);
+
+            var cacheMock = new Mock<ICache>();
+            cacheMock
+                .Setup(x => x.GetAndFetchLatest(
+                    It.IsAny<string>(),
+                    It.IsAny<Func<IObservable<GenreInfo>>>()))
+                .Returns<string, Func<IObservable<GenreInfo>>>((arg, targetMethod) => targetMethod());
+
+            var target = new MovieService(
+                apiServiceMock.Object,
+                cacheMock.Object);
+
+            IEnumerable<Genre> resultData = null;
+            Assert.DoesNotThrow(
+                () => target
+                    .GetMovieGenres()
+                    .Subscribe(results => resultData = results));
+
+            Assert.IsEmpty(resultData);
+        }
+
+        [Test]
+        public void GetMovieGenres_WhenInvoked_InvokeServiceWithCorrectParameters()
+        {
+            var expectedLanguage = "en-US";
+            var genreInfo = new GenreInfo();
+
+            var apiClientMock = new Mock<ITmdbApiClient>();
+            apiClientMock
+                .Setup(x => x.FetchMovieGenres(It.IsAny<string>()))
+                .Returns(() => Observable.Return(genreInfo));
+
+            var apiServiceMock = new Mock<ITmdbApiService>();
+            apiServiceMock
+                .Setup(x => x.GetClient())
+                .Returns(apiClientMock.Object);
+
+            var cacheMock = new Mock<ICache>();
+            cacheMock
+                .Setup(x => x.GetAndFetchLatest(
+                    It.IsAny<string>(),
+                    It.IsAny<Func<IObservable<GenreInfo>>>()))
+                .Returns<string, Func<IObservable<GenreInfo>>>((arg, targetMethod) => targetMethod());
+
+            var target = new MovieService(
+                apiServiceMock.Object,
+                cacheMock.Object);
+
+            target.GetMovieGenres().Subscribe();
+
+            apiServiceMock.Verify(x => x.GetClient(), Times.Once);
+            apiClientMock.Verify(
+                x => x.FetchMovieGenres(It.Is<string>(language => language == expectedLanguage)),
+                Times.Once);
+        }
+
+        [Test]
+        public void GetMovieGenres_WhenInvoked_UsesSpecifiedCacheKey()
+        {
+            var genreInfo = new GenreInfo();
+
+            var apiClientMock = new Mock<ITmdbApiClient>();
+            apiClientMock
+                .Setup(x => x.FetchMovieGenres(It.IsAny<string>()))
+                .Returns(() => Observable.Return(genreInfo));
+
+            var apiServiceMock = new Mock<ITmdbApiService>();
+            apiServiceMock
+                .Setup(x => x.GetClient())
+                .Returns(apiClientMock.Object);
+
+            var cacheMock = new Mock<ICache>();
+            cacheMock
+                .Setup(x => x.GetAndFetchLatest(
+                    It.IsAny<string>(),
+                    It.IsAny<Func<IObservable<GenreInfo>>>()))
+                .Returns<string, Func<IObservable<GenreInfo>>>((arg, targetMethod) => targetMethod());
+
+            var target = new MovieService(
+                apiServiceMock.Object,
+                cacheMock.Object);
+
+            target.GetMovieGenres().Subscribe();
+
+            cacheMock.Verify(
+                x => x.GetAndFetchLatest(
+                    It.Is<string>(cacheKey => cacheKey == "genres"),
+                    It.IsAny<Func<IObservable<GenreInfo>>>()),
+                Times.Once);
+        }
     }
 }

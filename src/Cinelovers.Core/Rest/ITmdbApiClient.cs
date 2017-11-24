@@ -8,5 +8,8 @@ namespace Cinelovers.Core.Rest
     {
         [Get("/movie/upcoming?language={language}&page={page}")]
         IObservable<MoviePagingInfo> FetchUpcomingMovies(int page, string language);
+
+        [Get("/genre/movie/list?language={language}")]
+        IObservable<GenreInfo> FetchMovieGenres(string language);
     }
 }

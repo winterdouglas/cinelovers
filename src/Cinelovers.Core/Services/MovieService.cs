@@ -42,6 +42,21 @@ namespace Cinelovers.Core.Services
                     : pagingInfo.Results.Select(result => movieMapper.ToMovie(result)));
         }
 
+        public IObservable<IEnumerable<Genre>> GetMovieGenres()
+        {
+            var genreMapper = new GenreMapper();
+
+            return _cache
+                .GetAndFetchLatest(
+                    GetGenresCacheKey(),
+                    () => _client.FetchMovieGenres(Language))
+                .Select(genreInfo => genreInfo == null
+                    ? Enumerable.Empty<Genre>()
+                    : genreInfo.Genres.Select(result => genreMapper.ToGenre(result)));
+        }
+
         private string GetUpComingMoviesCacheKey(int page) => $"upcoming_movies_{page}";
+
+        private string GetGenresCacheKey() => "genres";
     }
 }

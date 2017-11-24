@@ -7,15 +7,15 @@ using Xamarin.Forms.Xaml;
 namespace Cinelovers.Views.Movies
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class UpcomingMoviesView : ReactiveContentPage<UpcomingMoviesViewModel>
+    public partial class MovieCellView : ReactiveViewCell<MovieCellViewModel>
     {
-        public UpcomingMoviesView()
+        public MovieCellView()
         {
             InitializeComponent();
 
             this.WhenActivated(disposables =>
             {
-                this.OneWayBind(ViewModel, x => x.Movies, x => x.MovieList.ItemsSource).DisposeWith(disposables);
+                this.OneWayBind(ViewModel, x => x.Title, x => x.TitleLabel.Text).DisposeWith(disposables);
             });
         }
     }
