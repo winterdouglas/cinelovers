@@ -4,7 +4,7 @@ using System.Reactive.Concurrency;
 
 namespace Cinelovers.ViewModels
 {
-    public class ViewModelBase : ReactiveObject, IRoutableViewModel, ISupportsActivation
+    public abstract class ViewModelBase : ReactiveObject, IRoutableViewModel, ISupportsActivation
     {
         public string UrlPathSegment { get; protected set; }
 

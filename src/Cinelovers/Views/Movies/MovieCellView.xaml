@@ -7,7 +7,8 @@
                        x:TypeArguments="vm:MovieCellViewModel">
     <ViewCell.View>
         <StackLayout>
-            <Label x:Name="TitleLabel" />
+            <Label x:Name="TitleLabel" FontSize="Large" />
+            <Label x:Name="GenreLabel" FontSize="Small" />
         </StackLayout>
     </ViewCell.View>
 </rxui:ReactiveViewCell>
