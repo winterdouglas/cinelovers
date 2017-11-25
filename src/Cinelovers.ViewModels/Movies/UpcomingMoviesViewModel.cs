@@ -13,7 +13,7 @@ namespace Cinelovers.ViewModels.Movies
 {
     public class UpcomingMoviesViewModel : ViewModelBase
     {
-        public ReactiveCommand<int, IEnumerable<Movie>> GetMovies { get; protected set; }
+        public ReactiveCommand<int, IEnumerable<Movie>> GetUpcomingMovies { get; protected set; }
 
         public ReactiveList<MovieCellViewModel> Movies { get; } = new ReactiveList<MovieCellViewModel>();
 
@@ -30,11 +30,11 @@ namespace Cinelovers.ViewModels.Movies
 
             this.WhenActivated(disposables =>
             {
-                GetMovies = ReactiveCommand
+                GetUpcomingMovies = ReactiveCommand
                     .CreateFromObservable<int, IEnumerable<Movie>>(
                         (page) => Observable.Throw<IEnumerable<Movie>>(new NotImplementedException()));
 
-                GetMovies
+                GetUpcomingMovies
                     .Subscribe()
                     .DisposeWith(disposables);
             });
