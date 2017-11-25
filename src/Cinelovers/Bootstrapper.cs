@@ -7,6 +7,8 @@ using ReactiveUI;
 using ReactiveUI.XamForms;
 using Splat;
 using System;
+using System.Reactive;
+using System.Reactive.Linq;
 using Xamarin.Forms;
 
 namespace Cinelovers
@@ -21,10 +23,10 @@ namespace Cinelovers
 
             RegisterDependencies();
 
-            Router
-                .NavigateAndReset
-                .Execute(new UpcomingMoviesViewModel())
-                .Subscribe();
+            Observable
+                .Return(new UpcomingMoviesViewModel())
+                .InvokeCommand<IRoutableViewModel, IRoutableViewModel>(
+                    Router.NavigateAndReset);
         }
 
         public Page CreateMainPage()

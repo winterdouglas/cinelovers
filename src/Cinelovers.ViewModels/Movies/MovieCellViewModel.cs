@@ -6,6 +6,8 @@ namespace Cinelovers.ViewModels.Movies
 {
     public class MovieCellViewModel
     {
+        public int Id => _movie.Id;
+
         public string Title => _movie.Title;
 
         public string PosterUrl => _movie.PosterUrl;

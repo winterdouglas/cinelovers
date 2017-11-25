@@ -15,7 +15,16 @@ namespace Cinelovers.ViewModels.Movies
     {
         public ReactiveCommand<int, IEnumerable<Movie>> GetUpcomingMovies { get; protected set; }
 
+        //public ReactiveCommand<MovieCellViewModel, IRoutableViewModel> OpenMovieDetails { get; protected set; }
+
         public ReactiveList<MovieCellViewModel> Movies { get; } = new ReactiveList<MovieCellViewModel>();
+
+        private MovieCellViewModel _selectedMovie;
+        public MovieCellViewModel SelectedMovie
+        {
+            get { return _selectedMovie; }
+            set { this.RaiseAndSetIfChanged(ref _selectedMovie, value); }
+        }
 
         private readonly IMovieService _movieService;
 
@@ -27,7 +36,7 @@ namespace Cinelovers.ViewModels.Movies
             IMovieService movieService = null,
             IScheduler mainScheduler = null,
             IScheduler taskPoolScheduler = null,
-            IScreen hostScreen = null) 
+            IScreen hostScreen = null)
             : base(hostScreen, mainScheduler, taskPoolScheduler)
         {
             _movieService = movieService ?? Locator.Current.GetService<IMovieService>();
@@ -36,15 +45,21 @@ namespace Cinelovers.ViewModels.Movies
                 .CreateFromObservable<int, IEnumerable<Movie>>(
                     page => _movieService.GetUpcomingMovies(page));
 
-            this.WhenActivated(disposables =>
+            GetUpcomingMovies
+                .Select(movies => movies.Select(movie => new MovieCellViewModel(movie)))
+                .SelectMany(movies => movies)
+                .SubscribeOn(TaskPoolScheduler)
+                .ObserveOn(MainScheduler)
+                .Subscribe(item => Movies.Add(item));
+
+            this.WhenAnyValue(x => x.SelectedMovie)
+                .Where(selected => selected != null)
+                .Select(selected => new MovieDetailsViewModel())
+                .InvokeCommand<IRoutableViewModel, IRoutableViewModel>(HostScreen.Router.Navigate);
+
+            this.WhenActivated((CompositeDisposable disposables) =>
             {
-                GetUpcomingMovies
-                    .Select(movies => movies.Select(movie => new MovieCellViewModel(movie)))
-                    .SelectMany(movies => movies)
-                    .SubscribeOn(TaskPoolScheduler)
-                    .ObserveOn(MainScheduler)
-                    .Subscribe(item => Movies.Add(item))
-                    .DisposeWith(disposables);
+                SelectedMovie = null;
             });
         }
     }

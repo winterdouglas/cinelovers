@@ -22,6 +22,7 @@ namespace Cinelovers.Views.Movies
             this.WhenActivated(disposables =>
             {
                 this.OneWayBind(ViewModel, x => x.Movies, x => x.MovieList.ItemsSource).DisposeWith(disposables);
+                this.Bind(ViewModel, x => x.SelectedMovie, x => x.MovieList.SelectedItem).DisposeWith(disposables);
 
                 Observable
                     .FromEventPattern<ItemVisibilityEventArgs>(
