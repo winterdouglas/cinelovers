@@ -1,15 +1,20 @@
 ﻿using Cinelovers.Core.Services;
+using Cinelovers.Core.Services.Models;
 using ReactiveUI;
 using Splat;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Concurrency;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
 namespace Cinelovers.ViewModels.Movies
 {
     public class UpcomingMoviesViewModel : ViewModelBase
     {
+        public ReactiveCommand<int, IEnumerable<Movie>> GetMovies { get; protected set; }
+
         public ReactiveList<MovieCellViewModel> Movies { get; } = new ReactiveList<MovieCellViewModel>();
 
         private readonly IMovieService _movieService;
@@ -23,13 +28,23 @@ namespace Cinelovers.ViewModels.Movies
         {
             _movieService = movieService ?? Locator.Current.GetService<IMovieService>();
 
-            _movieService
-                .GetUpcomingMovies(1)
-                .Select(movies => movies.Select(movie => new MovieCellViewModel(movie)))
-                .SubscribeOn(TaskPoolScheduler)
-                .SelectMany(movies => movies)
-                .ObserveOn(MainScheduler)
-                .Subscribe(item => Movies.Add(item));
+            this.WhenActivated(disposables =>
+            {
+                GetMovies = ReactiveCommand
+                    .CreateFromObservable<int, IEnumerable<Movie>>(
+                        (page) => Observable.Throw<IEnumerable<Movie>>(new NotImplementedException()));
+
+                GetMovies
+                    .Subscribe()
+                    .DisposeWith(disposables);
+            });
+            //_movieService
+            //    .GetUpcomingMovies(1)
+            //    .Select(movies => movies.Select(movie => new MovieCellViewModel(movie)))
+            //    .SubscribeOn(TaskPoolScheduler)
+            //    .SelectMany(movies => movies)
+            //    .ObserveOn(MainScheduler)
+            //    .Subscribe(item => Movies.Add(item));
         }
     }
 }

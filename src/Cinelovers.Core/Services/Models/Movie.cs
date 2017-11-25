@@ -15,14 +15,19 @@ namespace Cinelovers.Core.Services.Models
 
         public string BackdropUrl { get; set; }
 
-        public IList<string> Genres { get; set; }
+        public IList<Genre> Genres { get; set; }
 
-        public DateTime ReleaseDate { get; set; }
+        public DateTime? ReleaseDate { get; set; }
 
         public double Popularity { get; set; }
 
         public int VoteCount { get; set; }
 
         public double VoteAverage { get; set; }
+
+        public Movie()
+        {
+            Genres = new List<Genre>();
+        }
     }
 }

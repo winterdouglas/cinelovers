@@ -7,6 +7,7 @@ using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Linq;
 
 namespace Cinelovers.Core.UnitTests.Services
@@ -19,6 +20,7 @@ namespace Cinelovers.Core.UnitTests.Services
         {
             int expectedPage = 2;
             MoviePagingInfo pagingInfo = null;
+            GenreInfo genreInfo = null;
 
             var apiClientMock = new Mock<ITmdbApiClient>();
             apiClientMock
@@ -26,6 +28,10 @@ namespace Cinelovers.Core.UnitTests.Services
                     It.IsAny<int>(),
                     It.IsAny<string>()))
                 .Returns(() => Observable.Return(pagingInfo));
+            apiClientMock
+                .Setup(x => x.FetchMovieGenres(
+                    It.IsAny<string>()))
+                .Returns(() => Observable.Return(genreInfo));
 
             var apiServiceMock = new Mock<ITmdbApiService>();
             apiServiceMock
@@ -38,6 +44,11 @@ namespace Cinelovers.Core.UnitTests.Services
                     It.IsAny<string>(),
                     It.IsAny<Func<IObservable<MoviePagingInfo>>>()))
                 .Returns<string, Func<IObservable<MoviePagingInfo>>>((arg, targetMethod) => targetMethod());
+            cacheMock
+                .Setup(x => x.GetAndFetchLatest(
+                    It.IsAny<string>(),
+                    It.IsAny<Func<IObservable<GenreInfo>>>()))
+                .Returns<string, Func<IObservable<GenreInfo>>>((arg, targetMethod) => targetMethod());
 
             var target = new MovieService(
                 apiServiceMock.Object,
@@ -58,6 +69,7 @@ namespace Cinelovers.Core.UnitTests.Services
             int expectedPage = 2;
             var expectedLanguage = "en-US";
             var pagingInfo = new MoviePagingInfo();
+            GenreInfo genreInfo = null;
 
             var apiClientMock = new Mock<ITmdbApiClient>();
             apiClientMock
@@ -65,6 +77,10 @@ namespace Cinelovers.Core.UnitTests.Services
                     It.IsAny<int>(),
                     It.IsAny<string>()))
                 .Returns(() => Observable.Return(pagingInfo));
+            apiClientMock
+               .Setup(x => x.FetchMovieGenres(
+                   It.IsAny<string>()))
+               .Returns(() => Observable.Return(genreInfo));
 
             var apiServiceMock = new Mock<ITmdbApiService>();
             apiServiceMock
@@ -77,6 +93,11 @@ namespace Cinelovers.Core.UnitTests.Services
                     It.IsAny<string>(),
                     It.IsAny<Func<IObservable<MoviePagingInfo>>>()))
                 .Returns<string, Func<IObservable<MoviePagingInfo>>>((arg, targetMethod) => targetMethod());
+            cacheMock
+                .Setup(x => x.GetAndFetchLatest(
+                    It.IsAny<string>(),
+                    It.IsAny<Func<IObservable<GenreInfo>>>()))
+                .Returns<string, Func<IObservable<GenreInfo>>>((arg, targetMethod) => targetMethod());
 
             var target = new MovieService(
                 apiServiceMock.Object,
@@ -90,6 +111,10 @@ namespace Cinelovers.Core.UnitTests.Services
                     It.Is<int>(page => page == expectedPage),
                     It.Is<string>(language => language == expectedLanguage)),
                 Times.Once);
+            apiClientMock.Verify(
+                x => x.FetchMovieGenres(
+                    It.Is<string>(language => language == expectedLanguage)),
+                Times.Once);
         }
 
         [Test]
@@ -97,6 +122,7 @@ namespace Cinelovers.Core.UnitTests.Services
         {
             int expectedPage = 2;
             var pagingInfo = new MoviePagingInfo();
+            GenreInfo genreInfo = null;
 
             var apiClientMock = new Mock<ITmdbApiClient>();
             apiClientMock
@@ -104,6 +130,10 @@ namespace Cinelovers.Core.UnitTests.Services
                     It.IsAny<int>(),
                     It.IsAny<string>()))
                 .Returns(() => Observable.Return(pagingInfo));
+            apiClientMock
+                .Setup(x => x.FetchMovieGenres(
+                    It.IsAny<string>()))
+                .Returns(() => Observable.Return(genreInfo));
 
             var apiServiceMock = new Mock<ITmdbApiService>();
             apiServiceMock
@@ -116,6 +146,11 @@ namespace Cinelovers.Core.UnitTests.Services
                     It.IsAny<string>(),
                     It.IsAny<Func<IObservable<MoviePagingInfo>>>()))
                 .Returns<string, Func<IObservable<MoviePagingInfo>>>((arg, targetMethod) => targetMethod());
+            cacheMock
+                .Setup(x => x.GetAndFetchLatest(
+                    It.IsAny<string>(),
+                    It.IsAny<Func<IObservable<GenreInfo>>>()))
+                .Returns<string, Func<IObservable<GenreInfo>>>((arg, targetMethod) => targetMethod());
 
             var target = new MovieService(
                 apiServiceMock.Object,
@@ -128,6 +163,71 @@ namespace Cinelovers.Core.UnitTests.Services
                     It.Is<string>(cacheKey => cacheKey == $"upcoming_movies_{expectedPage}"),
                     It.IsAny<Func<IObservable<MoviePagingInfo>>>()),
                 Times.Once);
+        }
+
+        [Test]
+        public void GetUpcomingMovies_MovieHasGenres_MovieWithGenres()
+        {
+            int expectedPage = 2;
+            var pagingInfo = new MoviePagingInfo()
+            {
+                Results = new List<MovieResult>()
+                {
+                    new MovieResult() { Id = 1, Title = "Movie 1", GenreIds = new List<int>() { 1, 2, 3 } },
+                    new MovieResult() { Id = 2, Title = "Movie 2", GenreIds = new List<int>() { 1, 3 } }
+                }
+            };
+            var genreInfo = new GenreInfo()
+            {
+                Genres = new List<GenreResult>()
+                {
+                    new GenreResult() { Id = 1, Name = "Genre 1" },
+                    new GenreResult() { Id = 2, Name = "Genre 2" },
+                    new GenreResult() { Id = 3, Name = "Genre 3" }
+                }
+            };
+
+            var apiClientMock = new Mock<ITmdbApiClient>();
+            apiClientMock
+                .Setup(x => x.FetchUpcomingMovies(
+                    It.IsAny<int>(),
+                    It.IsAny<string>()))
+                .Returns(() => Observable.Return(pagingInfo));
+            apiClientMock
+               .Setup(x => x.FetchMovieGenres(
+                   It.IsAny<string>()))
+               .Returns(() => Observable.Return(genreInfo));
+
+            var apiServiceMock = new Mock<ITmdbApiService>();
+            apiServiceMock
+                .Setup(x => x.GetClient())
+                .Returns(apiClientMock.Object);
+
+            var cacheMock = new Mock<ICache>();
+            cacheMock
+                .Setup(x => x.GetAndFetchLatest(
+                    It.IsAny<string>(),
+                    It.IsAny<Func<IObservable<MoviePagingInfo>>>()))
+                .Returns<string, Func<IObservable<MoviePagingInfo>>>((arg, targetMethod) => targetMethod());
+            cacheMock
+                .Setup(x => x.GetAndFetchLatest(
+                    It.IsAny<string>(),
+                    It.IsAny<Func<IObservable<GenreInfo>>>()))
+                .Returns<string, Func<IObservable<GenreInfo>>>((arg, targetMethod) => targetMethod());
+
+            IList<Movie> results = null;
+
+            var target = new MovieService(
+                apiServiceMock.Object,
+                cacheMock.Object);
+
+            target
+                .GetUpcomingMovies(expectedPage)
+                .Subscribe(movies => results = movies.ToList());
+
+            Assert.AreEqual(pagingInfo.Results.Count, results.Count());
+            Assert.AreEqual(pagingInfo.Results[0].GenreIds.Count, results[0].Genres.Count());
+            Assert.AreEqual(pagingInfo.Results[1].GenreIds.Count, results[1].Genres.Count());
         }
 
         [Test]

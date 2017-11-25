@@ -12,11 +12,11 @@ namespace Cinelovers.ViewModels.Movies
 
         public string BackdropUrl => _movie.BackdropUrl;
 
-        public IList<string> Genres => _movie.Genres;
+        public IList<Genre> Genres => _movie.Genres;
 
         public string Overview => _movie.Overview;
 
-        public DateTime ReleaseDate => _movie.ReleaseDate;
+        public DateTime? ReleaseDate => _movie.ReleaseDate;
 
         private readonly Movie _movie;
 

@@ -2,6 +2,7 @@
 using Cinelovers.Core.Rest.Dtos;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 
 namespace Cinelovers.Core.UnitTests.Mappers
 {
@@ -9,7 +10,7 @@ namespace Cinelovers.Core.UnitTests.Mappers
     public class MovieMapperTests
     {
         [Test]
-        public void ToMovie_HasMovieResult_ReturnsMovie()
+        public void ToMovie_HasMovieResultWithNoAvailableGenres_ReturnsMovieWithNoGenres()
         {
             var source = new MovieResult()
             {
@@ -25,19 +26,53 @@ namespace Cinelovers.Core.UnitTests.Mappers
                 VoteAverage = 7.43D,
                 VoteCount = 54
             };
+            var genreInfo = new GenreInfo();
+
             var target = new MovieMapper();
-            var actual = target.ToMovie(source);
+            var actual = target.ToMovie(source, genreInfo);
 
             Assert.AreEqual(source.BackdropPath, actual.BackdropUrl);
-            Assert.AreEqual(source.GenreIds.Count, actual.Genres.Count);
             Assert.AreEqual(source.Id, actual.Id);
             Assert.AreEqual(source.Overview, actual.Overview);
             Assert.AreEqual(source.Popularity, actual.Popularity);
             Assert.AreEqual(source.PosterPath, actual.PosterUrl);
-            Assert.AreEqual(source.ReleaseDate, actual.ReleaseDate);
             Assert.AreEqual(source.Title, actual.Title);
             Assert.AreEqual(source.VoteAverage, actual.VoteAverage);
             Assert.AreEqual(source.VoteCount, actual.VoteCount);
+            Assert.IsEmpty(actual.Genres);
+            Assert.AreEqual(DateTime.Parse(source.ReleaseDate), actual.ReleaseDate);
+        }
+
+        [Test]
+        public void ToMovie_HasMovieResultWithSomeGenres_ReturnsMovieWithCorrectGenres()
+        {
+            var source = new MovieResult()
+            {
+                Adult = true,
+                BackdropPath = "any.path",
+                GenreIds = new int[] { 1, 2 },
+                Id = 10,
+                Overview = "Some overview text",
+                Popularity = 8.52D,
+                PosterPath = "another.poster.path",
+                ReleaseDate = "2010/01/01",
+                Title = "Movie title",
+                VoteAverage = 7.43D,
+                VoteCount = 54
+            };
+            var genreInfo = new GenreInfo()
+            {
+                Genres = new List<GenreResult>()
+                {
+                    new GenreResult() { Id = 2, Name = "Genre 2"}
+                }
+            };
+
+            var target = new MovieMapper();
+            var actual = target.ToMovie(source, genreInfo);
+
+            Assert.AreEqual(1, actual.Genres.Count);
+            Assert.AreEqual(genreInfo.Genres[0].Id, actual.Genres[0].Id);
         }
 
         [Test]
@@ -45,7 +80,15 @@ namespace Cinelovers.Core.UnitTests.Mappers
         {
             var target = new MovieMapper();
 
-            Assert.Throws<ArgumentNullException>(() => target.ToMovie(null));
+            Assert.Throws<ArgumentNullException>(() => target.ToMovie(null, new GenreInfo()));
+        }
+
+        [Test]
+        public void ToMovie_GenreInfoIsNull_ThrowsArgumentNullException()
+        {
+            var target = new MovieMapper();
+
+            Assert.Throws<ArgumentNullException>(() => target.ToMovie(new MovieResult(), null));
         }
     }
 }

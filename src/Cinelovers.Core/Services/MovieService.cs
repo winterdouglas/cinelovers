@@ -44,17 +44,8 @@ namespace Cinelovers.Core.Services
                         {
                             result = movieInfo
                                 .Results
-                                .Select(
-                                    source => 
-                                    {
-                                        var movie = movieMapper.ToMovie(source);
-                                        movie.Genres = genreInfo
-                                            .Genres
-                                            .Where(list => source.GenreIds.Contains(list.Id))
-                                            .Select(genre => genre.Name)
-                                            .ToList();
-                                        return movie;
-                                    });
+                                .Select(source => movieMapper
+                                    .ToMovie(source, genreInfo));
                         }
                         return result;
                     });
