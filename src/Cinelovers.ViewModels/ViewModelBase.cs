@@ -10,20 +10,20 @@ namespace Cinelovers.ViewModels
 
         public IScreen HostScreen { get; protected set; }
 
-        public ViewModelActivator Activator => new ViewModelActivator();
+        public ViewModelActivator Activator { get; } = new ViewModelActivator();
 
         protected IScheduler TaskPoolScheduler { get; }
 
         protected IScheduler MainScheduler { get; }
 
         public ViewModelBase(
+            IScreen hostScreen = null,
             IScheduler mainScheduler = null, 
-            IScheduler taskPoolScheduler = null, 
-            IScreen hostScreen = null)
+            IScheduler taskPoolScheduler = null)
         {
+            HostScreen = hostScreen ?? Locator.Current.GetService<IScreen>();
             MainScheduler = mainScheduler ?? Locator.Current.GetService<IScheduler>("MainScheduler");
             TaskPoolScheduler = taskPoolScheduler ?? Locator.Current.GetService<IScheduler>("TaskPoolScheduler");
-            HostScreen = hostScreen ?? Locator.Current.GetService<IScreen>();
         }
     }
 }

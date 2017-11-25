@@ -9,7 +9,7 @@ namespace Cinelovers.ViewModels.Movies
             IScheduler mainScheduler = null, 
             IScheduler taskPoolScheduler = null, 
             IScreen hostScreen = null) 
-            : base(mainScheduler, taskPoolScheduler, hostScreen)
+            : base(hostScreen, mainScheduler, taskPoolScheduler)
         {
         }
     }

@@ -2,8 +2,6 @@
 using ReactiveUI;
 using ReactiveUI.XamForms;
 using System.Reactive.Disposables;
-using System.Reactive.Linq;
-using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace Cinelovers.Views.Movies

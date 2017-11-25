@@ -19,32 +19,33 @@ namespace Cinelovers.ViewModels.Movies
 
         private readonly IMovieService _movieService;
 
+        public UpcomingMoviesViewModel() : this(null)
+        {
+        }
+
         public UpcomingMoviesViewModel(
             IMovieService movieService = null,
             IScheduler mainScheduler = null,
             IScheduler taskPoolScheduler = null,
             IScreen hostScreen = null) 
-            : base(mainScheduler, taskPoolScheduler, hostScreen)
+            : base(hostScreen, mainScheduler, taskPoolScheduler)
         {
             _movieService = movieService ?? Locator.Current.GetService<IMovieService>();
 
+            GetUpcomingMovies = ReactiveCommand
+                .CreateFromObservable<int, IEnumerable<Movie>>(
+                    page => _movieService.GetUpcomingMovies(page));
+
             this.WhenActivated(disposables =>
             {
-                GetUpcomingMovies = ReactiveCommand
-                    .CreateFromObservable<int, IEnumerable<Movie>>(
-                        (page) => Observable.Throw<IEnumerable<Movie>>(new NotImplementedException()));
-
                 GetUpcomingMovies
-                    .Subscribe()
+                    .Select(movies => movies.Select(movie => new MovieCellViewModel(movie)))
+                    .SelectMany(movies => movies)
+                    .SubscribeOn(TaskPoolScheduler)
+                    .ObserveOn(MainScheduler)
+                    .Subscribe(item => Movies.Add(item))
                     .DisposeWith(disposables);
             });
-            //_movieService
-            //    .GetUpcomingMovies(1)
-            //    .Select(movies => movies.Select(movie => new MovieCellViewModel(movie)))
-            //    .SubscribeOn(TaskPoolScheduler)
-            //    .SelectMany(movies => movies)
-            //    .ObserveOn(MainScheduler)
-            //    .Subscribe(item => Movies.Add(item));
         }
     }
 }

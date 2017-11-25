@@ -7,7 +7,6 @@ using ReactiveUI;
 using ReactiveUI.XamForms;
 using Splat;
 using System;
-using System.Reactive.Concurrency;
 using Xamarin.Forms;
 
 namespace Cinelovers
