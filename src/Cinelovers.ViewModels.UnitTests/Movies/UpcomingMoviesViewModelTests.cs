@@ -25,11 +25,14 @@ namespace Cinelovers.ViewModels.UnitTests.Movies
             ModeDetector.InUnitTestRunner();
 
             _testScheduler = new TestScheduler();
+            RxApp.MainThreadScheduler = _testScheduler;
+            RxApp.TaskpoolScheduler = _testScheduler;
 
+            var routingState = new RoutingState();
             _screenMock = new Mock<IScreen>();
             _screenMock
-                .Setup(x => x.Router)
-                .Returns(() => new RoutingState());
+                .SetupGet(x => x.Router)
+                .Returns(() => routingState);
         }
 
         [Test]
@@ -68,6 +71,28 @@ namespace Cinelovers.ViewModels.UnitTests.Movies
                     Times.Once);
 
             Assert.AreEqual(movies.Count, target.Movies.Count);
+        }
+
+        [Test]
+        public void SetSelectedMovie_ValueIsNotNull_NavigatesToMovieDetails()
+        {
+            var selectedMovie = new MovieCellViewModel(new Movie() { Id = 1, Title = "Movie 1" });
+            var movieServiceMock = new Mock<IMovieService>();
+
+            var target = new UpcomingMoviesViewModel(
+                movieServiceMock.Object,
+                _testScheduler,
+                _testScheduler,
+                _screenMock.Object);
+
+            target.Activator.Activate();
+
+            target.SelectedMovie = selectedMovie;
+
+            _testScheduler.AdvanceBy(TimeSpan.FromMilliseconds(500).Ticks);
+
+            var currentViewModel = target.HostScreen.Router.GetCurrentViewModel();
+            Assert.IsInstanceOf<MovieDetailsViewModel>(currentViewModel);
         }
     }
 }

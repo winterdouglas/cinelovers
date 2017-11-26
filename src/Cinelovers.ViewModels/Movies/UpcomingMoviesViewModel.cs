@@ -15,8 +15,6 @@ namespace Cinelovers.ViewModels.Movies
     {
         public ReactiveCommand<int, IEnumerable<Movie>> GetUpcomingMovies { get; protected set; }
 
-        //public ReactiveCommand<MovieCellViewModel, IRoutableViewModel> OpenMovieDetails { get; protected set; }
-
         public ReactiveList<MovieCellViewModel> Movies { get; } = new ReactiveList<MovieCellViewModel>();
 
         private MovieCellViewModel _selectedMovie;
@@ -55,7 +53,8 @@ namespace Cinelovers.ViewModels.Movies
             this.WhenAnyValue(x => x.SelectedMovie)
                 .Where(selected => selected != null)
                 .Select(selected => new MovieDetailsViewModel())
-                .InvokeCommand<IRoutableViewModel, IRoutableViewModel>(HostScreen.Router.Navigate);
+                .InvokeCommand<IRoutableViewModel, IRoutableViewModel>(
+                    HostScreen.Router.Navigate);
 
             this.WhenActivated((CompositeDisposable disposables) =>
             {
