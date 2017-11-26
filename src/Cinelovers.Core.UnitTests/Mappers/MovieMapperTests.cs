@@ -3,6 +3,7 @@ using Cinelovers.Core.Rest.Dtos;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace Cinelovers.Core.UnitTests.Mappers
 {
@@ -12,16 +13,18 @@ namespace Cinelovers.Core.UnitTests.Mappers
         [Test]
         public void ToMovie_HasMovieResultWithNoAvailableGenres_ReturnsMovieWithNoGenres()
         {
+            var smallPosterBaseUrl = "https://image.tmdb.org/t/p/w185";
+            var largePosterBaseUrl = "https://image.tmdb.org/t/p/w500";
+
             var source = new MovieResult()
             {
                 Adult = true,
-                BackdropPath = "any.path",
                 GenreIds = new int[] { 1, 2 },
                 Id = 10,
                 Overview = "Some overview text",
                 Popularity = 8.52D,
-                PosterPath = "another.poster.path",
-                ReleaseDate = "2010/01/01",
+                PosterPath = "/another.poster.path",
+                ReleaseDate = "2010-01-01",
                 Title = "Movie title",
                 VoteAverage = 7.43D,
                 VoteCount = 54
@@ -31,16 +34,19 @@ namespace Cinelovers.Core.UnitTests.Mappers
             var target = new MovieMapper();
             var actual = target.ToMovie(source, genreInfo);
 
-            Assert.AreEqual(source.BackdropPath, actual.BackdropUrl);
+            Assert.AreEqual($"{smallPosterBaseUrl}{source.PosterPath}", actual.SmallPosterUri.ToString());
+            Assert.AreEqual($"{largePosterBaseUrl}{source.PosterPath}", actual.LargePosterUri.ToString());
             Assert.AreEqual(source.Id, actual.Id);
             Assert.AreEqual(source.Overview, actual.Overview);
             Assert.AreEqual(source.Popularity, actual.Popularity);
-            Assert.AreEqual(source.PosterPath, actual.PosterUrl);
             Assert.AreEqual(source.Title, actual.Title);
             Assert.AreEqual(source.VoteAverage, actual.VoteAverage);
             Assert.AreEqual(source.VoteCount, actual.VoteCount);
             Assert.IsEmpty(actual.Genres);
-            Assert.AreEqual(DateTime.Parse(source.ReleaseDate), actual.ReleaseDate);
+            Assert.AreEqual(DateTime.Parse(
+                source.ReleaseDate, 
+                new CultureInfo("en-US"), 
+                DateTimeStyles.AssumeUniversal), actual.ReleaseDate);
         }
 
         [Test]
@@ -49,7 +55,6 @@ namespace Cinelovers.Core.UnitTests.Mappers
             var source = new MovieResult()
             {
                 Adult = true,
-                BackdropPath = "any.path",
                 GenreIds = new int[] { 1, 2 },
                 Id = 10,
                 Overview = "Some overview text",

@@ -12,8 +12,6 @@ namespace Cinelovers.Core.Rest.Dtos
 
         public string PosterPath { get; set; }
 
-        public string BackdropPath { get; set; }
-
         public IList<int> GenreIds { get; set; }
 
         public string ReleaseDate { get; set; }

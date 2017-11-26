@@ -1,6 +1,7 @@
 ﻿using Cinelovers.Core.Services.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Cinelovers.ViewModels.Movies
 {
@@ -10,15 +11,24 @@ namespace Cinelovers.ViewModels.Movies
 
         public string Title => _movie.Title;
 
-        public string PosterUrl => _movie.PosterUrl;
+        public Uri LargePosterUri => _movie.LargePosterUri;
 
-        public string BackdropUrl => _movie.BackdropUrl;
+        public Uri SmallPosterUri => _movie.SmallPosterUri;
 
-        public IList<Genre> Genres => _movie.Genres;
+        public IList<string> Genres => _movie
+            .Genres
+            .Select(genre => genre.Name)
+            .ToList();
 
         public string Overview => _movie.Overview;
 
-        public DateTime? ReleaseDate => _movie.ReleaseDate;
+        public DateTime ReleaseDate => _movie.ReleaseDate;
+
+        public double Popularity => _movie.Popularity;
+
+        public double VoteAverage => _movie.VoteAverage;
+
+        public double VoteCount => _movie.VoteCount;
 
         private readonly Movie _movie;
 

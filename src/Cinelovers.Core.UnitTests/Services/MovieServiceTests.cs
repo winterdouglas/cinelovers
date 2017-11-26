@@ -173,8 +173,8 @@ namespace Cinelovers.Core.UnitTests.Services
             {
                 Results = new List<MovieResult>()
                 {
-                    new MovieResult() { Id = 1, Title = "Movie 1", GenreIds = new List<int>() { 1, 2, 3 } },
-                    new MovieResult() { Id = 2, Title = "Movie 2", GenreIds = new List<int>() { 1, 3 } }
+                    new MovieResult() { Id = 1, Title = "Movie 1", GenreIds = new List<int>() { 1, 2, 3 }, ReleaseDate = "2004-01-02" },
+                    new MovieResult() { Id = 2, Title = "Movie 2", GenreIds = new List<int>() { 1, 3 }, ReleaseDate = "2003-10-10" }
                 }
             };
             var genreInfo = new GenreInfo()

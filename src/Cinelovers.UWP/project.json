@@ -8,6 +8,7 @@
     "reactiveui-xamforms": "7.3.0",
     "refit": "2.4.1",
     "Splat": "1.6.2",
+    "Xamarin.FFImageLoading.Forms": "2.2.25",
     "Xamarin.Forms": "2.4.0.280"
   },
   "frameworks": {

@@ -17,18 +17,14 @@ namespace Cinelovers.ViewModels.Movies
 
         public ReactiveList<MovieCellViewModel> Movies { get; } = new ReactiveList<MovieCellViewModel>();
 
-        private MovieCellViewModel _selectedMovie;
         public MovieCellViewModel SelectedMovie
         {
             get { return _selectedMovie; }
             set { this.RaiseAndSetIfChanged(ref _selectedMovie, value); }
         }
 
+        private MovieCellViewModel _selectedMovie;
         private readonly IMovieService _movieService;
-
-        public UpcomingMoviesViewModel() : this(null)
-        {
-        }
 
         public UpcomingMoviesViewModel(
             IMovieService movieService = null,
@@ -53,6 +49,7 @@ namespace Cinelovers.ViewModels.Movies
             this.WhenAnyValue(x => x.SelectedMovie)
                 .Where(selected => selected != null)
                 .Select(selected => new MovieDetailsViewModel())
+                .ObserveOn(TaskPoolScheduler)
                 .InvokeCommand<IRoutableViewModel, IRoutableViewModel>(
                     HostScreen.Router.Navigate);
 

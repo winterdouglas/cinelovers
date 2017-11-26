@@ -2,13 +2,23 @@
 <rxui:ReactiveViewCell x:Class="Cinelovers.Views.Movies.MovieCellView"
                        xmlns="http://xamarin.com/schemas/2014/forms"
                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
                        xmlns:rxui="clr-namespace:ReactiveUI.XamForms;assembly=ReactiveUI.XamForms"
                        xmlns:vm="clr-namespace:Cinelovers.ViewModels.Movies;assembly=Cinelovers"
                        x:TypeArguments="vm:MovieCellViewModel">
     <ViewCell.View>
-        <StackLayout>
-            <Label x:Name="TitleLabel" FontSize="Large" />
-            <Label x:Name="GenreLabel" FontSize="Small" />
+        <StackLayout Orientation="Horizontal">
+            <ff:CachedImage x:Name="PosterImage"
+                            Aspect="AspectFit"
+                            DownsampleToViewSize="True"
+                            DownsampleUseDipUnits="True"
+                            HeightRequest="100"
+                            WidthRequest="100" />
+            
+            <StackLayout HorizontalOptions="Fill">
+                <Label x:Name="TitleLabel" FontSize="Large" />
+                <Label x:Name="GenreLabel" FontSize="Small" />
+            </StackLayout>
         </StackLayout>
     </ViewCell.View>
 </rxui:ReactiveViewCell>
