@@ -3,6 +3,8 @@ using Cinelovers.Core.Rest;
 using Cinelovers.Core.Services;
 using Cinelovers.ViewModels.Movies;
 using Cinelovers.Views.Movies;
+using FFImageLoading;
+using FFImageLoading.Config;
 using ReactiveUI;
 using ReactiveUI.XamForms;
 using Splat;
@@ -22,6 +24,12 @@ namespace Cinelovers
             Router = new RoutingState();
 
             RegisterDependencies();
+
+            var config = new Configuration
+            {
+                DiskCacheDuration = TimeSpan.FromDays(1)
+            };
+            ImageService.Instance.Initialize(config);
 
             Observable
                 .Return(new UpcomingMoviesViewModel())

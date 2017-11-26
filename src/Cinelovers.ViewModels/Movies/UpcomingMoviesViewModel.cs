@@ -35,6 +35,8 @@ namespace Cinelovers.ViewModels.Movies
         {
             _movieService = movieService ?? Locator.Current.GetService<IMovieService>();
 
+            UrlPathSegment = "Upcoming Movies";
+
             GetUpcomingMovies = ReactiveCommand
                 .CreateFromObservable<int, IEnumerable<Movie>>(
                     page => _movieService.GetUpcomingMovies(page));

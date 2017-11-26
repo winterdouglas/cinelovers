@@ -136,5 +136,19 @@ namespace Cinelovers.ViewModels.UnitTests.Movies
 
             Assert.IsNull(target.SelectedMovie);
         }
+
+        [Test]
+        public void GetUrlPathSegment_VmIsCreated_ReturnsCorrectText()
+        {
+            var movieServiceMock = new Mock<IMovieService>();
+
+            var target = new UpcomingMoviesViewModel(
+                movieServiceMock.Object,
+                _testScheduler,
+                _testScheduler,
+                _screenMock.Object);
+
+            Assert.AreEqual("Upcoming Movies", target.UrlPathSegment);
+        }
     }
 }
