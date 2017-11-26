@@ -94,5 +94,26 @@ namespace Cinelovers.ViewModels.UnitTests.Movies
             var currentViewModel = target.HostScreen.Router.GetCurrentViewModel();
             Assert.IsInstanceOf<MovieDetailsViewModel>(currentViewModel);
         }
+
+        [Test]
+        public void SelectedMovie_WhenVmIsActivated_IsSetToNull()
+        {
+            var selectedMovie = new MovieCellViewModel(new Movie() { Id = 1, Title = "Movie 1" });
+            var movieServiceMock = new Mock<IMovieService>();
+
+            var target = new UpcomingMoviesViewModel(
+                movieServiceMock.Object,
+                _testScheduler,
+                _testScheduler,
+                _screenMock.Object);
+
+            target.SelectedMovie = selectedMovie;
+
+            target.Activator.Activate();
+
+            _testScheduler.AdvanceBy(TimeSpan.FromMilliseconds(500).Ticks);
+
+            Assert.IsNull(target.SelectedMovie);
+        }
     }
 }
