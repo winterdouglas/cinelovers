@@ -12,11 +12,11 @@
                             Aspect="AspectFit"
                             DownsampleToViewSize="True"
                             DownsampleUseDipUnits="True"
-                            HeightRequest="100"
-                            WidthRequest="100" />
-            
+                            HeightRequest="120"
+                            WidthRequest="120" />
             <StackLayout HorizontalOptions="Fill">
                 <Label x:Name="TitleLabel" FontSize="Large" />
+                <Label x:Name="ReleaseDateLabel" FontSize="Micro" />
                 <Label x:Name="GenreLabel" FontSize="Small" />
             </StackLayout>
         </StackLayout>

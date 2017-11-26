@@ -7,7 +7,7 @@
                           x:TypeArguments="vm:UpcomingMoviesViewModel"
                           xmlns:movie="clr-namespace:Cinelovers.Views.Movies">
 
-    <ListView x:Name="MovieList" CachingStrategy="RecycleElement" RowHeight="100">
+    <ListView x:Name="MovieList" CachingStrategy="RecycleElement" RowHeight="120">
         <ListView.ItemTemplate>
             <DataTemplate>
                 <movie:MovieCellView />
