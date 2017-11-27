@@ -23,6 +23,7 @@ namespace Cinelovers.Views.Movies
             {
                 this.OneWayBind(ViewModel, x => x.Movies, x => x.MovieList.ItemsSource).DisposeWith(disposables);
                 this.Bind(ViewModel, x => x.SelectedMovie, x => x.MovieList.SelectedItem).DisposeWith(disposables);
+                this.OneWayBind(ViewModel, x => x.IsLoading, x => x.LoadingIndicator.IsRunning).DisposeWith(disposables);
 
                 Observable
                     .FromEventPattern<ItemVisibilityEventArgs>(
@@ -32,7 +33,8 @@ namespace Cinelovers.Views.Movies
                     .SelectMany(ev => GetNextPage(ViewModel.Movies, ev.EventArgs.Item as MovieCellViewModel))
                     .StartWith(1)
                     .DistinctUntilChanged()
-                    .InvokeCommand(ViewModel, x => x.GetUpcomingMovies);
+                    .InvokeCommand(ViewModel, x => x.GetUpcomingMovies)
+                    .DisposeWith(disposables);
             });
         }
 

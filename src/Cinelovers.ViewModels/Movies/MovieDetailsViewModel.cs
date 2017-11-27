@@ -11,6 +11,7 @@ namespace Cinelovers.ViewModels.Movies
             IScheduler taskPoolScheduler = null) 
             : base(hostScreen, mainScheduler, taskPoolScheduler)
         {
+            UrlPathSegment = "Movie Details";
         }
     }
 }

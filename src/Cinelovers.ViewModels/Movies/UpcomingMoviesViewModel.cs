@@ -23,6 +23,9 @@ namespace Cinelovers.ViewModels.Movies
             set { this.RaiseAndSetIfChanged(ref _selectedMovie, value); }
         }
 
+        public bool IsLoading => _isLoading.Value;
+
+        private ObservableAsPropertyHelper<bool> _isLoading;
         private MovieCellViewModel _selectedMovie;
         private readonly IMovieService _movieService;
 
@@ -42,8 +45,14 @@ namespace Cinelovers.ViewModels.Movies
                     page => _movieService.GetUpcomingMovies(page));
 
             GetUpcomingMovies
+                .IsExecuting
+                .ToProperty(this, x => x.IsLoading, out _isLoading,
+                    scheduler: MainScheduler);
+
+            GetUpcomingMovies
                 .Select(movies => movies.Select(movie => new MovieCellViewModel(movie)))
                 .SelectMany(movies => movies)
+                .Where(movie => !Movies.Select(m => m.Id).ToList().Contains(movie.Id))
                 .SubscribeOn(TaskPoolScheduler)
                 .ObserveOn(MainScheduler)
                 .Subscribe(item => Movies.Add(item));
@@ -51,7 +60,7 @@ namespace Cinelovers.ViewModels.Movies
             this.WhenAnyValue(x => x.SelectedMovie)
                 .Where(selected => selected != null)
                 .Select(selected => new MovieDetailsViewModel())
-                .ObserveOn(TaskPoolScheduler)
+                .ObserveOn(MainScheduler)
                 .InvokeCommand<IRoutableViewModel, IRoutableViewModel>(
                     HostScreen.Router.Navigate);
 

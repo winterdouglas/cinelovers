@@ -8,6 +8,7 @@ using ReactiveUI;
 using Splat;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 
@@ -71,6 +72,82 @@ namespace Cinelovers.ViewModels.UnitTests.Movies
                     Times.Once);
 
             Assert.AreEqual(movies.Count, target.Movies.Count);
+        }
+
+        [Test]
+        public void GetUpcomingMovies_OperationIsInvokedTwice_DoesNotAddDuplicatedMovies()
+        {
+            int expectedPage = 2;
+            var movies = new List<Movie>()
+            {
+                new Movie() { Id = 1, Title = "Movie 1" },
+                new Movie() { Id = 2, Title = "Movie 2" }
+            };
+
+            var movieServiceMock = new Mock<IMovieService>();
+            movieServiceMock
+                .Setup(x => x.GetUpcomingMovies(
+                    It.IsAny<int>()))
+                .Returns(() => Observable.Return(movies));
+
+            var target = new UpcomingMoviesViewModel(
+                movieServiceMock.Object,
+                _testScheduler,
+                _testScheduler,
+                _screenMock.Object);
+
+            target.Activator.Activate();
+
+            _testScheduler.AdvanceBy(TimeSpan.FromMilliseconds(500).Ticks);
+
+            Observable.Return(expectedPage).InvokeCommand(target.GetUpcomingMovies);
+            Observable.Return(expectedPage).InvokeCommand(target.GetUpcomingMovies);
+
+            _testScheduler.AdvanceBy(TimeSpan.FromMilliseconds(500).Ticks);
+
+            movieServiceMock
+                .Verify(x => x.GetUpcomingMovies(
+                    It.Is<int>(page => page == expectedPage)),
+                    Times.Exactly(2));
+
+            Assert.AreEqual(movies.Count, target.Movies.Count);
+        }
+
+        [Test]
+        public void GetUpcomingMovies_IsExecuting_SetsIsLoading()
+        {
+            int expectedPage = 2;
+
+            var movieServiceMock = new Mock<IMovieService>();
+            movieServiceMock
+                .Setup(x => x.GetUpcomingMovies(
+                    It.IsAny<int>()))
+                .Returns(() => Observable
+                    .Return(Enumerable.Empty<Movie>())
+                    .Delay(TimeSpan.FromMilliseconds(500), _testScheduler)
+                    .DelaySubscription(TimeSpan.FromMilliseconds(500), _testScheduler));
+
+            var target = new UpcomingMoviesViewModel(
+                movieServiceMock.Object,
+                _testScheduler,
+                _testScheduler,
+                _screenMock.Object);
+
+            target.Activator.Activate();
+
+            _testScheduler.AdvanceBy(TimeSpan.FromMilliseconds(200).Ticks);
+
+            Assert.IsFalse(target.IsLoading);
+
+            Observable.Return(expectedPage).InvokeCommand(target.GetUpcomingMovies);
+
+            _testScheduler.AdvanceBy(TimeSpan.FromMilliseconds(200).Ticks);
+
+            Assert.IsTrue(target.IsLoading);
+
+            _testScheduler.AdvanceBy(TimeSpan.FromMilliseconds(800).Ticks);
+
+            Assert.IsFalse(target.IsLoading);
         }
 
         [Test]
