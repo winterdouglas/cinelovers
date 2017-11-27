@@ -59,7 +59,7 @@ namespace Cinelovers.ViewModels.Movies
 
             this.WhenAnyValue(x => x.SelectedMovie)
                 .Where(selected => selected != null)
-                .Select(selected => new MovieDetailsViewModel())
+                .Select(selected => new MovieDetailsViewModel(selected))
                 .ObserveOn(MainScheduler)
                 .InvokeCommand<IRoutableViewModel, IRoutableViewModel>(
                     HostScreen.Router.Navigate);

@@ -2,10 +2,21 @@
 <rxui:ReactiveContentPage x:Class="Cinelovers.Views.Movies.MovieDetailsView"
                           xmlns="http://xamarin.com/schemas/2014/forms"
                           xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                          xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
                           xmlns:rxui="clr-namespace:ReactiveUI.XamForms;assembly=ReactiveUI.XamForms"
                           xmlns:vm="clr-namespace:Cinelovers.ViewModels.Movies;assembly=Cinelovers.ViewModels"
                           x:TypeArguments="vm:MovieDetailsViewModel">
-    <StackLayout>
-        <Label Text="Testing" />
+    <StackLayout Margin="15">
+        <ff:CachedImage x:Name="PosterImage"
+                        Aspect="AspectFit"
+                        DownsampleToViewSize="True"
+                        DownsampleUseDipUnits="True"
+                        HeightRequest="320"
+                        HorizontalOptions="Center"
+                        WidthRequest="320" />
+        <Label x:Name="TitleLabel" FontSize="Large" />
+        <Label x:Name="ReleaseDateLabel" FontSize="Micro" />
+        <Label x:Name="GenreLabel" FontSize="Small" />
+        <Label x:Name="OverviewLabel" FontSize="Medium" LineBreakMode="WordWrap" />
     </StackLayout>
 </rxui:ReactiveContentPage>

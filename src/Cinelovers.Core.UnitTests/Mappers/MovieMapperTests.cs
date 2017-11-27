@@ -13,7 +13,7 @@ namespace Cinelovers.Core.UnitTests.Mappers
         [Test]
         public void ToMovie_HasMovieResultWithNoAvailableGenres_ReturnsMovieWithNoGenres()
         {
-            var smallPosterBaseUrl = "https://image.tmdb.org/t/p/w185";
+            var smallPosterBaseUrl = "https://image.tmdb.org/t/p/w154";
             var largePosterBaseUrl = "https://image.tmdb.org/t/p/w500";
 
             var source = new MovieResult()

@@ -141,7 +141,7 @@ namespace Cinelovers.ViewModels.UnitTests.Movies
 
             Observable.Return(expectedPage).InvokeCommand(target.GetUpcomingMovies);
 
-            _testScheduler.AdvanceBy(TimeSpan.FromMilliseconds(200).Ticks);
+            _testScheduler.AdvanceBy(TimeSpan.FromMilliseconds(400).Ticks);
 
             Assert.IsTrue(target.IsLoading);
 
@@ -168,8 +168,9 @@ namespace Cinelovers.ViewModels.UnitTests.Movies
 
             _testScheduler.AdvanceBy(TimeSpan.FromMilliseconds(500).Ticks);
 
-            var currentViewModel = target.HostScreen.Router.GetCurrentViewModel();
-            Assert.IsInstanceOf<MovieDetailsViewModel>(currentViewModel);
+            var currentViewModel = target.HostScreen.Router.GetCurrentViewModel() as MovieDetailsViewModel;
+            Assert.IsNotNull(currentViewModel);
+            Assert.AreEqual(selectedMovie, currentViewModel.Movie);
         }
 
         [Test]

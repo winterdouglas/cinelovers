@@ -10,7 +10,7 @@ namespace Cinelovers.Core.Mappers
     public sealed class MovieMapper
     {
         const string PosterBaseUrl = "https://image.tmdb.org/t/p/";
-        const string SmallPosterSize = "w185";
+        const string SmallPosterSize = "w154";
         const string LargePosterSize = "w500";
         const string DefaultCulture = "en-US";
 
