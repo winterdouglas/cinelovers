@@ -4,6 +4,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 namespace Cinelovers.ViewModels.UnitTests.Movies
 {
@@ -40,20 +41,22 @@ namespace Cinelovers.ViewModels.UnitTests.Movies
                 VoteCount = 120,
                 Genres = genres
             };
-            var target = new MovieCellViewModel(movie);
+            var actual = new MovieCellViewModel(movie);
 
-            Assert.AreEqual(movie.Id, target.Id);
-            Assert.AreEqual(movie.LargePosterUri, target.LargePosterUri);
-            Assert.AreEqual(movie.SmallPosterUri, target.SmallPosterUri);
-            Assert.AreEqual(movie.Overview, target.Overview);
-            Assert.AreEqual(movie.Popularity, target.Popularity);
-            Assert.AreEqual(movie.ReleaseDate, target.ReleaseDate);
-            Assert.AreEqual(movie.Title, target.Title);
-            Assert.AreEqual(movie.VoteAverage, target.VoteAverage);
-            Assert.AreEqual(movie.VoteCount, target.VoteCount);
-            Assert.AreEqual(movie.Genres.Count, target.Genres.Count);
-            Assert.AreEqual(movie.Genres[0].Name, target.Genres[0]);
-            Assert.AreEqual(movie.Genres[1].Name, target.Genres[1]);
+            Assert.AreEqual(movie.Id, actual.Id);
+            Assert.AreEqual(movie.LargePosterUri, actual.LargePosterUri);
+            Assert.AreEqual(movie.SmallPosterUri, actual.SmallPosterUri);
+            Assert.AreEqual(movie.Overview, actual.Overview);
+            Assert.AreEqual(movie.Popularity, actual.Popularity);
+            Assert.AreEqual(movie.ReleaseDate, actual.ReleaseDate);
+            Assert.AreEqual(movie.Title, actual.Title);
+            Assert.AreEqual(movie.VoteAverage, actual.VoteAverage);
+            Assert.AreEqual(movie.VoteCount, actual.VoteCount);
+            Assert.AreEqual(movie.Genres.Count, actual.Genres.Count);
+            Assert.AreEqual(movie.Genres[0].Name, actual.Genres[0]);
+            Assert.AreEqual(movie.Genres[1].Name, actual.Genres[1]);
+            Assert.AreEqual(string.Join(", ", movie.Genres.Select(g => g.Name)), actual.GenresText);
+            Assert.AreEqual($"Released in {movie.ReleaseDate:yyyy-MM-dd}", actual.ReleasedIn);
         }
     }
 }

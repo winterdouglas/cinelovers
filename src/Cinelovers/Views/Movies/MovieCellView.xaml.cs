@@ -17,10 +17,8 @@ namespace Cinelovers.Views.Movies
             this.WhenActivated(disposables =>
             {
                 this.OneWayBind(ViewModel, x => x.Title, x => x.TitleLabel.Text).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, x => x.ReleaseDate, x => x.ReleaseDateLabel.Text, 
-                    released => $"Released in {released:yyyy-MM-dd}").DisposeWith(disposables);
-                this.OneWayBind(ViewModel, x => x.Genres, x => x.GenreLabel.Text,
-                    genres => string.Join(", ", genres)).DisposeWith(disposables);
+                this.OneWayBind(ViewModel, x => x.ReleasedIn, x => x.ReleaseDateLabel.Text).DisposeWith(disposables);
+                this.OneWayBind(ViewModel, x => x.GenresText, x => x.GenreLabel.Text).DisposeWith(disposables);
             });
         }
 

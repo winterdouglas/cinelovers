@@ -20,9 +20,13 @@ namespace Cinelovers.ViewModels.Movies
             .Select(genre => genre.Name)
             .ToList();
 
+        public string GenresText => string.Join(", ", Genres);
+
         public string Overview => _movie.Overview;
 
         public DateTime ReleaseDate => _movie.ReleaseDate;
+
+        public string ReleasedIn => $"Released in {ReleaseDate:yyyy-MM-dd}";
 
         public double Popularity => _movie.Popularity;
 
