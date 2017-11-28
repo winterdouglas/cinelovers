@@ -12,9 +12,9 @@ namespace Cinelovers.ViewModels
 
         public ViewModelActivator Activator { get; } = new ViewModelActivator();
 
-        protected IScheduler TaskPoolScheduler { get; }
+        public IScheduler TaskPoolScheduler { get; }
 
-        protected IScheduler MainScheduler { get; }
+        public IScheduler MainScheduler { get; }
 
         public ViewModelBase(
             IScreen hostScreen = null,
