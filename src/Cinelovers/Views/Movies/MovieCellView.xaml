@@ -10,14 +10,12 @@
         <StackLayout Orientation="Horizontal">
             <ff:CachedImage x:Name="PosterImage"
                             Aspect="AspectFit"
-                            DownsampleToViewSize="True"
-                            DownsampleUseDipUnits="True"
                             HeightRequest="150"
                             WidthRequest="120" />
             <StackLayout HorizontalOptions="Fill">
-                <Label x:Name="TitleLabel" FontSize="Large" />
-                <Label x:Name="ReleaseDateLabel" FontSize="Micro" />
+                <Label x:Name="TitleLabel" FontSize="Medium" />
                 <Label x:Name="GenreLabel" FontSize="Small" />
+                <Label x:Name="ReleaseDateLabel" FontSize="Micro" />
             </StackLayout>
         </StackLayout>
     </ViewCell.View>

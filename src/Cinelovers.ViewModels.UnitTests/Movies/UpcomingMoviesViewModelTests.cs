@@ -397,9 +397,10 @@ namespace Cinelovers.ViewModels.UnitTests.Movies
                 movieServiceMock.Object,
                 _testScheduler,
                 _testScheduler,
-                _screenMock.Object);
-
-            target.SelectedMovie = selectedMovie;
+                _screenMock.Object)
+            {
+                SelectedMovie = selectedMovie
+            };
 
             target.Activator.Activate();
 

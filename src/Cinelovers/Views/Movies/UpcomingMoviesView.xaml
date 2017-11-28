@@ -8,9 +8,10 @@
                           x:TypeArguments="vm:UpcomingMoviesViewModel">
 
     <StackLayout VerticalOptions="Fill">
-        <SearchBar x:Name="Search" Placeholder="Search movies"/>
-        <ActivityIndicator x:Name="LoadingIndicator" HeightRequest="30" />
+        <SearchBar x:Name="Search" Placeholder="Search movies" />
+        <ActivityIndicator x:Name="LoadingIndicator" />
         <ListView x:Name="MovieList"
+                  IsPullToRefreshEnabled="False"
                   CachingStrategy="RecycleElement"
                   RowHeight="150"
                   VerticalOptions="FillAndExpand">
