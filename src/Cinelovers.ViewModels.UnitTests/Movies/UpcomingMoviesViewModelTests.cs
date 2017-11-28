@@ -151,6 +151,199 @@ namespace Cinelovers.ViewModels.UnitTests.Movies
         }
 
         [Test]
+        public void GetMovies_HasMovies_SetsMovies()
+        {
+            string expectedSearch = "query";
+            int expectedPage = 2;
+            var movies = new List<Movie>()
+            {
+                new Movie() { Id = 1, Title = "Movie 1" },
+                new Movie() { Id = 2, Title = "Movie 2" }
+            };
+
+            var movieServiceMock = new Mock<IMovieService>();
+            movieServiceMock
+                .Setup(x => x.GetMovies(
+                    It.IsAny<string>(),
+                    It.IsAny<int>()))
+                .Returns(() => Observable.Return(movies));
+
+            var target = new UpcomingMoviesViewModel(
+                movieServiceMock.Object,
+                _testScheduler,
+                _testScheduler,
+                _screenMock.Object);
+
+            target.Activator.Activate();
+
+            target.SearchTerm = expectedSearch;
+
+            _testScheduler.AdvanceBy(TimeSpan.FromMilliseconds(500).Ticks);
+
+            Observable.Return(expectedPage).InvokeCommand(target.GetMovies);
+
+            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(2).Ticks);
+
+            movieServiceMock
+                .Verify(x => x.GetMovies(
+                    It.Is<string>(search => search == expectedSearch),
+                    It.Is<int>(page => page == expectedPage)),
+                    Times.Once);
+
+            Assert.AreEqual(movies.Count, target.Movies.Count);
+        }
+
+        [Test]
+        public void SearchTerm_HasAtLeastThreeCharacters_GetMovies()
+        {
+            string expectedSearch = "Any query";
+            int expectedPage = 1;
+            var movies = new List<Movie>()
+            {
+                new Movie() { Id = 1, Title = "Movie 1" },
+                new Movie() { Id = 2, Title = "Movie 2" }
+            };
+
+            var movieServiceMock = new Mock<IMovieService>();
+            movieServiceMock
+                .Setup(x => x.GetMovies(
+                    It.IsAny<string>(),
+                    It.IsAny<int>()))
+                .Returns(() => Observable.Return(movies));
+
+            var target = new UpcomingMoviesViewModel(
+                movieServiceMock.Object,
+                _testScheduler,
+                _testScheduler,
+                _screenMock.Object);
+
+            target.Activator.Activate();
+
+            target.SearchTerm = expectedSearch;
+
+            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(2).Ticks);
+
+            movieServiceMock
+                .Verify(x => x.GetMovies(
+                    It.Is<string>(search => search == expectedSearch),
+                    It.Is<int>(page => page == expectedPage)),
+                    Times.Once);
+
+            Assert.AreEqual(movies.Count, target.Movies.Count);
+        }
+
+        [Test]
+        public void SearchTerm_HasLessThanThreeCharacters_DoesNotGetMovies()
+        {
+            string expectedSearch = "12";
+            var movieServiceMock = new Mock<IMovieService>();
+            movieServiceMock
+                .Setup(x => x.GetMovies(
+                    It.IsAny<string>(),
+                    It.IsAny<int>()))
+                .Returns(() => Observable
+                    .Return(Enumerable.Empty<Movie>()));
+
+            var target = new UpcomingMoviesViewModel(
+                movieServiceMock.Object,
+                _testScheduler,
+                _testScheduler,
+                _screenMock.Object);
+
+            target.Activator.Activate();
+
+            target.SearchTerm = expectedSearch;
+
+            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(2).Ticks);
+
+            movieServiceMock
+                .Verify(x => x.GetMovies(
+                    It.IsAny<string>(),
+                    It.IsAny<int>()),
+                    Times.Never);
+        }
+
+        [Test]
+        public void SearchTerm_IsEmpty_GetUpcomingMovies()
+        {
+            var movieServiceMock = new Mock<IMovieService>();
+            movieServiceMock
+                .Setup(x => x.GetMovies(
+                    It.IsAny<string>(),
+                    It.IsAny<int>()))
+                .Returns(() => Observable
+                    .Return(Enumerable.Empty<Movie>()));
+            movieServiceMock
+                .Setup(x => x.GetUpcomingMovies(
+                    It.IsAny<int>()))
+                .Returns(() => Observable
+                    .Return(Enumerable.Empty<Movie>()));
+
+            var target = new UpcomingMoviesViewModel(
+                movieServiceMock.Object,
+                _testScheduler,
+                _testScheduler,
+                _screenMock.Object);
+
+            target.Activator.Activate();
+
+            target.SearchTerm = "any";
+
+            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(2).Ticks);
+
+            target.SearchTerm = null;
+
+            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(2).Ticks);
+
+            movieServiceMock
+                .Verify(x => x.GetMovies(
+                    It.Is<string>(search => search == "any"),
+                    It.Is<int>(page => page == 1)),
+                    Times.Once);
+
+            movieServiceMock
+                .Verify(x => x.GetUpcomingMovies(
+                    It.Is<int>(page => page == 1)),
+                    Times.Once);
+        }
+
+        [Test]
+        public void GetMovies_IsExecuting_SetsIsLoading()
+        {
+            var movieServiceMock = new Mock<IMovieService>();
+            movieServiceMock
+                .Setup(x => x.GetMovies(
+                    It.IsAny<string>(),
+                    It.IsAny<int>()))
+                .Returns(() => Observable
+                    .Return(Enumerable.Empty<Movie>())
+                    .Delay(TimeSpan.FromMilliseconds(500), _testScheduler)
+                    .DelaySubscription(TimeSpan.FromMilliseconds(500), _testScheduler));
+
+            var target = new UpcomingMoviesViewModel(
+                movieServiceMock.Object,
+                _testScheduler,
+                _testScheduler,
+                _screenMock.Object);
+
+            target.Activator.Activate();
+
+            target.SearchTerm = "Any query";
+
+            _testScheduler.AdvanceBy(TimeSpan.FromMilliseconds(200).Ticks);
+
+            Assert.IsFalse(target.IsLoading);
+
+            _testScheduler.AdvanceBy(TimeSpan.FromMilliseconds(900).Ticks);
+
+            Assert.IsTrue(target.IsLoading);
+
+            _testScheduler.AdvanceBy(TimeSpan.FromMilliseconds(1000).Ticks);
+
+            Assert.IsFalse(target.IsLoading);
+        }
+
+        [Test]
         public void SetSelectedMovie_ValueIsNotNull_NavigatesToMovieDetails()
         {
             var selectedMovie = new MovieCellViewModel(new Movie() { Id = 1, Title = "Movie 1" });
