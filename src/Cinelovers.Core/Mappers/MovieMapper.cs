@@ -31,12 +31,24 @@ namespace Cinelovers.Core.Mappers
                 VoteAverage = source.VoteAverage,
                 VoteCount = source.VoteCount,
                 Genres = genres,
-                ReleaseDate = DateTime.Parse(
-                    source.ReleaseDate, 
-                    new CultureInfo(DefaultCulture), 
-                    DateTimeStyles.AssumeUniversal)
+                ReleaseDate = ParseDate(source.ReleaseDate)
             };
+            
 
+            return result;
+        }
+
+        private DateTime? ParseDate(string date)
+        {
+            DateTime? result = null;
+
+            if (!string.IsNullOrEmpty(date))
+            {
+                result = DateTime.Parse(
+                    date,
+                    new CultureInfo(DefaultCulture),
+                    DateTimeStyles.AssumeUniversal);
+            }
             return result;
         }
 

@@ -22,18 +22,33 @@ namespace Cinelovers.Views.Movies
             this.WhenActivated(disposables =>
             {
                 this.OneWayBind(ViewModel, x => x.Movies, x => x.MovieList.ItemsSource).DisposeWith(disposables);
-                this.Bind(ViewModel, x => x.SelectedMovie, x => x.MovieList.SelectedItem).DisposeWith(disposables);
                 this.OneWayBind(ViewModel, x => x.IsLoading, x => x.LoadingIndicator.IsRunning).DisposeWith(disposables);
+                this.Bind(ViewModel, x => x.SelectedMovie, x => x.MovieList.SelectedItem).DisposeWith(disposables);
+                this.Bind(ViewModel, x => x.SearchTerm, x => x.Search.Text).DisposeWith(disposables);
 
-                Observable
+                var nextPageResqueted = Observable
                     .FromEventPattern<ItemVisibilityEventArgs>(
                         x => MovieList.ItemAppearing += x,
                         x => MovieList.ItemAppearing -= x)
                     .ObserveOn(RxApp.TaskpoolScheduler)
                     .SelectMany(ev => GetNextPage(ViewModel.Movies, ev.EventArgs.Item as MovieCellViewModel))
+                    .Publish();
+
+                nextPageResqueted
+                    .Where(page => string.IsNullOrWhiteSpace(ViewModel.SearchTerm))
                     .StartWith(1)
                     .DistinctUntilChanged()
                     .InvokeCommand(ViewModel, x => x.GetUpcomingMovies)
+                    .DisposeWith(disposables);
+
+                nextPageResqueted
+                    .Where(page => !string.IsNullOrWhiteSpace(ViewModel.SearchTerm))
+                    .DistinctUntilChanged()
+                    .InvokeCommand(ViewModel, x => x.GetMovies)
+                    .DisposeWith(disposables);
+
+                nextPageResqueted
+                    .Connect()
                     .DisposeWith(disposables);
             });
         }

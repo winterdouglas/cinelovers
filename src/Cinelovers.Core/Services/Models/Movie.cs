@@ -17,7 +17,7 @@ namespace Cinelovers.Core.Services.Models
 
         public IList<Genre> Genres { get; set; }
 
-        public DateTime ReleaseDate { get; set; }
+        public DateTime? ReleaseDate { get; set; }
 
         public double Popularity { get; set; }
 

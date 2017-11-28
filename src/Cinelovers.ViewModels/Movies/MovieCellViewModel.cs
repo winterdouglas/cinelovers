@@ -24,7 +24,7 @@ namespace Cinelovers.ViewModels.Movies
 
         public string Overview => _movie.Overview;
 
-        public DateTime ReleaseDate => _movie.ReleaseDate;
+        public DateTime? ReleaseDate => _movie.ReleaseDate;
 
         public string ReleasedIn => $"Released in {ReleaseDate:yyyy-MM-dd}";
 

@@ -12,7 +12,7 @@
                             Aspect="AspectFit"
                             DownsampleToViewSize="True"
                             DownsampleUseDipUnits="True"
-                            HeightRequest="120"
+                            HeightRequest="150"
                             WidthRequest="120" />
             <StackLayout HorizontalOptions="Fill">
                 <Label x:Name="TitleLabel" FontSize="Large" />

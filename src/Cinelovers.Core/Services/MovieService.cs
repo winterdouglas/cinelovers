@@ -35,8 +35,30 @@ namespace Cinelovers.Core.Services
 
             return Observable
                 .CombineLatest(
-                    GetMovies(page),
-                    GetGenres(),
+                    GetAndFetchUpcomingMovies(page),
+                    GetAndFetchGenres(),
+                    (movieInfo, genreInfo) =>
+                    {
+                        var result = Enumerable.Empty<Movie>();
+                        if (movieInfo != null)
+                        {
+                            result = movieInfo
+                                .Results
+                                .Select(source => movieMapper
+                                    .ToMovie(source, genreInfo));
+                        }
+                        return result;
+                    });
+        }
+
+        public IObservable<IEnumerable<Movie>> GetMovies(string query, int page)
+        {
+            var movieMapper = new MovieMapper();
+
+            return Observable
+                .CombineLatest(
+                    GetAndFetchMovies(query, page),
+                    GetAndFetchGenres(),
                     (movieInfo, genreInfo) =>
                     {
                         var result = Enumerable.Empty<Movie>();
@@ -55,13 +77,13 @@ namespace Cinelovers.Core.Services
         {
             var genreMapper = new GenreMapper();
 
-            return GetGenres()
+            return GetAndFetchGenres()
                 .Select(genreInfo => genreInfo == null
                     ? Enumerable.Empty<Genre>()
                     : genreInfo.Genres.Select(result => genreMapper.ToGenre(result)));
         }
 
-        private IObservable<MoviePagingInfo> GetMovies(int page)
+        private IObservable<MoviePagingInfo> GetAndFetchUpcomingMovies(int page)
         {
             return _cache
                 .GetAndFetchLatest(
@@ -69,7 +91,15 @@ namespace Cinelovers.Core.Services
                     () => _client.FetchUpcomingMovies(page, Language));
         }
 
-        private IObservable<GenreInfo> GetGenres()
+        private IObservable<MoviePagingInfo> GetAndFetchMovies(string query, int page)
+        {
+            return _cache
+                .GetAndFetchLatest(
+                    GetMoviesCacheKey(query, page),
+                    () => _client.FetchMovies(query, page, Language));
+        }
+
+        private IObservable<GenreInfo> GetAndFetchGenres()
         {
             return _cache
                 .GetAndFetchLatest(
@@ -80,5 +110,7 @@ namespace Cinelovers.Core.Services
         private string GetUpcomingMoviesCacheKey(int page) => $"upcoming_movies_{page}";
 
         private string GetGenresCacheKey() => "genres";
+
+        private string GetMoviesCacheKey(string query, int page) => $"movies_{query}_{page}";
     }
 }

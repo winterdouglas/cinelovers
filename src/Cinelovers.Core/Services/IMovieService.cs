@@ -8,6 +8,8 @@ namespace Cinelovers.Core.Services
     {
         IObservable<IEnumerable<Movie>> GetUpcomingMovies(int page);
 
+        IObservable<IEnumerable<Movie>> GetMovies(string query, int page);
+
         IObservable<IEnumerable<Genre>> GetMovieGenres();
     }
 }
