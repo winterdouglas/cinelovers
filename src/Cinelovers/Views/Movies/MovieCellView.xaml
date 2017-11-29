@@ -6,17 +6,15 @@
                        xmlns:rxui="clr-namespace:ReactiveUI.XamForms;assembly=ReactiveUI.XamForms"
                        xmlns:vm="clr-namespace:Cinelovers.ViewModels.Movies;assembly=Cinelovers"
                        x:TypeArguments="vm:MovieCellViewModel">
-    <ViewCell.View>
-        <StackLayout Orientation="Horizontal">
-            <ff:CachedImage x:Name="PosterImage"
+    <StackLayout Orientation="Horizontal">
+        <ff:CachedImage x:Name="PosterImage"
                             Aspect="AspectFit"
-                            HeightRequest="150"
-                            WidthRequest="120" />
-            <StackLayout HorizontalOptions="Fill">
-                <Label x:Name="TitleLabel" FontSize="Medium" />
-                <Label x:Name="GenreLabel" FontSize="Small" />
-                <Label x:Name="ReleaseDateLabel" FontSize="Micro" />
-            </StackLayout>
+                            HeightRequest="120"
+                            WidthRequest="100" />
+        <StackLayout HorizontalOptions="Fill" VerticalOptions="Center">
+            <Label x:Name="TitleLabel" FontSize="Medium" />
+            <Label x:Name="GenreLabel" FontSize="Small" />
+            <Label x:Name="ReleaseDateLabel" FontSize="Micro" />
         </StackLayout>
-    </ViewCell.View>
+    </StackLayout>
 </rxui:ReactiveViewCell>

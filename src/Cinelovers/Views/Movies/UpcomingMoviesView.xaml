@@ -9,11 +9,10 @@
 
     <StackLayout VerticalOptions="Fill">
         <SearchBar x:Name="Search" Placeholder="Search movies" />
-        <ActivityIndicator x:Name="LoadingIndicator" />
         <ListView x:Name="MovieList"
                   IsPullToRefreshEnabled="False"
                   CachingStrategy="RecycleElement"
-                  RowHeight="150"
+                  RowHeight="120"
                   VerticalOptions="FillAndExpand">
             <ListView.ItemTemplate>
                 <DataTemplate>

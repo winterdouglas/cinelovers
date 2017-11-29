@@ -94,6 +94,7 @@ namespace Cinelovers.ViewModels.Movies
 
             var searchChanged = this
                 .WhenAnyValue(x => x.SearchTerm)
+                .Skip(1)
                 .Throttle(TimeSpan.FromSeconds(1), TaskPoolScheduler)
                 .DistinctUntilChanged()
                 .Publish();
@@ -110,11 +111,6 @@ namespace Cinelovers.ViewModels.Movies
 
             searchChanged
                 .Connect();
-
-            this.WhenActivated((CompositeDisposable disposables) =>
-            {
-                SelectedMovie = null;
-            });
         }
 
         private IObservable<IEnumerable<Movie>> ClearAndGetUpcomingMovies(int page)

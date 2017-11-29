@@ -7,7 +7,7 @@
                           xmlns:vm="clr-namespace:Cinelovers.ViewModels.Movies;assembly=Cinelovers.ViewModels"
                           x:TypeArguments="vm:MovieDetailsViewModel">
     <ScrollView>
-        <StackLayout Margin="15">
+        <StackLayout Padding="15">
             <ff:CachedImage x:Name="PosterImage"
                         Aspect="AspectFit"
                         HeightRequest="320"

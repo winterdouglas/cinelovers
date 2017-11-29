@@ -388,28 +388,6 @@ namespace Cinelovers.ViewModels.UnitTests.Movies
         }
 
         [Test]
-        public void SelectedMovie_VmIsActivated_IsSetToNull()
-        {
-            var selectedMovie = new MovieCellViewModel(new Movie() { Id = 1, Title = "Movie 1" });
-            var movieServiceMock = new Mock<IMovieService>();
-
-            var target = new UpcomingMoviesViewModel(
-                movieServiceMock.Object,
-                _testScheduler,
-                _testScheduler,
-                _screenMock.Object)
-            {
-                SelectedMovie = selectedMovie
-            };
-
-            target.Activator.Activate();
-
-            _testScheduler.AdvanceBy(TimeSpan.FromMilliseconds(500).Ticks);
-
-            Assert.IsNull(target.SelectedMovie);
-        }
-
-        [Test]
         public void GetUrlPathSegment_VmIsCreated_ReturnsCorrectText()
         {
             var movieServiceMock = new Mock<IMovieService>();
