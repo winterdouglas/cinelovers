@@ -19,13 +19,18 @@ namespace Cinelovers.Views.Movies
         {
             InitializeComponent();
 
-            this.OneWayBind(ViewModel, x => x.Movies, x => x.MovieList.ItemsSource);
-            this.OneWayBind(ViewModel, x => x.IsLoading, x => x.MovieList.IsRefreshing);
-            this.Bind(ViewModel, x => x.SelectedMovie, x => x.MovieList.SelectedItem);
-            this.Bind(ViewModel, x => x.SearchTerm, x => x.Search.Text);
+            this.WhenActivated(disposables =>
+            {
+                this.OneWayBind(ViewModel, x => x.Movies, x => x.MovieList.ItemsSource).DisposeWith(disposables);
+                this.OneWayBind(ViewModel, x => x.IsLoading, x => x.MovieList.IsRefreshing).DisposeWith(disposables);
+                this.Bind(ViewModel, x => x.SelectedMovie, x => x.MovieList.SelectedItem).DisposeWith(disposables);
+                this.Bind(ViewModel, x => x.SearchTerm, x => x.Search.Text).DisposeWith(disposables);
+            });
 
             this.WhenAnyValue(x => x.ViewModel)
                 .Where(vm => vm != null)
+                .SubscribeOn(RxApp.TaskpoolScheduler)
+                .ObserveOn(RxApp.TaskpoolScheduler)
                 .Subscribe(
                     _ =>
                     {
@@ -33,8 +38,9 @@ namespace Cinelovers.Views.Movies
                             .FromEventPattern<ItemVisibilityEventArgs>(
                                 x => MovieList.ItemAppearing += x,
                                 x => MovieList.ItemAppearing -= x)
-                            .ObserveOn(RxApp.TaskpoolScheduler)
                             .SelectMany(ev => GetNextPage(ViewModel.Movies, ev.EventArgs.Item as MovieCellViewModel))
+                            .SubscribeOn(RxApp.TaskpoolScheduler)
+                            .ObserveOn(RxApp.TaskpoolScheduler)
                             .Publish();
 
                         nextPageResqueted

@@ -58,13 +58,13 @@ namespace Cinelovers.ViewModels.Movies
             GetUpcomingMovies = ReactiveCommand
                 .CreateFromObservable<int, IEnumerable<Movie>>(
                     page => ClearAndGetUpcomingMovies(page),
-                    outputScheduler: MainScheduler);
+                    outputScheduler: TaskPoolScheduler);
 
             GetMovies = ReactiveCommand
                 .CreateFromObservable<int, IEnumerable<Movie>>(
                     page => ClearAndGetMovies(SearchTerm, page),
                     canExecute: canGetMovies,
-                    outputScheduler: MainScheduler);
+                    outputScheduler: TaskPoolScheduler);
 
             GetUpcomingMovies
                 .IsExecuting
@@ -77,17 +77,14 @@ namespace Cinelovers.ViewModels.Movies
                 .Select(movies => movies.Select(movie => new MovieCellViewModel(movie)))
                 .SelectMany(movies => movies)
                 .SubscribeOn(TaskPoolScheduler)
-                .ObserveOn(MainScheduler)
-                .Subscribe(
-                    movie =>
-                    {
-                        if (!Movies.Any(m => m.Id == movie.Id))
-                            Movies.Add(movie);
-                    });
+                .ObserveOn(TaskPoolScheduler)
+                .SelectMany(movie => AddMovie(movie))
+                .Subscribe();
 
             this.WhenAnyValue(x => x.SelectedMovie)
                 .Where(selected => selected != null)
                 .Select(selected => new MovieDetailsViewModel(selected))
+                .SubscribeOn(TaskPoolScheduler)
                 .ObserveOn(MainScheduler)
                 .InvokeCommand<IRoutableViewModel, IRoutableViewModel>(
                     HostScreen.Router.Navigate);
@@ -97,6 +94,8 @@ namespace Cinelovers.ViewModels.Movies
                 .Skip(1)
                 .Throttle(TimeSpan.FromSeconds(1), TaskPoolScheduler)
                 .DistinctUntilChanged()
+                .SubscribeOn(TaskPoolScheduler)
+                .ObserveOn(TaskPoolScheduler)
                 .Publish();
 
             searchChanged
@@ -116,37 +115,47 @@ namespace Cinelovers.ViewModels.Movies
         private IObservable<IEnumerable<Movie>> ClearAndGetUpcomingMovies(int page)
         {
             return Observable
-                .Create<Unit>(
+                .Create<IEnumerable<Movie>>(
                     observer =>
                     {
                         if (page == 1)
                             MainScheduler.Schedule(() => Movies.Clear());
 
-                        observer.OnNext(Unit.Default);
-                        observer.OnCompleted();
-
-                        return Disposable.Empty;
-                    })
-                .ObserveOn(TaskPoolScheduler)
-                .SelectMany(_ => _movieService.GetUpcomingMovies(page));
+                        return _movieService
+                            .GetUpcomingMovies(page)
+                            .Subscribe(observer);
+                    });
         }
 
         private IObservable<IEnumerable<Movie>> ClearAndGetMovies(string query, int page)
         {
             return Observable
-                .Create<Unit>(
+                .Create<IEnumerable<Movie>>(
                     observer =>
                     {
                         if (page == 1)
                             MainScheduler.Schedule(() => Movies.Clear());
 
+                        return _movieService
+                            .GetMovies(query, page)
+                            .Subscribe(observer);
+                    });
+        }
+
+        private IObservable<Unit> AddMovie(MovieCellViewModel movie)
+        {
+            return Observable
+                .Create<Unit>(
+                    observer =>
+                    {
+                        if (!Movies.Any(m => m.Id == movie.Id))
+                            MainScheduler.Schedule(() => Movies.Add(movie));
+
                         observer.OnNext(Unit.Default);
                         observer.OnCompleted();
 
                         return Disposable.Empty;
-                    })
-                .ObserveOn(TaskPoolScheduler)
-                .SelectMany(_ => _movieService.GetMovies(query, page));
+                    });
         }
     }
 }

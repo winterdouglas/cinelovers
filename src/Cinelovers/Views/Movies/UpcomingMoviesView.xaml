@@ -11,7 +11,7 @@
         <SearchBar x:Name="Search" Placeholder="Search movies" />
         <ListView x:Name="MovieList"
                   IsPullToRefreshEnabled="False"
-                  CachingStrategy="RecycleElement"
+                  CachingStrategy="RecycleElementAndDataTemplate"
                   RowHeight="120"
                   VerticalOptions="FillAndExpand">
             <ListView.ItemTemplate>
