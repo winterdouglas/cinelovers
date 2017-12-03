@@ -4,6 +4,7 @@ using ReactiveUI;
 using Splat;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Concurrency;
@@ -69,17 +70,32 @@ namespace Cinelovers.ViewModels.Movies
             GetUpcomingMovies
                 .IsExecuting
                 .Merge(GetMovies.IsExecuting, TaskPoolScheduler)
+                .SubscribeOn(TaskPoolScheduler)
                 .ToProperty(this, x => x.IsLoading, out _isLoading,
                     scheduler: MainScheduler);
 
-            GetUpcomingMovies
+            var moviesChanged = GetUpcomingMovies
                 .Merge(GetMovies, TaskPoolScheduler)
-                .Select(movies => movies.Select(movie => new MovieCellViewModel(movie)))
-                .SelectMany(movies => movies)
                 .SubscribeOn(TaskPoolScheduler)
                 .ObserveOn(TaskPoolScheduler)
-                .SelectMany(movie => AddMovie(movie))
+                .Publish();
+
+            moviesChanged
+                .Select(movies => movies.Where(movie => Movies.Select(m => m.Id).Contains(movie.Id)))
+                .SubscribeOn(TaskPoolScheduler)
+                .ObserveOn(MainScheduler)
+                .SelectMany(movies => MergeMovies(movies))
                 .Subscribe();
+
+            moviesChanged
+                .Select(movies => movies.Where(movie => !Movies.Select(m => m.Id).Contains(movie.Id)))
+                .Select(movies => movies.Select(movie => new MovieCellViewModel(movie)))
+                .SubscribeOn(TaskPoolScheduler)
+                .ObserveOn(MainScheduler)
+                .Subscribe(movies => Movies.AddRange(movies));
+
+            moviesChanged
+                .Connect();
 
             this.WhenAnyValue(x => x.SelectedMovie)
                 .Where(selected => selected != null)
@@ -91,7 +107,6 @@ namespace Cinelovers.ViewModels.Movies
 
             var searchChanged = this
                 .WhenAnyValue(x => x.SearchTerm)
-                .Skip(1)
                 .Throttle(TimeSpan.FromSeconds(1), TaskPoolScheduler)
                 .DistinctUntilChanged()
                 .SubscribeOn(TaskPoolScheduler)
@@ -101,11 +116,16 @@ namespace Cinelovers.ViewModels.Movies
             searchChanged
                 .Where(searchTerm => !string.IsNullOrWhiteSpace(searchTerm))
                 .Select(_ => 1)
+                .SubscribeOn(TaskPoolScheduler)
+                .ObserveOn(TaskPoolScheduler)
                 .InvokeCommand(GetMovies);
 
             searchChanged
+                .Skip(1)
                 .Where(searchTerm => string.IsNullOrWhiteSpace(searchTerm))
                 .Select(_ => 1)
+                .SubscribeOn(TaskPoolScheduler)
+                .ObserveOn(TaskPoolScheduler)
                 .InvokeCommand(GetUpcomingMovies);
 
             searchChanged
@@ -142,15 +162,17 @@ namespace Cinelovers.ViewModels.Movies
                     });
         }
 
-        private IObservable<Unit> AddMovie(MovieCellViewModel movie)
+        private IObservable<Unit> MergeMovies(IEnumerable<Movie> movies)
         {
             return Observable
                 .Create<Unit>(
                     observer =>
                     {
-                        if (!Movies.Any(m => m.Id == movie.Id))
-                            MainScheduler.Schedule(() => Movies.Add(movie));
-
+                        foreach (var movie in movies)
+                        {
+                            var foundMovie = Movies.First(m => m.Id == movie.Id);
+                            foundMovie.UpdateMovie(movie);
+                        }
                         observer.OnNext(Unit.Default);
                         observer.OnCompleted();
 

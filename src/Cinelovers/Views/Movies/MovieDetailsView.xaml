@@ -7,16 +7,27 @@
                           xmlns:vm="clr-namespace:Cinelovers.ViewModels.Movies;assembly=Cinelovers.ViewModels"
                           x:TypeArguments="vm:MovieDetailsViewModel">
     <ScrollView>
-        <StackLayout Padding="15">
-            <ff:CachedImage x:Name="PosterImage"
-                        Aspect="AspectFit"
-                        HeightRequest="320"
-                        HorizontalOptions="Center"
-                        WidthRequest="320" />
-            <Label x:Name="TitleLabel" FontSize="Large" />
-            <Label x:Name="GenreLabel" FontSize="Small" />
-            <Label x:Name="ReleaseDateLabel" FontSize="Micro" />
-            <Label x:Name="OverviewLabel" FontSize="Medium" />
+        <StackLayout BackgroundColor="{StaticResource BackgroundColor}">
+            <StackLayout Margin="10"
+                         BackgroundColor="{StaticResource BorderColor}"
+                         VerticalOptions="FillAndExpand">
+                <StackLayout Margin="0.5"
+                             Padding="10"
+                             Spacing="5"
+                             BackgroundColor="{StaticResource PanelColor}">
+                    <Label x:Name="TitleLabel"
+                           FontAttributes="Bold"
+                           FontSize="Medium" />
+                    <ff:CachedImage x:Name="PosterImage"
+                                    Aspect="AspectFit"
+                                    HeightRequest="320"
+                                    HorizontalOptions="Center"
+                                    WidthRequest="320" />
+                    <Label x:Name="GenreLabel" FontSize="Small" />
+                    <Label x:Name="ReleaseDateLabel" FontSize="Small" />
+                    <Label x:Name="OverviewLabel" FontSize="Medium" />
+                </StackLayout>
+            </StackLayout>
         </StackLayout>
     </ScrollView>
 </rxui:ReactiveContentPage>

@@ -19,7 +19,7 @@ namespace Cinelovers.Core.Caching
                 .GetAndFetchLatest(
                     cacheKey, 
                     fetchFunction, 
-                    offset => (DateTimeOffset.UtcNow - offset) > TimeSpan.FromHours(1));
+                    offset => (DateTimeOffset.UtcNow - offset) > TimeSpan.FromSeconds(1));
         }
 
         public IObservable<Unit> InvalidateAll()

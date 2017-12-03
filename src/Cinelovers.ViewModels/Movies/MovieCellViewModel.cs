@@ -1,11 +1,12 @@
 ﻿using Cinelovers.Core.Services.Models;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Cinelovers.ViewModels.Movies
 {
-    public class MovieCellViewModel
+    public class MovieCellViewModel : ReactiveObject
     {
         public int Id => _movie.Id;
 
@@ -34,11 +35,17 @@ namespace Cinelovers.ViewModels.Movies
 
         public double VoteCount => _movie.VoteCount;
 
-        private readonly Movie _movie;
+        private Movie _movie;
 
         public MovieCellViewModel(Movie movie)
         {
             _movie = movie ?? throw new ArgumentNullException(nameof(movie));
+        }
+
+        public void UpdateMovie(Movie movie)
+        {
+            _movie = movie;
+            this.RaisePropertyChanged("");
         }
     }
 }

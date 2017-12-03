@@ -19,12 +19,17 @@ namespace Cinelovers.Views.Movies
         {
             InitializeComponent();
 
+            var dispose = new CompositeDisposable();
+
             this.WhenActivated(disposables =>
             {
                 this.OneWayBind(ViewModel, x => x.Movies, x => x.MovieList.ItemsSource).DisposeWith(disposables);
                 this.OneWayBind(ViewModel, x => x.IsLoading, x => x.MovieList.IsRefreshing).DisposeWith(disposables);
                 this.Bind(ViewModel, x => x.SelectedMovie, x => x.MovieList.SelectedItem).DisposeWith(disposables);
                 this.Bind(ViewModel, x => x.SearchTerm, x => x.Search.Text).DisposeWith(disposables);
+                dispose.DisposeWith(disposables);
+
+                ViewModel.SelectedMovie = null;
             });
 
             this.WhenAnyValue(x => x.ViewModel)
@@ -47,21 +52,24 @@ namespace Cinelovers.Views.Movies
                             .Where(page => string.IsNullOrWhiteSpace(ViewModel.SearchTerm))
                             .StartWith(1)
                             .DistinctUntilChanged()
-                            .InvokeCommand(ViewModel.GetUpcomingMovies);
+                            .SubscribeOn(RxApp.TaskpoolScheduler)
+                            .ObserveOn(RxApp.TaskpoolScheduler)
+                            .InvokeCommand(ViewModel.GetUpcomingMovies)
+                            .DisposeWith(dispose);
 
                         nextPageResqueted
                             .Where(page => !string.IsNullOrWhiteSpace(ViewModel.SearchTerm))
                             .DistinctUntilChanged()
-                            .InvokeCommand(ViewModel.GetMovies);
+                            .SubscribeOn(RxApp.TaskpoolScheduler)
+                            .ObserveOn(RxApp.TaskpoolScheduler)
+                            .InvokeCommand(ViewModel.GetMovies)
+                            .DisposeWith(dispose);
 
                         nextPageResqueted
-                            .Connect();
-                    });
-
-            this.WhenActivated(disposables =>
-            {
-                ViewModel.SelectedMovie = null;
-            });
+                            .Connect()
+                            .DisposeWith(dispose);
+                    })
+                .DisposeWith(dispose);
         }
 
         private IObservable<int> GetNextPage<T>(IList<T> items, T currentItem, int pageSize = 20)

@@ -7,13 +7,15 @@
                           xmlns:vm="clr-namespace:Cinelovers.ViewModels.Movies;assembly=Cinelovers.ViewModels"
                           x:TypeArguments="vm:UpcomingMoviesViewModel">
 
-    <StackLayout VerticalOptions="Fill">
-        <SearchBar x:Name="Search" Placeholder="Search movies" />
+    <StackLayout BackgroundColor="{StaticResource BackgroundColor}" VerticalOptions="Fill">
+        <SearchBar x:Name="Search"
+                   BackgroundColor="{StaticResource PanelColor}"
+                   Placeholder="Search movies" />
+        <BoxView Style="{StaticResource SeparatorStyle}"/>
         <ListView x:Name="MovieList"
+                  CachingStrategy="RecycleElement"
                   IsPullToRefreshEnabled="False"
-                  CachingStrategy="RecycleElementAndDataTemplate"
-                  RowHeight="120"
-                  VerticalOptions="FillAndExpand">
+                  RowHeight="400">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <movie:MovieCellView />
