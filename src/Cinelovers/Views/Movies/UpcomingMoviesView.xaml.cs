@@ -44,6 +44,8 @@ namespace Cinelovers.Views.Movies
                                 x => MovieList.ItemAppearing += x,
                                 x => MovieList.ItemAppearing -= x)
                             .SelectMany(ev => GetNextPage(ViewModel.Movies, ev.EventArgs.Item as MovieCellViewModel))
+                            .Where(page => page != -1)
+                            .DistinctUntilChanged()
                             .SubscribeOn(RxApp.TaskpoolScheduler)
                             .ObserveOn(RxApp.TaskpoolScheduler)
                             .Publish();
@@ -72,15 +74,17 @@ namespace Cinelovers.Views.Movies
                 .DisposeWith(dispose);
         }
 
-        private IObservable<int> GetNextPage<T>(IList<T> items, T currentItem, int pageSize = 20)
+        private IObservable<int> GetNextPage(IList<MovieCellViewModel> items, MovieCellViewModel currentItem, int pageSize = 20)
         {
             return Observable.Create<int>(
                 observer =>
                 {
-                    var lastPage = (int)Math.Ceiling((double)items.Count / pageSize);
-                    var position = items.IndexOf(currentItem) + 1;
-                    var nextPage = position % PageSize == 0 ? ++lastPage : lastPage;
-
+                    int nextPage = -1;
+                    if (currentItem == items[items.Count - 1])
+                    {
+                        nextPage = items.Count / pageSize;
+                        ++nextPage;
+                    }
                     observer.OnNext(nextPage);
                     observer.OnCompleted();
 
