@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using SnakeCase.JsonNet;
 using System.Net.Http;
 using System;
+using System.Net;
 
 namespace Cinelovers.Core.Rest
 {
@@ -13,7 +14,11 @@ namespace Cinelovers.Core.Rest
 
         public ITmdbApiClient GetClient()
         {
-            var httpClient = new HttpClient(new TmdbHttpClientHandler(() => ApiKey))
+            var clientHandler = new TmdbHttpClientHandler(() => ApiKey)
+            {
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+            };
+            var httpClient = new HttpClient(clientHandler)
             {
                 BaseAddress = new Uri(BaseAddress)
             };
