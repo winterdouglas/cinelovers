@@ -24,7 +24,7 @@ namespace Cinelovers.Views.Movies
             this.WhenActivated(disposables =>
             {
                 this.OneWayBind(ViewModel, x => x.Movies, x => x.MovieList.ItemsSource).DisposeWith(disposables);
-                this.OneWayBind(ViewModel, x => x.IsLoading, x => x.MovieList.IsRefreshing).DisposeWith(disposables);
+                this.OneWayBind(ViewModel, x => x.IsLoading, x => x.Indicator.IsLoading).DisposeWith(disposables);
                 this.Bind(ViewModel, x => x.SelectedMovie, x => x.MovieList.SelectedItem).DisposeWith(disposables);
                 this.Bind(ViewModel, x => x.SearchTerm, x => x.Search.Text).DisposeWith(disposables);
                 dispose.DisposeWith(disposables);
