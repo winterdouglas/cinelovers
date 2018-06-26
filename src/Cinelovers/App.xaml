@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application x:Class="Cinelovers.App"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <Color x:Key="BackgroundColor">#efefef</Color>
+            <Color x:Key="BorderColor">#e0e0e0</Color>
+            <Color x:Key="PanelColor">#ffffff</Color>
+
+            <Style x:Key="SeparatorStyle" TargetType="BoxView">
+                <Setter Property="Color" Value="{StaticResource BorderColor}" />
+                <Setter Property="HeightRequest" Value="0.5" />
+                <Setter Property="HorizontalOptions" Value="Fill" />
+            </Style>
+
+            <Style x:Key="DefaultContentPageStyle" TargetType="ContentPage">
+                <Setter Property="BackgroundColor" Value="{StaticResource BackgroundColor}" />
+            </Style>
+
+            <Style x:Key="DefaultStackLayoutStyle" TargetType="StackLayout">
+                <Setter Property="Spacing" Value="0" />
+                <Setter Property="Padding" Value="0" />
+            </Style>
+
+            <Style x:Key="DefaultListViewStyle" TargetType="ListView">
+                <Setter Property="SeparatorVisibility" Value="None" />
+            </Style>
+
+            <Style BasedOn="{StaticResource DefaultStackLayoutStyle}" TargetType="StackLayout" />
+            <Style BasedOn="{StaticResource DefaultListViewStyle}" TargetType="ListView" />
+            <Style ApplyToDerivedTypes="True"
+                   BasedOn="{StaticResource DefaultContentPageStyle}"
+                   TargetType="ContentPage" />
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
