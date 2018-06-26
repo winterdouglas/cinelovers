@@ -1,4 +1,4 @@
-﻿using FFImageLoading.Forms.WinUWP;
+﻿using FFImageLoading.Forms.Platform;
 
 namespace Cinelovers.UWP
 {

@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using FFImageLoading.Forms.Droid;
+using FFImageLoading.Forms.Platform;
 
 namespace Cinelovers.Droid
 {
@@ -21,7 +21,7 @@ namespace Cinelovers.Droid
 
             base.OnCreate(bundle);
 
-            CachedImageRenderer.Init();
+            CachedImageRenderer.Init(true);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());

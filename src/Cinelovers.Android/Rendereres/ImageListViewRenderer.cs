@@ -3,12 +3,18 @@ using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using Cinelovers.Droid.Rendereres;
 using FFImageLoading;
+using Android.Content;
 
 [assembly: ExportRenderer(typeof(Xamarin.Forms.ListView), typeof(ImageListViewRenderer))]
 namespace Cinelovers.Droid.Rendereres
 {
     public class ImageListViewRenderer : ListViewRenderer
     {
+        public ImageListViewRenderer(Context context)
+            : base(context)
+        {
+        }
+
         protected override void OnElementChanged(ElementChangedEventArgs<Xamarin.Forms.ListView> e)
         {
             base.OnElementChanged(e);
