@@ -10,7 +10,7 @@
         <StackLayout BackgroundColor="{StaticResource BackgroundColor}">
             <StackLayout Margin="10"
                          BackgroundColor="{StaticResource BorderColor}"
-                         VerticalOptions="FillAndExpand">
+                         VerticalOptions="StartAndExpand">
                 <StackLayout Margin="0.5"
                              Padding="10"
                              Spacing="5"
