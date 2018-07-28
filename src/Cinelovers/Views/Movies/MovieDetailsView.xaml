@@ -3,6 +3,7 @@
                           xmlns="http://xamarin.com/schemas/2014/forms"
                           xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                           xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+                          xmlns:movie="clr-namespace:Cinelovers.Views.Movies"
                           xmlns:rxui="clr-namespace:ReactiveUI.XamForms;assembly=ReactiveUI.XamForms"
                           xmlns:vm="clr-namespace:Cinelovers.ViewModels.Movies;assembly=Cinelovers.ViewModels"
                           x:TypeArguments="vm:MovieDetailsViewModel">
@@ -13,8 +14,8 @@
                          VerticalOptions="StartAndExpand">
                 <StackLayout Margin="0.5"
                              Padding="10"
-                             Spacing="5"
-                             BackgroundColor="{StaticResource PanelColor}">
+                             BackgroundColor="{StaticResource PanelColor}"
+                             Spacing="5">
                     <Label x:Name="TitleLabel"
                            FontAttributes="Bold"
                            FontSize="Medium" />
@@ -27,6 +28,16 @@
                     <Label x:Name="ReleaseDateLabel" FontSize="Small" />
                     <Label x:Name="OverviewLabel" FontSize="Medium" />
                 </StackLayout>
+                <ListView x:Name="ReviewList"
+                          CachingStrategy="RecycleElement"
+                          IsPullToRefreshEnabled="False"
+                          RowHeight="400">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <movie:ReviewCellView />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </StackLayout>
         </StackLayout>
     </ScrollView>
