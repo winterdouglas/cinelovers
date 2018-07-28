@@ -1,9 +1,9 @@
 ﻿using Refit;
 using Newtonsoft.Json;
-using SnakeCase.JsonNet;
 using System.Net.Http;
 using System;
 using System.Net;
+using Cinelovers.Core.Infrastructure;
 
 namespace Cinelovers.Core.Rest
 {
