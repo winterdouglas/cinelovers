@@ -1,6 +1,6 @@
 ﻿namespace Cinelovers.Core.Rest
 {
-    public interface ITmdbApiService
+    public interface IApiService
     {
         ITmdbApiClient GetClient();
     }

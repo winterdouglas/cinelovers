@@ -24,16 +24,16 @@ namespace Cinelovers.Core.UnitTests.Services
 
             var apiClientMock = new Mock<ITmdbApiClient>();
             apiClientMock
-                .Setup(x => x.FetchUpcomingMovies(
+                .Setup(x => x.GetUpcomingMovies(
                     It.IsAny<int>(),
                     It.IsAny<string>()))
                 .Returns(() => Observable.Return(pagingInfo));
             apiClientMock
-                .Setup(x => x.FetchMovieGenres(
+                .Setup(x => x.GetGenres(
                     It.IsAny<string>()))
                 .Returns(() => Observable.Return(genreInfo));
 
-            var apiServiceMock = new Mock<ITmdbApiService>();
+            var apiServiceMock = new Mock<IApiService>();
             apiServiceMock
                 .Setup(x => x.GetClient())
                 .Returns(apiClientMock.Object);
@@ -73,16 +73,16 @@ namespace Cinelovers.Core.UnitTests.Services
 
             var apiClientMock = new Mock<ITmdbApiClient>();
             apiClientMock
-                .Setup(x => x.FetchUpcomingMovies(
+                .Setup(x => x.GetUpcomingMovies(
                     It.IsAny<int>(),
                     It.IsAny<string>()))
                 .Returns(() => Observable.Return(pagingInfo));
             apiClientMock
-               .Setup(x => x.FetchMovieGenres(
+               .Setup(x => x.GetGenres(
                    It.IsAny<string>()))
                .Returns(() => Observable.Return(genreInfo));
 
-            var apiServiceMock = new Mock<ITmdbApiService>();
+            var apiServiceMock = new Mock<IApiService>();
             apiServiceMock
                 .Setup(x => x.GetClient())
                 .Returns(apiClientMock.Object);
@@ -107,12 +107,12 @@ namespace Cinelovers.Core.UnitTests.Services
 
             apiServiceMock.Verify(x => x.GetClient(), Times.Once);
             apiClientMock.Verify(
-                x => x.FetchUpcomingMovies(
+                x => x.GetUpcomingMovies(
                     It.Is<int>(page => page == expectedPage),
                     It.Is<string>(language => language == expectedLanguage)),
                 Times.Once);
             apiClientMock.Verify(
-                x => x.FetchMovieGenres(
+                x => x.GetGenres(
                     It.Is<string>(language => language == expectedLanguage)),
                 Times.Once);
         }
@@ -126,16 +126,16 @@ namespace Cinelovers.Core.UnitTests.Services
 
             var apiClientMock = new Mock<ITmdbApiClient>();
             apiClientMock
-                .Setup(x => x.FetchUpcomingMovies(
+                .Setup(x => x.GetUpcomingMovies(
                     It.IsAny<int>(),
                     It.IsAny<string>()))
                 .Returns(() => Observable.Return(pagingInfo));
             apiClientMock
-                .Setup(x => x.FetchMovieGenres(
+                .Setup(x => x.GetGenres(
                     It.IsAny<string>()))
                 .Returns(() => Observable.Return(genreInfo));
 
-            var apiServiceMock = new Mock<ITmdbApiService>();
+            var apiServiceMock = new Mock<IApiService>();
             apiServiceMock
                 .Setup(x => x.GetClient())
                 .Returns(apiClientMock.Object);
@@ -189,16 +189,16 @@ namespace Cinelovers.Core.UnitTests.Services
 
             var apiClientMock = new Mock<ITmdbApiClient>();
             apiClientMock
-                .Setup(x => x.FetchUpcomingMovies(
+                .Setup(x => x.GetUpcomingMovies(
                     It.IsAny<int>(),
                     It.IsAny<string>()))
                 .Returns(() => Observable.Return(pagingInfo));
             apiClientMock
-               .Setup(x => x.FetchMovieGenres(
+               .Setup(x => x.GetGenres(
                    It.IsAny<string>()))
                .Returns(() => Observable.Return(genreInfo));
 
-            var apiServiceMock = new Mock<ITmdbApiService>();
+            var apiServiceMock = new Mock<IApiService>();
             apiServiceMock
                 .Setup(x => x.GetClient())
                 .Returns(apiClientMock.Object);
@@ -241,17 +241,17 @@ namespace Cinelovers.Core.UnitTests.Services
 
             var apiClientMock = new Mock<ITmdbApiClient>();
             apiClientMock
-                .Setup(x => x.FetchMovies(
+                .Setup(x => x.GetMovies(
                     It.IsAny<string>(),
                     It.IsAny<int>(),
                     It.IsAny<string>()))
                 .Returns(() => Observable.Return(pagingInfo));
             apiClientMock
-                .Setup(x => x.FetchMovieGenres(
+                .Setup(x => x.GetGenres(
                     It.IsAny<string>()))
                 .Returns(() => Observable.Return(genreInfo));
 
-            var apiServiceMock = new Mock<ITmdbApiService>();
+            var apiServiceMock = new Mock<IApiService>();
             apiServiceMock
                 .Setup(x => x.GetClient())
                 .Returns(apiClientMock.Object);
@@ -293,17 +293,17 @@ namespace Cinelovers.Core.UnitTests.Services
 
             var apiClientMock = new Mock<ITmdbApiClient>();
             apiClientMock
-                .Setup(x => x.FetchMovies(
+                .Setup(x => x.GetMovies(
                     It.IsAny<string>(),
                     It.IsAny<int>(),
                     It.IsAny<string>()))
                 .Returns(() => Observable.Return(pagingInfo));
             apiClientMock
-               .Setup(x => x.FetchMovieGenres(
+               .Setup(x => x.GetGenres(
                    It.IsAny<string>()))
                .Returns(() => Observable.Return(genreInfo));
 
-            var apiServiceMock = new Mock<ITmdbApiService>();
+            var apiServiceMock = new Mock<IApiService>();
             apiServiceMock
                 .Setup(x => x.GetClient())
                 .Returns(apiClientMock.Object);
@@ -330,13 +330,13 @@ namespace Cinelovers.Core.UnitTests.Services
 
             apiServiceMock.Verify(x => x.GetClient(), Times.Once);
             apiClientMock.Verify(
-                x => x.FetchMovies(
+                x => x.GetMovies(
                     It.Is<string>(query => query == expectedQuery),
                     It.Is<int>(page => page == expectedPage),
                     It.Is<string>(language => language == expectedLanguage)),
                 Times.Once);
             apiClientMock.Verify(
-                x => x.FetchMovieGenres(
+                x => x.GetGenres(
                     It.Is<string>(language => language == expectedLanguage)),
                 Times.Once);
         }
@@ -352,17 +352,17 @@ namespace Cinelovers.Core.UnitTests.Services
 
             var apiClientMock = new Mock<ITmdbApiClient>();
             apiClientMock
-                .Setup(x => x.FetchMovies(
+                .Setup(x => x.GetMovies(
                     It.IsAny<string>(),
                     It.IsAny<int>(),
                     It.IsAny<string>()))
                 .Returns(() => Observable.Return(pagingInfo));
             apiClientMock
-                .Setup(x => x.FetchMovieGenres(
+                .Setup(x => x.GetGenres(
                     It.IsAny<string>()))
                 .Returns(() => Observable.Return(genreInfo));
 
-            var apiServiceMock = new Mock<ITmdbApiService>();
+            var apiServiceMock = new Mock<IApiService>();
             apiServiceMock
                 .Setup(x => x.GetClient())
                 .Returns(apiClientMock.Object);
@@ -419,17 +419,17 @@ namespace Cinelovers.Core.UnitTests.Services
 
             var apiClientMock = new Mock<ITmdbApiClient>();
             apiClientMock
-                .Setup(x => x.FetchMovies(
+                .Setup(x => x.GetMovies(
                     It.IsAny<string>(),
                     It.IsAny<int>(),
                     It.IsAny<string>()))
                 .Returns(() => Observable.Return(pagingInfo));
             apiClientMock
-               .Setup(x => x.FetchMovieGenres(
+               .Setup(x => x.GetGenres(
                    It.IsAny<string>()))
                .Returns(() => Observable.Return(genreInfo));
 
-            var apiServiceMock = new Mock<ITmdbApiService>();
+            var apiServiceMock = new Mock<IApiService>();
             apiServiceMock
                 .Setup(x => x.GetClient())
                 .Returns(apiClientMock.Object);
@@ -468,10 +468,10 @@ namespace Cinelovers.Core.UnitTests.Services
 
             var apiClientMock = new Mock<ITmdbApiClient>();
             apiClientMock
-                .Setup(x => x.FetchMovieGenres(It.IsAny<string>()))
+                .Setup(x => x.GetGenres(It.IsAny<string>()))
                 .Returns(() => Observable.Return(genreInfo));
 
-            var apiServiceMock = new Mock<ITmdbApiService>();
+            var apiServiceMock = new Mock<IApiService>();
             apiServiceMock
                 .Setup(x => x.GetClient())
                 .Returns(apiClientMock.Object);
@@ -490,7 +490,7 @@ namespace Cinelovers.Core.UnitTests.Services
             IEnumerable<Genre> resultData = null;
             Assert.DoesNotThrow(
                 () => target
-                    .GetMovieGenres()
+                    .GetGenres()
                     .Subscribe(results => resultData = results));
 
             Assert.IsEmpty(resultData);
@@ -504,10 +504,10 @@ namespace Cinelovers.Core.UnitTests.Services
 
             var apiClientMock = new Mock<ITmdbApiClient>();
             apiClientMock
-                .Setup(x => x.FetchMovieGenres(It.IsAny<string>()))
+                .Setup(x => x.GetGenres(It.IsAny<string>()))
                 .Returns(() => Observable.Return(genreInfo));
 
-            var apiServiceMock = new Mock<ITmdbApiService>();
+            var apiServiceMock = new Mock<IApiService>();
             apiServiceMock
                 .Setup(x => x.GetClient())
                 .Returns(apiClientMock.Object);
@@ -523,11 +523,11 @@ namespace Cinelovers.Core.UnitTests.Services
                 apiServiceMock.Object,
                 cacheMock.Object);
 
-            target.GetMovieGenres().Subscribe();
+            target.GetGenres().Subscribe();
 
             apiServiceMock.Verify(x => x.GetClient(), Times.Once);
             apiClientMock.Verify(
-                x => x.FetchMovieGenres(It.Is<string>(language => language == expectedLanguage)),
+                x => x.GetGenres(It.Is<string>(language => language == expectedLanguage)),
                 Times.Once);
         }
 
@@ -538,10 +538,10 @@ namespace Cinelovers.Core.UnitTests.Services
 
             var apiClientMock = new Mock<ITmdbApiClient>();
             apiClientMock
-                .Setup(x => x.FetchMovieGenres(It.IsAny<string>()))
+                .Setup(x => x.GetGenres(It.IsAny<string>()))
                 .Returns(() => Observable.Return(genreInfo));
 
-            var apiServiceMock = new Mock<ITmdbApiService>();
+            var apiServiceMock = new Mock<IApiService>();
             apiServiceMock
                 .Setup(x => x.GetClient())
                 .Returns(apiClientMock.Object);
@@ -557,7 +557,7 @@ namespace Cinelovers.Core.UnitTests.Services
                 apiServiceMock.Object,
                 cacheMock.Object);
 
-            target.GetMovieGenres().Subscribe();
+            target.GetGenres().Subscribe();
 
             cacheMock.Verify(
                 x => x.GetAndFetchLatest(

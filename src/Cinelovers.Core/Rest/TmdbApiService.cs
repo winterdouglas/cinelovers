@@ -7,7 +7,7 @@ using Cinelovers.Core.Infrastructure;
 
 namespace Cinelovers.Core.Rest
 {
-    public class TmdbApiService : ITmdbApiService
+    public class TmdbApiService : IApiService
     {
         const string BaseAddress = "https://api.themoviedb.org/3";
         const string ApiKey = "1f54bd990f1cdfb230adb312546d765d";

@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Cinelovers.Core.Infrastructure
 {
     [ExcludeFromCodeCoverage]
-    public class SnakeCaseJsonSerializer : JsonSerializer
+    internal class SnakeCaseJsonSerializer : JsonSerializer
     {
         public SnakeCaseJsonSerializer()
         {

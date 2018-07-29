@@ -51,7 +51,7 @@ namespace Cinelovers
             Locator.CurrentMutable.RegisterConstant(RxApp.TaskpoolScheduler, "TaskPoolScheduler");
             Locator.CurrentMutable.RegisterConstant<IScreen>(this);
             Locator.CurrentMutable.RegisterConstant<ICache>(cache);
-            Locator.CurrentMutable.Register<ITmdbApiService>(() => new TmdbApiService());
+            Locator.CurrentMutable.Register<IApiService>(() => new TmdbApiService());
             Locator.CurrentMutable.Register<IMovieService>(() => new MovieService());
 
             Locator.CurrentMutable.Register<IViewFor<UpcomingMoviesViewModel>>(() => new UpcomingMoviesView());
