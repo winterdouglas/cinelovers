@@ -42,10 +42,10 @@
     <ProjectReference Include="..\Cinelovers.ViewModels\Cinelovers.ViewModels.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Reactive.Testing" Version="3.1.1" />
-    <PackageReference Include="Moq" Version="4.8.3" />
+    <PackageReference Include="Microsoft.Reactive.Testing" Version="4.1.0" />
+    <PackageReference Include="Moq" Version="4.10.0" />
     <PackageReference Include="NUnit" Version="3.10.1" />
-    <PackageReference Include="Splat" Version="4.0.0" />
+    <PackageReference Include="Splat" Version="5.0.2" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Configuration" />

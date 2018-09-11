@@ -3,9 +3,9 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using System;
 using System.Net;
-using Cinelovers.Core.Infrastructure;
+using Cinelovers.Infrastructure.Serialization;
 
-namespace Cinelovers.Core.Rest
+namespace Cinelovers.Core.Api
 {
     public class TmdbApiService : IApiService
     {

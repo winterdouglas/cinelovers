@@ -1,25 +1,26 @@
 ﻿using Cinelovers.Core.Services;
-using Cinelovers.Core.Services.Models;
+using DynamicData;
+using DynamicData.PLinq;
 using ReactiveUI;
 using Splat;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Concurrency;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using DynamicData.ReactiveUI;
 
 namespace Cinelovers.ViewModels.Movies
 {
     public class UpcomingMoviesViewModel : ViewModelBase
     {
-        public ReactiveCommand<int, IEnumerable<Movie>> GetUpcomingMovies { get; protected set; }
+        public ReactiveCommand<int, Unit> GetUpcomingMovies { get; protected set; }
 
-        public ReactiveCommand<int, IEnumerable<Movie>> GetMovies { get; protected set; }
+        public ReactiveCommand<int, Unit> GetMovies { get; protected set; }
 
         public ReactiveList<MovieCellViewModel> Movies { get; } = new ReactiveList<MovieCellViewModel>();
+
+        public ReactiveList<MovieCellViewModel> UpcomingMovies { get; } = new ReactiveList<MovieCellViewModel>();
 
         public MovieCellViewModel SelectedMovie
         {
@@ -51,51 +52,46 @@ namespace Cinelovers.ViewModels.Movies
 
             UrlPathSegment = "Upcoming Movies";
 
-            var canGetMovies = this
+            var canSearch = this
                 .WhenAnyValue(
                     x => x.SearchTerm,
                     term => !string.IsNullOrWhiteSpace(term) && term.Length > 2);
 
             GetUpcomingMovies = ReactiveCommand
-                .CreateFromObservable<int, IEnumerable<Movie>>(
-                    page => ClearAndGetUpcomingMovies(page),
-                    outputScheduler: TaskPoolScheduler);
+                .CreateFromObservable<int, Unit>(
+                    page => _movieService.GetUpcomingMovies(page),
+                    outputScheduler: mainScheduler);
 
             GetMovies = ReactiveCommand
-                .CreateFromObservable<int, IEnumerable<Movie>>(
-                    page => ClearAndGetMovies(SearchTerm, page),
-                    canExecute: canGetMovies,
-                    outputScheduler: TaskPoolScheduler);
+                .CreateFromObservable<int, Unit>(
+                    page => _movieService.GetMovies(SearchTerm, page),
+                    canExecute: canSearch,
+                    outputScheduler: mainScheduler);
+
+            GetUpcomingMovies.Subscribe();
+            GetMovies.Subscribe();
+
+            _movieService
+                .Movies
+                .Connect()
+                .Transform(movie => new MovieCellViewModel(movie), new ParallelisationOptions(ParallelType.Ordered, 5))
+                .Bind(Movies)
+                .DisposeMany()
+                .Subscribe();
+
+            _movieService
+                .UpcomingMovies
+                .Connect()
+                .Transform(movie => new MovieCellViewModel(movie), new ParallelisationOptions(ParallelType.Ordered, 5))
+                .Bind(UpcomingMovies)
+                .DisposeMany()
+                .Subscribe();
 
             GetUpcomingMovies
                 .IsExecuting
                 .Merge(GetMovies.IsExecuting, TaskPoolScheduler)
-                .SubscribeOn(TaskPoolScheduler)
                 .ToProperty(this, x => x.IsLoading, out _isLoading,
                     scheduler: MainScheduler);
-
-            var moviesChanged = GetUpcomingMovies
-                .Merge(GetMovies, TaskPoolScheduler)
-                .SubscribeOn(TaskPoolScheduler)
-                .ObserveOn(TaskPoolScheduler)
-                .Publish();
-
-            moviesChanged
-                .Select(movies => movies.Where(movie => Movies.Select(m => m.Id).Contains(movie.Id)))
-                .SubscribeOn(TaskPoolScheduler)
-                .ObserveOn(MainScheduler)
-                .SelectMany(movies => MergeMovies(movies))
-                .Subscribe();
-
-            moviesChanged
-                .Select(movies => movies.Where(movie => !Movies.Select(m => m.Id).Contains(movie.Id)))
-                .Select(movies => movies.Select(movie => new MovieCellViewModel(movie)))
-                .SubscribeOn(TaskPoolScheduler)
-                .ObserveOn(MainScheduler)
-                .Subscribe(movies => Movies.AddRange(movies));
-
-            moviesChanged
-                .Connect();
 
             this.WhenAnyValue(x => x.SelectedMovie)
                 .Where(selected => selected != null)
@@ -110,14 +106,12 @@ namespace Cinelovers.ViewModels.Movies
                 .Throttle(TimeSpan.FromSeconds(1), TaskPoolScheduler)
                 .DistinctUntilChanged()
                 .SubscribeOn(TaskPoolScheduler)
-                .ObserveOn(TaskPoolScheduler)
                 .Publish();
 
             searchChanged
                 .Where(searchTerm => !string.IsNullOrWhiteSpace(searchTerm))
                 .Select(_ => 1)
                 .SubscribeOn(TaskPoolScheduler)
-                .ObserveOn(TaskPoolScheduler)
                 .InvokeCommand(GetMovies);
 
             searchChanged
@@ -125,59 +119,10 @@ namespace Cinelovers.ViewModels.Movies
                 .Where(searchTerm => string.IsNullOrWhiteSpace(searchTerm))
                 .Select(_ => 1)
                 .SubscribeOn(TaskPoolScheduler)
-                .ObserveOn(TaskPoolScheduler)
                 .InvokeCommand(GetUpcomingMovies);
 
             searchChanged
                 .Connect();
-        }
-
-        private IObservable<IEnumerable<Movie>> ClearAndGetUpcomingMovies(int page)
-        {
-            return Observable
-                .Create<IEnumerable<Movie>>(
-                    observer =>
-                    {
-                        if (page == 1)
-                            MainScheduler.Schedule(() => Movies.Clear());
-
-                        return _movieService
-                            .GetUpcomingMovies(page)
-                            .Subscribe(observer);
-                    });
-        }
-
-        private IObservable<IEnumerable<Movie>> ClearAndGetMovies(string query, int page)
-        {
-            return Observable
-                .Create<IEnumerable<Movie>>(
-                    observer =>
-                    {
-                        if (page == 1)
-                            MainScheduler.Schedule(() => Movies.Clear());
-
-                        return _movieService
-                            .GetMovies(query, page)
-                            .Subscribe(observer);
-                    });
-        }
-
-        private IObservable<Unit> MergeMovies(IEnumerable<Movie> movies)
-        {
-            return Observable
-                .Create<Unit>(
-                    observer =>
-                    {
-                        foreach (var movie in movies)
-                        {
-                            var foundMovie = Movies.First(m => m.Id == movie.Id);
-                            foundMovie.UpdateMovie(movie);
-                        }
-                        observer.OnNext(Unit.Default);
-                        observer.OnCompleted();
-
-                        return Disposable.Empty;
-                    });
         }
     }
 }

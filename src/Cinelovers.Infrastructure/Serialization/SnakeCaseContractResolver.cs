@@ -2,10 +2,10 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 
-namespace Cinelovers.Core.Infrastructure
+namespace Cinelovers.Infrastructure.Serialization
 {
     [ExcludeFromCodeCoverage]
-    internal class SnakeCaseContractResolver : DefaultContractResolver
+    public class SnakeCaseContractResolver : DefaultContractResolver
     {
         protected override string ResolvePropertyName(string propertyName)
         {

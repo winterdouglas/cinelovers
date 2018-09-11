@@ -1,111 +1,94 @@
 ﻿using System;
 using Cinelovers.Core.Services.Models;
-using Cinelovers.Core.Rest;
-using Cinelovers.Core.Caching;
 using Splat;
 using System.Reactive.Linq;
-using System.Linq;
-using Cinelovers.Core.Rest.Dtos;
 using Cinelovers.Core.Mappers;
 using DynamicData;
 using System.Reactive;
+using Cinelovers.Core.Api;
+using Cinelovers.Core.Api.Models;
+using Cinelovers.Infrastructure.Caching;
 
 namespace Cinelovers.Core.Services
 {
     public class MovieService : IMovieService
     {
-        public IObservableCache<Movie, int> Movies => _movies;
+        public IObservableCache<Movie, int> Movies => _moviesCache;
 
-        public IObservableCache<Genre, int> Genres => _genres;
+        public IObservableCache<Movie, int> UpcomingMovies => _upcomingMoviesCache;
 
-        private readonly SourceCache<Movie, int> _movies;
-        private readonly SourceCache<Genre, int> _genres;
+        private readonly SourceCache<Movie, int> _moviesCache;
+        private readonly SourceCache<Movie, int> _upcomingMoviesCache;
+        private readonly MovieMapper _movieMapper;
         private readonly IApiService _apiService;
         private readonly ITmdbApiClient _client;
         private readonly ICache _cache;
 
         const string Language = "en-US";
 
-        public MovieService(
-            IApiService apiService = null,
-            ICache cache = null)
+        public MovieService(IApiService apiService = null, ICache cache = null)
         {
             _apiService = apiService ?? Locator.Current.GetService<IApiService>();
             _cache = cache ?? Locator.Current.GetService<ICache>();
 
             _client = _apiService.GetClient();
-            _movies = new SourceCache<Movie, int>(m => m.Id);
-            _genres = new SourceCache<Genre, int>(g => g.Id);
+            _moviesCache = new SourceCache<Movie, int>(m => m.Id);
+            _upcomingMoviesCache = new SourceCache<Movie, int>(m => m.Id);
+
+            _movieMapper = new MovieMapper();
         }
 
         public IObservable<Unit> GetUpcomingMovies(int page)
         {
-            var movieMapper = new MovieMapper();
-
-            return Observable.CombineLatest(
-                GetAndFetchUpcomingMovies(page),
+            return GetAndFetchUpcomingMovies(page).CombineLatest(
                 GetAndFetchGenres(),
-                (movieInfo, genreInfo) =>
+                (movieResponse, genreResponse) =>
                 {
-                    var result = Enumerable.Empty<Movie>();
-                    if (movieInfo != null)
+                    var movies = _movieMapper.Map(movieResponse, genreResponse);
+                    _upcomingMoviesCache.Edit(cache =>
                     {
-                        result = movieInfo.Results.Select(source => movieMapper.ToMovie(source, genreInfo));
-                    }
+                        if (page <= 1)
+                            cache.Clear();
+
+                        cache.AddOrUpdate(movies);
+                    });
                     return Unit.Default;
                 });
         }
 
         public IObservable<Unit> GetMovies(string query, int page)
         {
-            if (query != null && query.Trim().Length <= 3)
-            {
-                //TODO: Project empty list
-                return Observable.Return(Unit.Default);
-            }
-
-            var movieMapper = new MovieMapper();
-
-            return Observable.CombineLatest(
-                GetAndFetchMovies(query, page),
+            return GetAndFetchMovies(query, page).CombineLatest(
                 GetAndFetchGenres(),
-                (movieInfo, genreInfo) =>
+                (movieResponse, genreResponse) =>
                 {
-                    var result = Enumerable.Empty<Movie>();
-                    if (movieInfo != null)
+                    var movies = _movieMapper.Map(movieResponse, genreResponse);
+                    _moviesCache.Edit(cache =>
                     {
-                        result = movieInfo.Results.Select(source => movieMapper.ToMovie(source, genreInfo));
-                    }
+                        if (page <= 1)
+                            cache.Clear();
+
+                        cache.AddOrUpdate(movies);
+                    });
                     return Unit.Default;
                 });
         }
 
-        public IObservable<Unit> GetGenres()
-        {
-            var genreMapper = new GenreMapper();
-
-            return GetAndFetchGenres()
-                .Select(genreInfo => genreInfo == null
-                    ? Enumerable.Empty<Genre>()
-                    : genreInfo.Genres.Select(result => genreMapper.ToGenre(result)))
-                .Select(_ => Unit.Default);
-        }
-
-        private IObservable<MoviePagingInfo> GetAndFetchUpcomingMovies(int page)
+        private IObservable<MovieResponse> GetAndFetchUpcomingMovies(int page)
         {
             return _cache.GetAndFetchLatest(
                 GetUpcomingMoviesCacheKey(page),
                 () => _client.GetUpcomingMovies(page, Language));
         }
 
-        private IObservable<MoviePagingInfo> GetAndFetchMovies(string query, int page)
+        private IObservable<MovieResponse> GetAndFetchMovies(string query, int page)
         {
             return _cache.GetAndFetchLatest(
                 GetMoviesCacheKey(query, page),
                 () => _client.GetMovies(query, page, Language));
         }
 
-        private IObservable<GenreInfo> GetAndFetchGenres()
+        private IObservable<GenreResponse> GetAndFetchGenres()
         {
             return _cache.GetAndFetchLatest(
                 GetGenresCacheKey(),
@@ -114,8 +97,8 @@ namespace Cinelovers.Core.Services
 
         private string GetUpcomingMoviesCacheKey(int page) => $"upcoming_movies_{page}";
 
-        private string GetGenresCacheKey() => "genres";
-
         private string GetMoviesCacheKey(string query, int page) => $"movies_{query}_{page}";
+
+        private string GetGenresCacheKey() => "genres";
     }
 }

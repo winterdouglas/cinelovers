@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reactive;
 
-namespace Cinelovers.Core.Caching
+namespace Cinelovers.Infrastructure.Caching
 {
     public interface ICache
     {

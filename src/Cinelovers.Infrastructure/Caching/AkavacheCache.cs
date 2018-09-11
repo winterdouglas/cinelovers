@@ -2,7 +2,7 @@ using System;
 using System.Reactive;
 using Akavache;
 
-namespace Cinelovers.Core.Caching
+namespace Cinelovers.Infrastructure.Caching
 {
     public class AkavacheCache : ICache
     {

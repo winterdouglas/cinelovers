@@ -1,4 +1,4 @@
-﻿using Cinelovers.Core.Caching;
+﻿using Cinelovers.Infrastructure.Caching;
 using Splat;
 using Xamarin.Forms;
 

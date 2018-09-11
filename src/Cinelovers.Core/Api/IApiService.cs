@@ -1,4 +1,4 @@
-﻿namespace Cinelovers.Core.Rest
+﻿namespace Cinelovers.Core.Api
 {
     public interface IApiService
     {

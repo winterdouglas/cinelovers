@@ -1,6 +1,6 @@
-﻿using Cinelovers.Core.Caching;
-using Cinelovers.Core.Rest;
+﻿using Cinelovers.Core.Api;
 using Cinelovers.Core.Services;
+using Cinelovers.Infrastructure.Caching;
 using Cinelovers.ViewModels.Movies;
 using Cinelovers.Views.Movies;
 using FFImageLoading;

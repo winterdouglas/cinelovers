@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 
-namespace Cinelovers.Core.Rest.Dtos
+namespace Cinelovers.Core.Api.Models
 {
-    public class GenreInfo
+    public class GenreResponse
     {
         public IList<GenreResult> Genres { get; set; }
 
-        public GenreInfo()
+        public GenreResponse()
         {
             Genres = new List<GenreResult>();
         }

@@ -40,10 +40,10 @@
     <ProjectReference Include="..\Cinelovers.Core\Cinelovers.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Moq" Version="4.8.3" />
+    <PackageReference Include="Moq" Version="4.10.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="NUnit" Version="3.10.1" />
-    <PackageReference Include="Splat" Version="4.0.0" />
+    <PackageReference Include="Splat" Version="5.0.2" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Configuration" />

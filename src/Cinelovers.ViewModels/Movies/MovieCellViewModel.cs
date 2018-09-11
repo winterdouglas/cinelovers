@@ -41,11 +41,5 @@ namespace Cinelovers.ViewModels.Movies
         {
             _movie = movie ?? throw new ArgumentNullException(nameof(movie));
         }
-
-        public void UpdateMovie(Movie movie)
-        {
-            _movie = movie;
-            this.RaisePropertyChanged("");
-        }
     }
 }

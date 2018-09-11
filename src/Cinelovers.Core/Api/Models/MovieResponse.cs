@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Cinelovers.Core.Rest.Dtos
+namespace Cinelovers.Core.Api.Models
 {
-    public class MoviePagingInfo
+    public class MovieResponse
     {
         public int Page { get; set; }
 
@@ -12,7 +12,7 @@ namespace Cinelovers.Core.Rest.Dtos
 
         public int TotalResults { get; set; }
 
-        public MoviePagingInfo()
+        public MovieResponse()
         {
             Results = new List<MovieResult>();
         }

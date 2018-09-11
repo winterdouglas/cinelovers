@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Cinelovers.Core.Services.Models
+﻿namespace Cinelovers.Core.Services.Models
 {
     public abstract class EntityBase
     {

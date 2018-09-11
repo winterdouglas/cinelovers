@@ -1,4 +1,4 @@
-﻿using Cinelovers.Core.Rest.Dtos;
+﻿using Cinelovers.Core.Api.Models;
 using Cinelovers.Core.Services.Models;
 using System;
 using System.Collections.Generic;
@@ -14,26 +14,28 @@ namespace Cinelovers.Core.Mappers
         const string LargePosterSize = "w500";
         const string DefaultCulture = "en-US";
 
-        public Movie ToMovie(MovieResult source, GenreInfo genreInfo)
+        public IList<Movie> Map(MovieResponse movieResponse, GenreResponse genreResponse)
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
-            if (genreInfo == null) throw new ArgumentNullException(nameof(genreInfo));
-
-            var genres = GetGenres(source, genreInfo);
-            var result = new Movie()
-            {
-                Id = source.Id,
-                Overview = source.Overview,
-                SmallPosterUri = new Uri($"{PosterBaseUrl}{SmallPosterSize}{source.PosterPath}", UriKind.Absolute),
-                LargePosterUri = new Uri($"{PosterBaseUrl}{LargePosterSize}{source.PosterPath}", UriKind.Absolute),
-                Popularity = source.Popularity,
-                Title = source.Title,
-                VoteAverage = source.VoteAverage,
-                VoteCount = source.VoteCount,
-                Genres = genres,
-                ReleaseDate = ParseDate(source.ReleaseDate)
-            };
-            
+            var result = (from movie in movieResponse.Results
+                         select new Movie()
+                         {
+                             Id = movie.Id,
+                             Overview = movie.Overview,
+                             SmallPosterUri = new Uri($"{PosterBaseUrl}{SmallPosterSize}{movie.PosterPath}", UriKind.Absolute),
+                             LargePosterUri = new Uri($"{PosterBaseUrl}{LargePosterSize}{movie.PosterPath}", UriKind.Absolute),
+                             Popularity = movie.Popularity,
+                             Title = movie.Title,
+                             VoteAverage = movie.VoteAverage,
+                             VoteCount = movie.VoteCount,
+                             Genres = (from genre in genreResponse.Genres
+                                       where movie.GenreIds.Contains(genre.Id)
+                                       select new Genre()
+                                       {
+                                           Id = genre.Id,
+                                           Name = genre.Name
+                                       }).ToList(),
+                             ReleaseDate = ParseDate(movie.ReleaseDate)
+                         }).ToList();
 
             return result;
         }
@@ -50,16 +52,6 @@ namespace Cinelovers.Core.Mappers
                     DateTimeStyles.AssumeUniversal);
             }
             return result;
-        }
-
-        private IList<Genre> GetGenres(MovieResult source, GenreInfo genreInfo)
-        {
-            var genreMapper = new GenreMapper();
-            return genreInfo
-                .Genres
-                .Where(list => source.GenreIds.Contains(list.Id))
-                .Select(genre => genreMapper.ToGenre(genre))
-                .ToList();
         }
     }
 }

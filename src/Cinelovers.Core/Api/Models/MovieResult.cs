@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Cinelovers.Core.Rest.Dtos
+namespace Cinelovers.Core.Api.Models
 {
     public class MovieResult
     {

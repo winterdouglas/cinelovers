@@ -7,14 +7,12 @@ namespace Cinelovers.Core.Services
 {
     public interface IMovieService
     {
-        IObservableCache<Movie, int> Movies { get; }
+        IObservableCache<Movie, int> UpcomingMovies { get; }
 
-        IObservableCache<Genre, int> Genres { get; }
+        IObservableCache<Movie, int> Movies { get; }
 
         IObservable<Unit> GetUpcomingMovies(int page);
 
         IObservable<Unit> GetMovies(string query, int page);
-
-        IObservable<Unit> GetGenres();
     }
 }

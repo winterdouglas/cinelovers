@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Cinelovers.Core.Rest
+namespace Cinelovers.Core.Api
 {
     public class TmdbHttpClientHandler : HttpClientHandler
     {

@@ -29,7 +29,7 @@ namespace Cinelovers.Core.UnitTests.Mappers
                 VoteAverage = 7.43D,
                 VoteCount = 54
             };
-            var genreInfo = new GenreInfo();
+            var genreInfo = new GenreResponse();
 
             var target = new MovieMapper();
             var actual = target.ToMovie(source, genreInfo);
@@ -65,7 +65,7 @@ namespace Cinelovers.Core.UnitTests.Mappers
                 VoteAverage = 7.43D,
                 VoteCount = 54
             };
-            var genreInfo = new GenreInfo()
+            var genreInfo = new GenreResponse()
             {
                 Genres = new List<GenreResult>()
                 {
@@ -85,7 +85,7 @@ namespace Cinelovers.Core.UnitTests.Mappers
         {
             var target = new MovieMapper();
 
-            Assert.Throws<ArgumentNullException>(() => target.ToMovie(null, new GenreInfo()));
+            Assert.Throws<ArgumentNullException>(() => target.ToMovie(null, new GenreResponse()));
         }
 
         [Test]
