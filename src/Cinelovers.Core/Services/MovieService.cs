@@ -8,6 +8,7 @@ using System.Reactive;
 using Cinelovers.Core.Api;
 using Cinelovers.Core.Api.Models;
 using Cinelovers.Infrastructure.Caching;
+using Cinelovers.Infrastructure.DynamicData;
 
 namespace Cinelovers.Core.Services
 {
@@ -40,36 +41,30 @@ namespace Cinelovers.Core.Services
 
         public IObservable<Unit> GetUpcomingMovies(int page)
         {
+            if (page <= 1)
+                _upcomingMoviesCache.Clear();
+
             return GetAndFetchUpcomingMovies(page).CombineLatest(
                 GetAndFetchGenres(),
                 (movieResponse, genreResponse) =>
                 {
                     var movies = _movieMapper.Map(movieResponse, genreResponse);
-                    _upcomingMoviesCache.Edit(cache =>
-                    {
-                        if (page <= 1)
-                            cache.Clear();
-
-                        cache.AddOrUpdate(movies);
-                    });
+                    _upcomingMoviesCache.Upsert(movies);
                     return Unit.Default;
                 });
         }
 
         public IObservable<Unit> GetMovies(string query, int page)
         {
+            if (page <= 1)
+                _moviesCache.Clear();
+
             return GetAndFetchMovies(query, page).CombineLatest(
                 GetAndFetchGenres(),
                 (movieResponse, genreResponse) =>
                 {
                     var movies = _movieMapper.Map(movieResponse, genreResponse);
-                    _moviesCache.Edit(cache =>
-                    {
-                        if (page <= 1)
-                            cache.Clear();
-
-                        cache.AddOrUpdate(movies);
-                    });
+                    _moviesCache.Upsert(movies);
                     return Unit.Default;
                 });
         }

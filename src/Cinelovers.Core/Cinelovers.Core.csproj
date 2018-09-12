@@ -42,8 +42,6 @@
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="refit" Version="4.6.30" />
     <PackageReference Include="Splat" Version="5.0.2" />
-    <PackageReference Include="System.Reactive" Version="4.1.0" />
-    <PackageReference Include="System.Reactive.Core" Version="4.1.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cinelovers.Infrastructure\Cinelovers.Infrastructure.csproj" />

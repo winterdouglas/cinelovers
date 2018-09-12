@@ -17,9 +17,9 @@ namespace Cinelovers.Infrastructure.Caching
             return BlobCache
                 .LocalMachine
                 .GetAndFetchLatest(
-                    cacheKey, 
+                    cacheKey,
                     fetchFunction, 
-                    offset => (DateTimeOffset.UtcNow - offset) > TimeSpan.FromHours(6));
+                    offset => (DateTimeOffset.UtcNow - offset) > TimeSpan.FromHours(1));
         }
 
         public IObservable<Unit> InvalidateAll()

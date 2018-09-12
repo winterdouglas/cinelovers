@@ -6,12 +6,9 @@
 
   <ItemGroup>
     <PackageReference Include="akavache" Version="6.0.20" />
+    <PackageReference Include="DynamicData" Version="6.5.1.2479" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Splat" Version="5.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="DynamicData\" />
   </ItemGroup>
 
 </Project>
