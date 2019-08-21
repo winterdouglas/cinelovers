@@ -36,7 +36,7 @@ namespace Cinelovers.ViewModels.Movies
         public bool IsLoading => _isLoading.Value;
 
         private string _searchTerm;
-        private ObservableAsPropertyHelper<bool> _isLoading;
+        private readonly ObservableAsPropertyHelper<bool> _isLoading;
         private MovieCellViewModel _selectedMovie;
         private readonly IMovieService _movieService;
 
