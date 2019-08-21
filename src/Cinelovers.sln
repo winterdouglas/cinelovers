@@ -1,27 +1,25 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29209.62
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cinelovers", "Cinelovers\Cinelovers.csproj", "{A321080E-C732-4968-A7EC-63849ECD807B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cinelovers", "Cinelovers\Cinelovers.csproj", "{A321080E-C732-4968-A7EC-63849ECD807B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cinelovers.Android", "Cinelovers.Android\Cinelovers.Android.csproj", "{38587047-E671-4ACC-8938-587737CA8D16}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cinelovers.iOS", "Cinelovers.iOS\Cinelovers.iOS.csproj", "{90CEF083-6EBF-42FB-AA28-DCF4E9CAFD4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cinelovers.UWP", "Cinelovers.UWP\Cinelovers.UWP.csproj", "{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cinelovers.ViewModels", "Cinelovers.ViewModels\Cinelovers.ViewModels.csproj", "{ED4BC787-E909-49E3-8053-7CC5262E2B8B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cinelovers.ViewModels", "Cinelovers.ViewModels\Cinelovers.ViewModels.csproj", "{ED4BC787-E909-49E3-8053-7CC5262E2B8B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Targets", "Targets", "{7899A987-D595-4B4F-8A85-6C34071501B0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{EB949F87-9E24-4F77-BF4E-F0F9862C2E54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cinelovers.Core", "Cinelovers.Core\Cinelovers.Core.csproj", "{696940B0-0661-4CDD-9A48-4FE5606F0333}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cinelovers.Core", "Cinelovers.Core\Cinelovers.Core.csproj", "{696940B0-0661-4CDD-9A48-4FE5606F0333}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cinelovers.ViewModels.UnitTests", "Cinelovers.ViewModels.UnitTests\Cinelovers.ViewModels.UnitTests.csproj", "{CE294A3D-6486-4165-B39E-A3052C205272}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cinelovers.ViewModels.UnitTests", "Cinelovers.ViewModels.UnitTests\Cinelovers.ViewModels.UnitTests.csproj", "{CE294A3D-6486-4165-B39E-A3052C205272}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cinelovers.Core.UnitTests", "Cinelovers.Core.UnitTests\Cinelovers.Core.UnitTests.csproj", "{16A4DE6C-AD19-418A-8787-52A068998C0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cinelovers.Core.UnitTests", "Cinelovers.Core.UnitTests\Cinelovers.Core.UnitTests.csproj", "{16A4DE6C-AD19-418A-8787-52A068998C0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -203,66 +201,6 @@ Global
 		{90CEF083-6EBF-42FB-AA28-DCF4E9CAFD4A}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 		{90CEF083-6EBF-42FB-AA28-DCF4E9CAFD4A}.Release|x64.ActiveCfg = Release|iPhone
 		{90CEF083-6EBF-42FB-AA28-DCF4E9CAFD4A}.Release|x86.ActiveCfg = Release|iPhone
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Ad-Hoc|Any CPU.ActiveCfg = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Ad-Hoc|Any CPU.Build.0 = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Ad-Hoc|Any CPU.Deploy.0 = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Ad-Hoc|ARM.ActiveCfg = Release|ARM
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Ad-Hoc|ARM.Build.0 = Release|ARM
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Ad-Hoc|ARM.Deploy.0 = Release|ARM
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Ad-Hoc|iPhone.ActiveCfg = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Ad-Hoc|iPhone.Build.0 = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Ad-Hoc|iPhone.Deploy.0 = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Ad-Hoc|iPhoneSimulator.ActiveCfg = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Ad-Hoc|iPhoneSimulator.Build.0 = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Ad-Hoc|iPhoneSimulator.Deploy.0 = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Ad-Hoc|x64.ActiveCfg = Release|x64
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Ad-Hoc|x64.Build.0 = Release|x64
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Ad-Hoc|x64.Deploy.0 = Release|x64
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Ad-Hoc|x86.ActiveCfg = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Ad-Hoc|x86.Build.0 = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Ad-Hoc|x86.Deploy.0 = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.AppStore|Any CPU.ActiveCfg = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.AppStore|Any CPU.Build.0 = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.AppStore|Any CPU.Deploy.0 = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.AppStore|ARM.ActiveCfg = Release|ARM
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.AppStore|ARM.Build.0 = Release|ARM
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.AppStore|ARM.Deploy.0 = Release|ARM
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.AppStore|iPhone.ActiveCfg = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.AppStore|iPhone.Build.0 = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.AppStore|iPhone.Deploy.0 = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.AppStore|iPhoneSimulator.ActiveCfg = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.AppStore|iPhoneSimulator.Build.0 = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.AppStore|iPhoneSimulator.Deploy.0 = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.AppStore|x64.ActiveCfg = Release|x64
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.AppStore|x64.Build.0 = Release|x64
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.AppStore|x64.Deploy.0 = Release|x64
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.AppStore|x86.ActiveCfg = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.AppStore|x86.Build.0 = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.AppStore|x86.Deploy.0 = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Debug|ARM.ActiveCfg = Debug|ARM
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Debug|ARM.Build.0 = Debug|ARM
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Debug|ARM.Deploy.0 = Debug|ARM
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Debug|iPhone.ActiveCfg = Debug|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Debug|iPhoneSimulator.ActiveCfg = Debug|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Debug|x64.ActiveCfg = Debug|x64
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Debug|x64.Build.0 = Debug|x64
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Debug|x64.Deploy.0 = Debug|x64
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Debug|x86.ActiveCfg = Debug|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Debug|x86.Build.0 = Debug|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Debug|x86.Deploy.0 = Debug|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Release|Any CPU.ActiveCfg = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Release|ARM.ActiveCfg = Release|ARM
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Release|ARM.Build.0 = Release|ARM
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Release|ARM.Deploy.0 = Release|ARM
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Release|iPhone.ActiveCfg = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Release|iPhoneSimulator.ActiveCfg = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Release|x64.ActiveCfg = Release|x64
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Release|x64.Build.0 = Release|x64
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Release|x64.Deploy.0 = Release|x64
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Release|x86.ActiveCfg = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Release|x86.Build.0 = Release|x86
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8}.Release|x86.Deploy.0 = Release|x86
 		{ED4BC787-E909-49E3-8053-7CC5262E2B8B}.Ad-Hoc|Any CPU.ActiveCfg = Release|Any CPU
 		{ED4BC787-E909-49E3-8053-7CC5262E2B8B}.Ad-Hoc|Any CPU.Build.0 = Release|Any CPU
 		{ED4BC787-E909-49E3-8053-7CC5262E2B8B}.Ad-Hoc|ARM.ActiveCfg = Release|Any CPU
@@ -462,7 +400,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{38587047-E671-4ACC-8938-587737CA8D16} = {7899A987-D595-4B4F-8A85-6C34071501B0}
 		{90CEF083-6EBF-42FB-AA28-DCF4E9CAFD4A} = {7899A987-D595-4B4F-8A85-6C34071501B0}
-		{43A64A21-F9BE-4E5C-881F-69D1E41ADAB8} = {7899A987-D595-4B4F-8A85-6C34071501B0}
 		{CE294A3D-6486-4165-B39E-A3052C205272} = {EB949F87-9E24-4F77-BF4E-F0F9862C2E54}
 		{16A4DE6C-AD19-418A-8787-52A068998C0C} = {EB949F87-9E24-4F77-BF4E-F0F9862C2E54}
 	EndGlobalSection

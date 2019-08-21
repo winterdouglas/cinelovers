@@ -19,7 +19,7 @@ namespace Cinelovers.ViewModels.Movies
 
         public ReactiveCommand<int, IEnumerable<Movie>> GetMovies { get; protected set; }
 
-        public ReactiveList<MovieCellViewModel> Movies { get; } = new ReactiveList<MovieCellViewModel>();
+        public ObservableCollection<MovieCellViewModel> Movies { get; } = new ObservableCollection<MovieCellViewModel>();
 
         public MovieCellViewModel SelectedMovie
         {
@@ -92,7 +92,8 @@ namespace Cinelovers.ViewModels.Movies
                 .Select(movies => movies.Select(movie => new MovieCellViewModel(movie)))
                 .SubscribeOn(TaskPoolScheduler)
                 .ObserveOn(MainScheduler)
-                .Subscribe(movies => Movies.AddRange(movies));
+                .SelectMany(movies => movies)
+                .Subscribe(movie => Movies.Add(movie));
 
             moviesChanged
                 .Connect();

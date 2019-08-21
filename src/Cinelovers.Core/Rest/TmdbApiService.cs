@@ -23,15 +23,17 @@ namespace Cinelovers.Core.Rest
                 BaseAddress = new Uri(BaseAddress)
             };
 
+            var serializerSettings = new JsonSerializerSettings
+            {
+                ContractResolver = new SnakeCaseContractResolver()
+            };
+
             return RestService
               .For<ITmdbApiClient>(
                   httpClient,
                   new RefitSettings
                   { 
-                      JsonSerializerSettings = new JsonSerializerSettings
-                      {
-                          ContractResolver = new SnakeCaseContractResolver()
-                      }
+                      ContentSerializer = new JsonContentSerializer(serializerSettings)
                   });
         }
     }
