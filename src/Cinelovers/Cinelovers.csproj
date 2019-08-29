@@ -41,9 +41,9 @@
     <ProjectReference Include="..\Cinelovers.ViewModels\Cinelovers.ViewModels.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="ReactiveUI" Version="9.20.1" />
-    <PackageReference Include="ReactiveUI.XamForms" Version="9.20.1" />
-    <PackageReference Include="Splat" Version="8.2.4" />
+    <PackageReference Include="ReactiveUI" Version="9.22.1" />
+    <PackageReference Include="ReactiveUI.XamForms" Version="9.22.1" />
+    <PackageReference Include="Splat" Version="8.3.1" />
     <PackageReference Include="Xamarin.FFImageLoading" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.Forms" Version="4.2.0.709249" />

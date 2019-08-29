@@ -9,8 +9,8 @@ namespace Cinelovers.Core.Rest
 {
     public class TmdbApiService : ITmdbApiService
     {
-        const string BaseAddress = "https://api.themoviedb.org/3";
-        const string ApiKey = "1f54bd990f1cdfb230adb312546d765d";
+        static readonly string BaseAddress = "https://api.themoviedb.org/3";
+        static readonly string ApiKey = Secrets.TmdbApi;
 
         public ITmdbApiClient GetClient()
         {
@@ -29,12 +29,12 @@ namespace Cinelovers.Core.Rest
             };
 
             return RestService
-              .For<ITmdbApiClient>(
-                  httpClient,
-                  new RefitSettings
-                  { 
-                      ContentSerializer = new JsonContentSerializer(serializerSettings)
-                  });
+                .For<ITmdbApiClient>(
+                    httpClient,
+                    new RefitSettings
+                    {
+                        ContentSerializer = new JsonContentSerializer(serializerSettings)
+                    });
         }
     }
 }

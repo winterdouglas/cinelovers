@@ -76,6 +76,7 @@ namespace Cinelovers.ViewModels.Movies
 
             var moviesChanged = GetUpcomingMovies
                 .Merge(GetMovies, TaskPoolScheduler)
+                .Where(movies => movies != null)
                 .SubscribeOn(TaskPoolScheduler)
                 .ObserveOn(TaskPoolScheduler)
                 .Publish();
@@ -131,6 +132,15 @@ namespace Cinelovers.ViewModels.Movies
 
             searchChanged
                 .Connect();
+
+            GetUpcomingMovies
+                .ThrownExceptions
+                .Merge(GetMovies.ThrownExceptions)
+                .Subscribe(ex =>
+                {
+                    Console.WriteLine(ex);
+                });
+                
         }
 
         private IObservable<IEnumerable<Movie>> ClearAndGetUpcomingMovies(int page)
