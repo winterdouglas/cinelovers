@@ -3,10 +3,6 @@
 - Restore nuget packages
 - Symply build and run
 
-### Running unit tests
-
-- You'll need a test adapter to run the unit tests. Using Windows I'd suggest the [NUnit 3 Test Adapter](https://marketplace.visualstudio.com/items?itemName=NUnitDevelopers.NUnit3TestAdapter "NUnit 3 Test Adapter")
-
 ### List of third-party dependencies
 
 - **ReactiveUI** (https://github.com/reactiveui/ReactiveUI) - This is a functional reactive model-view-viewmodel (MVVM) framework.
