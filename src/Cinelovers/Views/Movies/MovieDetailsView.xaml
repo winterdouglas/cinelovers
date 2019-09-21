@@ -8,13 +8,12 @@
                           x:TypeArguments="vm:MovieDetailsViewModel">
     <ScrollView>
         <StackLayout BackgroundColor="{StaticResource BackgroundColor}">
-            <StackLayout Margin="10"
-                         BackgroundColor="{StaticResource BorderColor}"
-                         VerticalOptions="StartAndExpand">
-                <StackLayout Margin="0.5"
-                             Padding="10"
-                             Spacing="5"
-                             BackgroundColor="{StaticResource PanelColor}">
+            <Frame Margin="10"
+                   Padding="10"
+                   BackgroundColor="{StaticResource PanelColor}"
+                   BorderColor="{StaticResource BorderColor}"
+                   VerticalOptions="FillAndExpand">
+                <StackLayout Spacing="5">
                     <Label x:Name="TitleLabel"
                            FontAttributes="Bold"
                            FontSize="Medium" />
@@ -27,7 +26,7 @@
                     <Label x:Name="ReleaseDateLabel" FontSize="Small" />
                     <Label x:Name="OverviewLabel" FontSize="Medium" />
                 </StackLayout>
-            </StackLayout>
+            </Frame>
         </StackLayout>
     </ScrollView>
 </rxui:ReactiveContentPage>

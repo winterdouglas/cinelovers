@@ -1,5 +1,6 @@
 ﻿using Cinelovers.Core.Services;
 using Cinelovers.Core.Services.Models;
+using DynamicData.Binding;
 using ReactiveUI;
 using Splat;
 using System;
@@ -19,7 +20,9 @@ namespace Cinelovers.ViewModels.Movies
 
         public ReactiveCommand<int, IEnumerable<Movie>> GetMovies { get; protected set; }
 
-        public ObservableCollection<MovieCellViewModel> Movies { get; } = new ObservableCollection<MovieCellViewModel>();
+        public ReactiveCommand<Unit, int> Load { get; protected set; }
+
+        public ObservableCollectionExtended<MovieCellViewModel> Movies { get; } = new ObservableCollectionExtended<MovieCellViewModel>();
 
         public MovieCellViewModel SelectedMovie
         {
@@ -59,13 +62,45 @@ namespace Cinelovers.ViewModels.Movies
             GetUpcomingMovies = ReactiveCommand
                 .CreateFromObservable<int, IEnumerable<Movie>>(
                     page => ClearAndGetUpcomingMovies(page),
-                    outputScheduler: TaskPoolScheduler);
+                    outputScheduler: MainScheduler);
 
             GetMovies = ReactiveCommand
                 .CreateFromObservable<int, IEnumerable<Movie>>(
                     page => ClearAndGetMovies(SearchTerm, page),
                     canExecute: canGetMovies,
-                    outputScheduler: TaskPoolScheduler);
+                    outputScheduler: MainScheduler);
+
+            Load = ReactiveCommand
+                .CreateFromObservable<Unit, int>(
+                    _ => Observable.Create<int>(
+                        observer =>
+                        {
+                            const int pageSize = 20;
+
+                            if (Movies.Count % pageSize == 0)
+                            {
+                                observer.OnNext(Movies.Count + 1);
+                            }
+                            observer.OnCompleted();
+
+                            return Disposable.Empty;
+                        }),
+                    outputScheduler: MainScheduler);
+
+            var loadRequested = Load
+                .Publish()
+                .RefCount();
+
+            loadRequested
+                .Where(page => string.IsNullOrWhiteSpace(SearchTerm))
+                .StartWith(1)
+                .DistinctUntilChanged()
+                .InvokeCommand(GetUpcomingMovies);
+
+            loadRequested
+                .Where(page => !string.IsNullOrWhiteSpace(SearchTerm))
+                .DistinctUntilChanged()
+                .InvokeCommand(GetMovies);
 
             GetUpcomingMovies
                 .IsExecuting
@@ -82,19 +117,18 @@ namespace Cinelovers.ViewModels.Movies
                 .Publish();
 
             moviesChanged
-                .Select(movies => movies.Where(movie => Movies.Select(m => m.Id).Contains(movie.Id)))
+                .Select(movies => movies.Where(movie => Movies.Any(m => m.Id == movie.Id)))
                 .SubscribeOn(TaskPoolScheduler)
                 .ObserveOn(MainScheduler)
                 .SelectMany(movies => MergeMovies(movies))
                 .Subscribe();
 
             moviesChanged
-                .Select(movies => movies.Where(movie => !Movies.Select(m => m.Id).Contains(movie.Id)))
+                .Select(movies => movies.Where(movie => !Movies.Any(m => m.Id == movie.Id)))
                 .Select(movies => movies.Select(movie => new MovieCellViewModel(movie)))
                 .SubscribeOn(TaskPoolScheduler)
                 .ObserveOn(MainScheduler)
-                .SelectMany(movies => movies)
-                .Subscribe(movie => Movies.Add(movie));
+                .Subscribe(movies => Movies.AddRange(movies));
 
             moviesChanged
                 .Connect();
@@ -140,7 +174,7 @@ namespace Cinelovers.ViewModels.Movies
                 {
                     Console.WriteLine(ex);
                 });
-                
+
         }
 
         private IObservable<IEnumerable<Movie>> ClearAndGetUpcomingMovies(int page)
