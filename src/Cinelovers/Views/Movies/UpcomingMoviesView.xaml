@@ -3,26 +3,53 @@
                           xmlns="http://xamarin.com/schemas/2014/forms"
                           xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                           xmlns:controls="clr-namespace:Cinelovers.Controls"
+                          xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
                           xmlns:movie="clr-namespace:Cinelovers.Views.Movies"
                           xmlns:rxui="clr-namespace:ReactiveUI.XamForms;assembly=ReactiveUI.XamForms"
                           xmlns:vm="clr-namespace:Cinelovers.ViewModels.Movies;assembly=Cinelovers.ViewModels"
                           x:TypeArguments="vm:UpcomingMoviesViewModel">
 
-    <StackLayout BackgroundColor="{StaticResource BackgroundColor}" VerticalOptions="Fill">
+    <StackLayout BackgroundColor="{StaticResource BackgroundColor}">
         <SearchBar x:Name="Search"
                    BackgroundColor="{StaticResource PanelColor}"
                    Placeholder="Search movies" />
         <BoxView Style="{StaticResource SeparatorStyle}" />
-        <controls:LoadingIndicator x:Name="Indicator" Margin="10,5"/>
-        <ListView x:Name="MovieList"
-                  CachingStrategy="RecycleElement"
-                  IsPullToRefreshEnabled="False"
-                  RowHeight="400">
-            <ListView.ItemTemplate>
+        <controls:LoadingIndicator x:Name="Indicator" Margin="10,5" />
+        <CollectionView x:Name="MovieList"
+                        RemainingItemsThreshold="5"
+                        SelectionMode="Single">
+            <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <movie:MovieCellView />
+                    <StackLayout BackgroundColor="{StaticResource BackgroundColor}" HeightRequest="420">
+                        <Frame Margin="10"
+                               Padding="10"
+                               BackgroundColor="{StaticResource PanelColor}"
+                               BorderColor="{StaticResource BorderColor}"
+                               HeightRequest="400">
+                            <StackLayout Spacing="5">
+                                <Label x:Name="TitleLabel"
+                                       FontAttributes="Bold"
+                                       FontSize="Medium"
+                                       Text="{Binding Title}" />
+                                <ff:CachedImage x:Name="PosterImage"
+                                                Aspect="AspectFit"
+                                                DownsampleToViewSize="True"
+                                                DownsampleUseDipUnits="True"
+                                                HeightRequest="278"
+                                                HorizontalOptions="Center"
+                                                Source="{Binding SmallPosterUri}"
+                                                WidthRequest="185" />
+                                <Label x:Name="GenreLabel"
+                                       FontSize="Small"
+                                       Text="{Binding GenresText}" />
+                                <Label x:Name="ReleaseDateLabel"
+                                       FontSize="Small"
+                                       Text="{Binding ReleasedIn}" />
+                            </StackLayout>
+                        </Frame>
+                    </StackLayout>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </StackLayout>
 </rxui:ReactiveContentPage>

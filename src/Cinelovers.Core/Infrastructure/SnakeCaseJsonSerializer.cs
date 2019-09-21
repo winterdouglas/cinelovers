@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Cinelovers.Core.Infrastructure
@@ -13,7 +14,7 @@ namespace Cinelovers.Core.Infrastructure
             Converters.Add(new StringEnumConverter
             {
                 AllowIntegerValues = true,
-                CamelCaseText = false
+                NamingStrategy = new CamelCaseNamingStrategy()
             });
         }
     }

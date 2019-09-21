@@ -2,6 +2,7 @@
 using Android.Content.PM;
 using Android.OS;
 using FFImageLoading.Forms.Platform;
+using Xamarin.Forms;
 
 namespace Cinelovers.Droid
 {
@@ -22,6 +23,8 @@ namespace Cinelovers.Droid
             base.OnCreate(bundle);
 
             CachedImageRenderer.Init(true);
+
+            Forms.SetFlags("CollectionView_Experimental");
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());
