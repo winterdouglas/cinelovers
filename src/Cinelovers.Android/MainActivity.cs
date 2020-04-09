@@ -1,7 +1,10 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
+using Cinelovers.Core.Infrastructure;
+using Cinelovers.Droid.Infrastructure;
 using FFImageLoading.Forms.Platform;
+using Splat;
 using Xamarin.Forms;
 
 namespace Cinelovers.Droid
@@ -21,6 +24,8 @@ namespace Cinelovers.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(bundle);
+
+            Locator.CurrentMutable.RegisterLazySingleton<IHttpClientFactory>(() => new HttpClientFactory());
 
             CachedImageRenderer.Init(true);
 

@@ -37,15 +37,13 @@
     <AssemblyName>Cinelovers.Core</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\Cinelovers\Secrets.cs" Link="Secrets.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="akavache" Version="6.7.1" />
-    <PackageReference Include="DynamicData" Version="6.13.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="refit" Version="4.7.51" />
-    <PackageReference Include="Splat" Version="8.3.1" />
-    <PackageReference Include="System.Reactive" Version="4.1.6" />
-    <PackageReference Include="System.Reactive.Core" Version="4.1.6" />
+    <PackageReference Include="akavache" Version="6.10.6" />
+    <PackageReference Include="DynamicData" Version="6.14.10" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="refit" Version="5.1.67" />
+    <PackageReference Include="Splat" Version="9.4.1" />
+    <PackageReference Include="System.Reactive" Version="4.4.1" />
+    <PackageReference Include="System.Reactive.Core" Version="4.4.1" />
+    <PackageReference Include="fusillade" Version="2.0.5" />
   </ItemGroup>
 </Project>

@@ -35,7 +35,7 @@ namespace Cinelovers.Core.UnitTests.Services
 
             var apiServiceMock = new Mock<ITmdbApiService>();
             apiServiceMock
-                .Setup(x => x.GetClient())
+                .Setup(x => x.GetApiClient())
                 .Returns(apiClientMock.Object);
 
             var cacheMock = new Mock<ICache>();
@@ -84,7 +84,7 @@ namespace Cinelovers.Core.UnitTests.Services
 
             var apiServiceMock = new Mock<ITmdbApiService>();
             apiServiceMock
-                .Setup(x => x.GetClient())
+                .Setup(x => x.GetApiClient())
                 .Returns(apiClientMock.Object);
 
             var cacheMock = new Mock<ICache>();
@@ -105,7 +105,7 @@ namespace Cinelovers.Core.UnitTests.Services
 
             target.GetUpcomingMovies(expectedPage).Subscribe();
 
-            apiServiceMock.Verify(x => x.GetClient(), Times.Once);
+            apiServiceMock.Verify(x => x.GetApiClient(), Times.Once);
             apiClientMock.Verify(
                 x => x.FetchUpcomingMovies(
                     It.Is<int>(page => page == expectedPage),
@@ -137,7 +137,7 @@ namespace Cinelovers.Core.UnitTests.Services
 
             var apiServiceMock = new Mock<ITmdbApiService>();
             apiServiceMock
-                .Setup(x => x.GetClient())
+                .Setup(x => x.GetApiClient())
                 .Returns(apiClientMock.Object);
 
             var cacheMock = new Mock<ICache>();
@@ -200,7 +200,7 @@ namespace Cinelovers.Core.UnitTests.Services
 
             var apiServiceMock = new Mock<ITmdbApiService>();
             apiServiceMock
-                .Setup(x => x.GetClient())
+                .Setup(x => x.GetApiClient())
                 .Returns(apiClientMock.Object);
 
             var cacheMock = new Mock<ICache>();
@@ -253,7 +253,7 @@ namespace Cinelovers.Core.UnitTests.Services
 
             var apiServiceMock = new Mock<ITmdbApiService>();
             apiServiceMock
-                .Setup(x => x.GetClient())
+                .Setup(x => x.GetApiClient())
                 .Returns(apiClientMock.Object);
 
             var cacheMock = new Mock<ICache>();
@@ -305,7 +305,7 @@ namespace Cinelovers.Core.UnitTests.Services
 
             var apiServiceMock = new Mock<ITmdbApiService>();
             apiServiceMock
-                .Setup(x => x.GetClient())
+                .Setup(x => x.GetApiClient())
                 .Returns(apiClientMock.Object);
 
             var cacheMock = new Mock<ICache>();
@@ -328,7 +328,7 @@ namespace Cinelovers.Core.UnitTests.Services
                 .GetMovies(expectedQuery, expectedPage)
                 .Subscribe();
 
-            apiServiceMock.Verify(x => x.GetClient(), Times.Once);
+            apiServiceMock.Verify(x => x.GetApiClient(), Times.Once);
             apiClientMock.Verify(
                 x => x.FetchMovies(
                     It.Is<string>(query => query == expectedQuery),
@@ -364,7 +364,7 @@ namespace Cinelovers.Core.UnitTests.Services
 
             var apiServiceMock = new Mock<ITmdbApiService>();
             apiServiceMock
-                .Setup(x => x.GetClient())
+                .Setup(x => x.GetApiClient())
                 .Returns(apiClientMock.Object);
 
             var cacheMock = new Mock<ICache>();
@@ -431,7 +431,7 @@ namespace Cinelovers.Core.UnitTests.Services
 
             var apiServiceMock = new Mock<ITmdbApiService>();
             apiServiceMock
-                .Setup(x => x.GetClient())
+                .Setup(x => x.GetApiClient())
                 .Returns(apiClientMock.Object);
 
             var cacheMock = new Mock<ICache>();
@@ -473,7 +473,7 @@ namespace Cinelovers.Core.UnitTests.Services
 
             var apiServiceMock = new Mock<ITmdbApiService>();
             apiServiceMock
-                .Setup(x => x.GetClient())
+                .Setup(x => x.GetApiClient())
                 .Returns(apiClientMock.Object);
 
             var cacheMock = new Mock<ICache>();
@@ -509,7 +509,7 @@ namespace Cinelovers.Core.UnitTests.Services
 
             var apiServiceMock = new Mock<ITmdbApiService>();
             apiServiceMock
-                .Setup(x => x.GetClient())
+                .Setup(x => x.GetApiClient())
                 .Returns(apiClientMock.Object);
 
             var cacheMock = new Mock<ICache>();
@@ -525,7 +525,7 @@ namespace Cinelovers.Core.UnitTests.Services
 
             target.GetMovieGenres().Subscribe();
 
-            apiServiceMock.Verify(x => x.GetClient(), Times.Once);
+            apiServiceMock.Verify(x => x.GetApiClient(), Times.Once);
             apiClientMock.Verify(
                 x => x.FetchMovieGenres(It.Is<string>(language => language == expectedLanguage)),
                 Times.Once);
@@ -543,7 +543,7 @@ namespace Cinelovers.Core.UnitTests.Services
 
             var apiServiceMock = new Mock<ITmdbApiService>();
             apiServiceMock
-                .Setup(x => x.GetClient())
+                .Setup(x => x.GetApiClient())
                 .Returns(apiClientMock.Object);
 
             var cacheMock = new Mock<ICache>();

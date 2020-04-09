@@ -9,36 +9,30 @@
                           xmlns:vm="clr-namespace:Cinelovers.ViewModels.Movies;assembly=Cinelovers.ViewModels"
                           x:TypeArguments="vm:UpcomingMoviesViewModel">
 
-    <StackLayout BackgroundColor="{StaticResource BackgroundColor}">
+    <StackLayout BackgroundColor="{StaticResource BackgroundColor}" x:DataType="vm:UpcomingMoviesViewModel">
         <SearchBar x:Name="Search"
                    BackgroundColor="{StaticResource PanelColor}"
                    Placeholder="Search movies" />
         <BoxView Style="{StaticResource SeparatorStyle}" />
         <controls:LoadingIndicator x:Name="Indicator" Margin="10,5" />
         <CollectionView x:Name="MovieList"
-                        RemainingItemsThreshold="5"
-                        SelectionMode="Single">
+                        SelectionMode="Single"
+                        ItemsLayout="VerticalList">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout BackgroundColor="{StaticResource BackgroundColor}" HeightRequest="420">
+                    <StackLayout x:DataType="vm:MovieCellViewModel" BackgroundColor="{StaticResource BackgroundColor}" HeightRequest="420">
                         <Frame Margin="10"
                                Padding="10"
                                BackgroundColor="{StaticResource PanelColor}"
                                BorderColor="{StaticResource BorderColor}"
-                               HeightRequest="400">
+                               HeightRequest="400"
+                               HasShadow="False">
                             <StackLayout Spacing="5">
                                 <Label x:Name="TitleLabel"
                                        FontAttributes="Bold"
                                        FontSize="Medium"
                                        Text="{Binding Title}" />
-                                <ff:CachedImage x:Name="PosterImage"
-                                                Aspect="AspectFit"
-                                                DownsampleToViewSize="True"
-                                                DownsampleUseDipUnits="True"
-                                                HeightRequest="278"
-                                                HorizontalOptions="Center"
-                                                Source="{Binding SmallPosterUri}"
-                                                WidthRequest="185" />
+                                
                                 <Label x:Name="GenreLabel"
                                        FontSize="Small"
                                        Text="{Binding GenresText}" />

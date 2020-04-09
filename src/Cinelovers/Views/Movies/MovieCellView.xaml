@@ -4,7 +4,7 @@
                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                        xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
                        xmlns:rxui="clr-namespace:ReactiveUI.XamForms;assembly=ReactiveUI.XamForms"
-                       xmlns:vm="clr-namespace:Cinelovers.ViewModels.Movies;assembly=Cinelovers"
+                       xmlns:vm="clr-namespace:Cinelovers.ViewModels.Movies;assembly=Cinelovers.ViewModels"
                        x:TypeArguments="vm:MovieCellViewModel">
 
     <StackLayout BackgroundColor="{StaticResource BackgroundColor}"

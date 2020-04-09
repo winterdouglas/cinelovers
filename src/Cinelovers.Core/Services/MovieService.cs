@@ -26,7 +26,7 @@ namespace Cinelovers.Core.Services
             _apiService = apiService ?? Locator.Current.GetService<ITmdbApiService>();
             _cache = cache ?? Locator.Current.GetService<ICache>();
 
-            _client = _apiService.GetClient();
+            _client = _apiService.GetApiClient();
         }
 
         public IObservable<IEnumerable<Movie>> GetUpcomingMovies(int page)

@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using System.Net.Http;
 using System;
-using System.Net;
 using Cinelovers.Core.Infrastructure;
 
 namespace Cinelovers.Core.Rest
@@ -10,18 +9,16 @@ namespace Cinelovers.Core.Rest
     public class TmdbApiService : ITmdbApiService
     {
         static readonly string BaseAddress = "https://api.themoviedb.org/3";
-        static readonly string ApiKey = Secrets.TmdbApi;
+        private readonly HttpClient _httpClient;
 
-        public ITmdbApiClient GetClient()
+        public TmdbApiService(HttpClient httpClient)
         {
-            var clientHandler = new TmdbHttpClientHandler(() => ApiKey)
-            {
-                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
-            };
-            var httpClient = new HttpClient(clientHandler)
-            {
-                BaseAddress = new Uri(BaseAddress)
-            };
+            _httpClient = httpClient;
+        }
+
+        public ITmdbApiClient GetApiClient()
+        {
+            _httpClient.BaseAddress = new Uri(BaseAddress);
 
             var serializerSettings = new JsonSerializerSettings
             {
@@ -30,10 +27,10 @@ namespace Cinelovers.Core.Rest
 
             return RestService
                 .For<ITmdbApiClient>(
-                    httpClient,
+                    _httpClient,
                     new RefitSettings
                     {
-                        ContentSerializer = new JsonContentSerializer(serializerSettings)
+                        ContentSerializer = new NewtonsoftJsonContentSerializer(serializerSettings)
                     });
         }
     }

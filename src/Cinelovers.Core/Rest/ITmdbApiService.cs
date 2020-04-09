@@ -2,6 +2,6 @@
 {
     public interface ITmdbApiService
     {
-        ITmdbApiClient GetClient();
+        ITmdbApiClient GetApiClient();
     }
 }

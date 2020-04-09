@@ -22,7 +22,7 @@ namespace Cinelovers.ViewModels.Movies
 
         public ReactiveCommand<Unit, int> Load { get; protected set; }
 
-        public ObservableCollectionExtended<MovieCellViewModel> Movies { get; } = new ObservableCollectionExtended<MovieCellViewModel>();
+        public ObservableCollection<MovieCellViewModel> Movies { get; } = new ObservableCollection<MovieCellViewModel>();
 
         public MovieCellViewModel SelectedMovie
         {
@@ -95,11 +95,13 @@ namespace Cinelovers.ViewModels.Movies
                 .Where(page => string.IsNullOrWhiteSpace(SearchTerm))
                 .StartWith(1)
                 .DistinctUntilChanged()
+                .ObserveOn(TaskPoolScheduler)
                 .InvokeCommand(GetUpcomingMovies);
 
             loadRequested
                 .Where(page => !string.IsNullOrWhiteSpace(SearchTerm))
                 .DistinctUntilChanged()
+                .ObserveOn(TaskPoolScheduler)
                 .InvokeCommand(GetMovies);
 
             GetUpcomingMovies
@@ -127,8 +129,9 @@ namespace Cinelovers.ViewModels.Movies
                 .Select(movies => movies.Where(movie => !Movies.Any(m => m.Id == movie.Id)))
                 .Select(movies => movies.Select(movie => new MovieCellViewModel(movie)))
                 .SubscribeOn(TaskPoolScheduler)
+                .SelectMany(movie => movie)
                 .ObserveOn(MainScheduler)
-                .Subscribe(movies => Movies.AddRange(movies));
+                .Subscribe(movies => Movies.Add(movies));
 
             moviesChanged
                 .Connect();

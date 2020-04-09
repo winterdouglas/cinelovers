@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 namespace Cinelovers.Core.Rest
 {
-    public class TmdbHttpClientHandler : HttpClientHandler
+    public class TmdbApiHandler : DelegatingHandler
     {
         private readonly Func<string> _getApiKey;
 
-        public TmdbHttpClientHandler(Func<string> getApiKey)
+        public TmdbApiHandler(HttpMessageHandler innerHandler, Func<string> getApiKey)
+            : base(innerHandler)
         {
-            if (getApiKey == null) throw new ArgumentNullException(nameof(getApiKey));
-            _getApiKey = getApiKey;
+            _getApiKey = getApiKey ?? throw new ArgumentNullException(nameof(getApiKey));
         }
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)

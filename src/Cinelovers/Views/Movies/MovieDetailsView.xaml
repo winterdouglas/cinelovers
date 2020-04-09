@@ -10,6 +10,7 @@
         <StackLayout BackgroundColor="{StaticResource BackgroundColor}">
             <Frame Margin="10"
                    Padding="10"
+                   HasShadow="False"
                    BackgroundColor="{StaticResource PanelColor}"
                    BorderColor="{StaticResource BorderColor}"
                    VerticalOptions="FillAndExpand">
