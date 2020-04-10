@@ -1,11 +1,9 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Cinelovers.Core.Infrastructure
 {
-    [ExcludeFromCodeCoverage]
     public class SnakeCaseJsonSerializer : JsonSerializer
     {
         public SnakeCaseJsonSerializer()

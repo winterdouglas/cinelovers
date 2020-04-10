@@ -9,17 +9,16 @@ namespace Cinelovers.Core.Rest
     public class TmdbApiService : ITmdbApiService
     {
         static readonly string BaseAddress = "https://api.themoviedb.org/3";
-        private readonly HttpClient _httpClient;
+        private readonly HttpClient _apiHttpClient;
 
-        public TmdbApiService(HttpClient httpClient)
+        public TmdbApiService(HttpClient apiHttpClient)
         {
-            _httpClient = httpClient;
+            _apiHttpClient = apiHttpClient ?? throw new ArgumentNullException(nameof(apiHttpClient));
+            _apiHttpClient.BaseAddress = new Uri(BaseAddress);
         }
 
         public ITmdbApiClient GetApiClient()
         {
-            _httpClient.BaseAddress = new Uri(BaseAddress);
-
             var serializerSettings = new JsonSerializerSettings
             {
                 ContractResolver = new SnakeCaseContractResolver()
@@ -27,7 +26,7 @@ namespace Cinelovers.Core.Rest
 
             return RestService
                 .For<ITmdbApiClient>(
-                    _httpClient,
+                    _apiHttpClient,
                     new RefitSettings
                     {
                         ContentSerializer = new NewtonsoftJsonContentSerializer(serializerSettings)

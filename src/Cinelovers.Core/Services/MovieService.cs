@@ -2,7 +2,6 @@
 using Cinelovers.Core.Services.Models;
 using Cinelovers.Core.Rest;
 using Cinelovers.Core.Caching;
-using Splat;
 using System.Reactive.Linq;
 using System.Linq;
 using Cinelovers.Core.Rest.Dtos;
@@ -17,14 +16,14 @@ namespace Cinelovers.Core.Services
 
         private readonly ITmdbApiService _apiService;
         private readonly ITmdbApiClient _client;
-        private readonly ICache _cache;
+        private readonly IApiCache _cache;
 
         public MovieService(
             ITmdbApiService apiService = null,
-            ICache cache = null)
+            IApiCache cache = null)
         {
-            _apiService = apiService ?? Locator.Current.GetService<ITmdbApiService>();
-            _cache = cache ?? Locator.Current.GetService<ICache>();
+            _apiService = apiService ?? throw new ArgumentNullException(nameof(apiService));
+            _cache = cache ?? throw new ArgumentNullException(nameof(cache));
 
             _client = _apiService.GetApiClient();
         }

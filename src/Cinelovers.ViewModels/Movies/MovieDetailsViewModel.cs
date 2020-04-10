@@ -1,6 +1,6 @@
-﻿using ReactiveUI;
-using System;
-using System.Reactive.Concurrency;
+﻿using Cinelovers.Core.Infrastructure;
+using Prism.Navigation;
+using ReactiveUI;
 
 namespace Cinelovers.ViewModels.Movies
 {
@@ -14,16 +14,9 @@ namespace Cinelovers.ViewModels.Movies
 
         private MovieCellViewModel _movie;
 
-        public MovieDetailsViewModel(
-            MovieCellViewModel movie,
-            IScreen hostScreen = null,
-            IScheduler mainScheduler = null, 
-            IScheduler taskPoolScheduler = null) 
-            : base(hostScreen, mainScheduler, taskPoolScheduler)
+        public MovieDetailsViewModel(INavigationService navigationService, ISchedulerService schedulerService)
+            : base(navigationService, schedulerService)
         {
-            Movie = movie ?? throw new ArgumentNullException(nameof(movie));
-
-            UrlPathSegment = "Movie Details";
         }
     }
 }

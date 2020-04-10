@@ -5,9 +5,9 @@ using System.Reactive.Disposables;
 
 namespace Cinelovers.Views.Movies
 {
-    public partial class MovieCellView : ReactiveViewCell<MovieCellViewModel>
+    public partial class MovieView : ReactiveContentView<MovieCellViewModel>
     {
-        public MovieCellView()
+        public MovieView()
         {
             InitializeComponent();
 
@@ -19,22 +19,16 @@ namespace Cinelovers.Views.Movies
             });
         }
 
-        /// <summary>
-        /// Using the binding context changed instead of binding accordingly to this:
-        /// https://github.com/luberda-molinet/FFImageLoading/wiki/Xamarin.Forms-Advanced
-        /// https://developer.xamarin.com/guides/xamarin-forms/user-interface/listview/performance/#RecycleElement
-        /// </summary>
         protected override void OnBindingContextChanged()
         {
             base.OnBindingContextChanged();
 
             PosterImage.Source = null;
 
-            var item = BindingContext as MovieCellViewModel;
-            if (item == null)
-                return;
-
-            PosterImage.Source = item.SmallPosterUri;
+            if (BindingContext is MovieCellViewModel item)
+            {
+                PosterImage.Source = item.SmallPosterUri;
+            }
         }
     }
 }

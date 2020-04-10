@@ -4,8 +4,8 @@ using Android.OS;
 using Cinelovers.Core.Infrastructure;
 using Cinelovers.Droid.Infrastructure;
 using FFImageLoading.Forms.Platform;
-using Splat;
-using Xamarin.Forms;
+using Prism;
+using Prism.Ioc;
 
 namespace Cinelovers.Droid
 {
@@ -16,7 +16,7 @@ namespace Cinelovers.Droid
         MainLauncher = true,
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation,
         ScreenOrientation = ScreenOrientation.User)]
-    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
+    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity, IPlatformInitializer
     {
         protected override void OnCreate(Bundle bundle)
         {
@@ -25,14 +25,15 @@ namespace Cinelovers.Droid
 
             base.OnCreate(bundle);
 
-            Locator.CurrentMutable.RegisterLazySingleton<IHttpClientFactory>(() => new HttpClientFactory());
-
             CachedImageRenderer.Init(true);
 
-            Forms.SetFlags("CollectionView_Experimental");
-
             global::Xamarin.Forms.Forms.Init(this, bundle);
-            LoadApplication(new App());
+            LoadApplication(new App(this));
+        }
+
+        public void RegisterTypes(IContainerRegistry containerRegistry)
+        {
+            containerRegistry.RegisterSingleton<IHttpClientFactory, HttpClientFactory>();
         }
     }
 }

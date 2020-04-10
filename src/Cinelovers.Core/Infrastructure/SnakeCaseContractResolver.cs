@@ -1,10 +1,8 @@
 ﻿using Newtonsoft.Json.Serialization;
-using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 
 namespace Cinelovers.Core.Infrastructure
 {
-    [ExcludeFromCodeCoverage]
     internal class SnakeCaseContractResolver : DefaultContractResolver
     {
         protected override string ResolvePropertyName(string propertyName)

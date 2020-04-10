@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<rxui:ReactiveContentView x:Class="Cinelovers.Views.Movies.MovieView"
+                          xmlns="http://xamarin.com/schemas/2014/forms"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                          xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+                          xmlns:rxui="clr-namespace:ReactiveUI.XamForms;assembly=ReactiveUI.XamForms"
+                          xmlns:vm="clr-namespace:Cinelovers.ViewModels.Movies;assembly=Cinelovers.ViewModels"
+                          x:TypeArguments="vm:MovieCellViewModel">
+
+    <Frame Padding="8"
+           BackgroundColor="{StaticResource PanelColor}"
+           BorderColor="{StaticResource BorderColor}"
+           HasShadow="False"
+           HeightRequest="400">
+        <StackLayout Margin="1"
+                     Padding="0"
+                     BackgroundColor="{StaticResource PanelColor}"
+                     Spacing="5">
+            <Label x:Name="TitleLabel"
+                   FontAttributes="Bold"
+                   FontSize="Medium" />
+            <ff:CachedImage x:Name="PosterImage"
+                            Aspect="AspectFit"
+                            DownsampleToViewSize="True"
+                            DownsampleUseDipUnits="True"
+                            HeightRequest="278"
+                            HorizontalOptions="Center"
+                            WidthRequest="185" />
+            <Label x:Name="GenreLabel"
+                   FontSize="Small" />
+            <Label x:Name="ReleaseDateLabel"
+                   FontSize="Small" />
+        </StackLayout>
+    </Frame>
+</rxui:ReactiveContentView>

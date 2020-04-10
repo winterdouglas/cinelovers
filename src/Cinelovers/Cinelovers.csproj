@@ -41,9 +41,10 @@
     <ProjectReference Include="..\Cinelovers.ViewModels\Cinelovers.ViewModels.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Prism.DryIoc.Forms" Version="7.2.0.1422" />
+    <PackageReference Include="Prism.Forms" Version="7.2.0.1422" />
     <PackageReference Include="ReactiveUI" Version="11.3.1" />
     <PackageReference Include="ReactiveUI.XamForms" Version="11.3.1" />
-    <PackageReference Include="Splat" Version="9.4.1" />
     <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.Forms" Version="4.5.0.530" />
     <PackageReference Include="Microsoft.AppCenter.Crashes" Version="3.1.0" />
@@ -51,5 +52,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Views\Movies\MovieView.xaml.cs">
+      <DependentUpon>MovieView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

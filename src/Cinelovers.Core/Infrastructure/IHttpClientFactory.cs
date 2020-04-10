@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using Fusillade;
 
 namespace Cinelovers.Core.Infrastructure

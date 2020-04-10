@@ -41,8 +41,9 @@
     <ProjectReference Include="..\Cinelovers.Core\Cinelovers.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Prism.DryIoc.Forms" Version="7.2.0.1422" />
+    <PackageReference Include="Prism.Forms" Version="7.2.0.1422" />
     <PackageReference Include="ReactiveUI" Version="11.3.1" />
-    <PackageReference Include="Splat" Version="9.4.1" />
     <PackageReference Include="Xamarin.Forms" Version="4.5.0.530" />
   </ItemGroup>
 </Project>
