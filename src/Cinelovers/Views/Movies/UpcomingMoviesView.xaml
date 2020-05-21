@@ -6,7 +6,9 @@
                        xmlns:movie="clr-namespace:Cinelovers.Views.Movies"
                        xmlns:views="clr-namespace:Cinelovers.Views"
                        xmlns:vm="clr-namespace:Cinelovers.ViewModels.Movies;assembly=Cinelovers.ViewModels"
-                       x:TypeArguments="vm:UpcomingMoviesViewModel">
+                       x:TypeArguments="vm:UpcomingMoviesViewModel"
+                       xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+                       ios:Page.UseSafeArea="True">
 
     <StackLayout BackgroundColor="{StaticResource BackgroundColor}">
         <SearchBar x:Name="Search"

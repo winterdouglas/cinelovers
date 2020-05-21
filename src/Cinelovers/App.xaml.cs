@@ -35,6 +35,15 @@ namespace Cinelovers
         {
             InitializeComponent();
 
+            AppCenter.Start(
+                $"android={Secrets.AppCenterAndroid};" +
+                $"ios={Secrets.AppCenterIos}",
+                typeof(Analytics), typeof(Crashes));
+
+            Container
+                .Resolve<IApiCache>()
+                .Initialize(ApplicationName);
+
             SetupImageService();
 
             await NavigationService.NavigateAsync("nav/upcoming");
@@ -50,16 +59,6 @@ namespace Cinelovers
             containerRegistry.RegisterSingleton<IApiCache, AkavacheApiCache>();
             containerRegistry.RegisterInstance(CreateApiClient());
             containerRegistry.RegisterSingleton<IMovieService, MovieService>();
-        }
-
-        protected override void OnStart()
-        {
-            AppCenter.Start(
-                $"android={Secrets.AppCenterAndroid};" +
-                $"ios={Secrets.AppCenterIos}",
-                typeof(Analytics), typeof(Crashes));
-
-            base.OnStart();
         }
 
         protected override void OnResume()

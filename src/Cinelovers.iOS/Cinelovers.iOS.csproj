@@ -140,13 +140,13 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="akavache.sqlite3">
-      <Version>6.10.6</Version>
+      <Version>6.10.17</Version>
     </PackageReference>
     <PackageReference Include="DynamicData">
-      <Version>6.14.10</Version>
+      <Version>6.14.18</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.Platforms">
-      <Version>3.1.0</Version>
+      <Version>3.1.1</Version>
     </PackageReference>
     <PackageReference Include="Prism.DryIoc.Forms">
       <Version>7.2.0.1422</Version>
@@ -155,16 +155,16 @@
       <Version>7.2.0.1422</Version>
     </PackageReference>
     <PackageReference Include="ReactiveUI">
-      <Version>11.3.1</Version>
+      <Version>11.4.1</Version>
     </PackageReference>
     <PackageReference Include="ReactiveUI.XamForms">
-      <Version>11.3.1</Version>
+      <Version>11.4.1</Version>
     </PackageReference>
     <PackageReference Include="Refit">
       <Version>5.1.67</Version>
     </PackageReference>
     <PackageReference Include="SQLitePCLRaw.bundle_green">
-      <Version>2.0.2</Version>
+      <Version>2.0.3</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.FFImageLoading.Forms">
       <Version>2.4.11.982</Version>
@@ -173,10 +173,10 @@
       <Version>4.6.0.800</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AppCenter.Crashes">
-      <Version>3.1.0</Version>
+      <Version>3.2.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AppCenter.Analytics">
-      <Version>3.1.0</Version>
+      <Version>3.2.1</Version>
     </PackageReference>
     <PackageReference Include="fusillade">
       <Version>2.1.1</Version>
