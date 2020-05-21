@@ -10,17 +10,22 @@ using Fusillade;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
+using Newtonsoft.Json;
 using Prism;
 using Prism.DryIoc;
 using Prism.Ioc;
+using Refit;
 using System;
-using System.Net.Http;
+using System.Reactive.Linq;
 using Xamarin.Forms;
 
 namespace Cinelovers
 {
     public partial class App : PrismApplication
     {
+        private const string ApplicationName = "Cinelovers";
+        private const string ApiBaseUri = "https://api.themoviedb.org/3";
+
         public App(IPlatformInitializer initializer)
             : base(initializer)
         {
@@ -42,9 +47,8 @@ namespace Cinelovers
             containerRegistry.RegisterForNavigation<MovieDetailsView, MovieDetailsViewModel>("details");
 
             containerRegistry.RegisterSingleton<ISchedulerService, DefaultSchedulerService>();
-            containerRegistry.RegisterInstance(Container.Resolve<IHttpClientFactory>().CreateClient(Priority.UserInitiated));
             containerRegistry.RegisterSingleton<IApiCache, AkavacheApiCache>();
-            containerRegistry.RegisterSingleton<ITmdbApiService, TmdbApiService>();
+            containerRegistry.RegisterInstance(CreateApiClient());
             containerRegistry.RegisterSingleton<IMovieService, MovieService>();
         }
 
@@ -54,11 +58,26 @@ namespace Cinelovers
                 $"android={Secrets.AppCenterAndroid};" +
                 $"ios={Secrets.AppCenterIos}",
                 typeof(Analytics), typeof(Crashes));
+
+            base.OnStart();
+        }
+
+        protected override void OnResume()
+        {
+            Container
+                .Resolve<IApiCache>()
+                .Initialize(ApplicationName);
+
+            base.OnResume();
         }
 
         protected override void OnSleep()
         {
-            Container.Resolve<IApiCache>().Shutdown();
+            Container
+                .Resolve<IApiCache>()
+                .Shutdown();
+
+            base.OnSleep();
         }
 
         private void SetupImageService()
@@ -71,6 +90,23 @@ namespace Cinelovers
                     .CreateClient(Priority.Background)
             };
             ImageService.Instance.Initialize(config);
+        }
+
+        private ITmdbApiClient CreateApiClient()
+        {
+            return RestService
+                .For<ITmdbApiClient>(
+                    Container
+                        .Resolve<IHttpClientFactory>()
+                        .CreateClient(Priority.UserInitiated, ApiBaseUri),
+                    new RefitSettings
+                    {
+                        ContentSerializer = new NewtonsoftJsonContentSerializer(
+                            new JsonSerializerSettings
+                            {
+                                ContractResolver = new SnakeCaseContractResolver()
+                            })
+                    });
         }
     }
 }

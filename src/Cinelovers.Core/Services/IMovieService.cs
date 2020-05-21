@@ -1,15 +1,16 @@
 ﻿using Cinelovers.Core.Services.Models;
+using DynamicData;
 using System;
-using System.Collections.Generic;
+using System.Reactive;
 
 namespace Cinelovers.Core.Services
 {
     public interface IMovieService
     {
-        IObservable<IEnumerable<Movie>> GetUpcomingMovies(int page);
+        IObservableCache<Movie, int> Movies { get; }
 
-        IObservable<IEnumerable<Movie>> GetMovies(string query, int page);
+        IObservable<Unit> LoadUpcomingMovies(int page);
 
-        IObservable<IEnumerable<Genre>> GetMovieGenres();
+        IObservable<Unit> LoadMovies(string query, int page);
     }
 }

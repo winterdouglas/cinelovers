@@ -16,10 +16,14 @@
         <controls:LoadingIndicator x:Name="Indicator"
                                    Margin="10,5" />
         <CollectionView x:Name="MovieList"
+                        ItemsUpdatingScrollMode="KeepScrollOffset"
+                        RemainingItemsThreshold="5"
                         SelectionMode="Single">
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout ItemSpacing="8"
-                                   Orientation="Vertical" />
+                                   Orientation="Vertical"
+                                   SnapPointsAlignment="Start"
+                                   SnapPointsType="Mandatory" />
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate>

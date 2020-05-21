@@ -25,9 +25,10 @@ namespace Cinelovers.Droid
 
             base.OnCreate(bundle);
 
-            CachedImageRenderer.Init(true);
-
             global::Xamarin.Forms.Forms.Init(this, bundle);
+            CachedImageRenderer.Init(true);
+            CachedImageRenderer.InitImageViewHandler();
+
             LoadApplication(new App(this));
         }
 

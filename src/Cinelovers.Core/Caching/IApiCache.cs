@@ -5,10 +5,16 @@ namespace Cinelovers.Core.Caching
 {
     public interface IApiCache
     {
+        void Initialize(string applicationName);
+
         IObservable<TResult> GetAndFetchLatest<TResult>(string cacheKey, Func<IObservable<TResult>> fetchFunction);
+
         IObservable<Unit> InvalidateAll();
+
         IObservable<Unit> InvalidateAllObjects<T>() where T : class;
+
         IObservable<Unit> Invalidate(string key);
+
         void Shutdown();
     }
 }

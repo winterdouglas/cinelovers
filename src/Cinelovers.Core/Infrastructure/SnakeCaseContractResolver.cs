@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace Cinelovers.Core.Infrastructure
 {
-    internal class SnakeCaseContractResolver : DefaultContractResolver
+    public class SnakeCaseContractResolver : DefaultContractResolver
     {
         protected override string ResolvePropertyName(string propertyName)
         {

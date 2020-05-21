@@ -46,7 +46,7 @@
     <PackageReference Include="ReactiveUI" Version="11.3.1" />
     <PackageReference Include="ReactiveUI.XamForms" Version="11.3.1" />
     <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
-    <PackageReference Include="Xamarin.Forms" Version="4.5.0.530" />
+    <PackageReference Include="Xamarin.Forms" Version="4.6.0.800" />
     <PackageReference Include="Microsoft.AppCenter.Crashes" Version="3.1.0" />
     <PackageReference Include="Microsoft.AppCenter.Analytics" Version="3.1.0" />
   </ItemGroup>

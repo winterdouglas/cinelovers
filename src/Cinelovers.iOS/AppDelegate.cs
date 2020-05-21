@@ -13,9 +13,10 @@ namespace Cinelovers.iOS
     {
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            CachedImageRenderer.Init();
-
             global::Xamarin.Forms.Forms.Init();
+            CachedImageRenderer.Init();
+            CachedImageRenderer.InitImageSourceHandler();
+
             LoadApplication(new App(this));
 
             return base.FinishedLaunching(app, options);

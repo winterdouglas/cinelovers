@@ -6,11 +6,9 @@ namespace Cinelovers.Core.Caching
 {
     public class AkavacheApiCache : IApiCache
     {
-        const string ApplicationName = "Cinelovers";
-
-        public AkavacheApiCache()
+        public void Initialize(string applicationName)
         {
-            Akavache.Sqlite3.Registrations.Start(ApplicationName, () => SQLitePCL.Batteries_V2.Init());
+            Akavache.Sqlite3.Registrations.Start(applicationName, () => SQLitePCL.Batteries_V2.Init());
             BlobCache.ForcedDateTimeKind = DateTimeKind.Utc;
         }
 
@@ -55,9 +53,7 @@ namespace Cinelovers.Core.Caching
 
         public void Shutdown()
         {
-            BlobCache
-                .Shutdown()
-                .Wait();
+            BlobCache.Shutdown().Wait();
         }
     }
 }

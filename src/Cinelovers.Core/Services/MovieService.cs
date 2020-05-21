@@ -7,6 +7,8 @@ using System.Linq;
 using Cinelovers.Core.Rest.Dtos;
 using Cinelovers.Core.Mappers;
 using System.Collections.Generic;
+using System.Reactive;
+using DynamicData;
 
 namespace Cinelovers.Core.Services
 {
@@ -14,22 +16,28 @@ namespace Cinelovers.Core.Services
     {
         const string Language = "en-US";
 
-        private readonly ITmdbApiService _apiService;
-        private readonly ITmdbApiClient _client;
+        private readonly ITmdbApiClient _apiClient;
         private readonly IApiCache _cache;
+        private readonly SourceCache<Movie, int> _movies;
+        private readonly MovieMapper _movieMapper;
 
-        public MovieService(
-            ITmdbApiService apiService = null,
-            IApiCache cache = null)
+        public MovieService(ITmdbApiClient apiClient, IApiCache cache)
         {
-            _apiService = apiService ?? throw new ArgumentNullException(nameof(apiService));
+            _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
             _cache = cache ?? throw new ArgumentNullException(nameof(cache));
-
-            _client = _apiService.GetApiClient();
+            _movies = new SourceCache<Movie, int>(x => x.Id);
+            _movieMapper = new MovieMapper();
         }
 
-        public IObservable<IEnumerable<Movie>> GetUpcomingMovies(int page)
+        public IObservableCache<Movie, int> Movies => _movies;
+
+        public IObservable<Unit> LoadUpcomingMovies(int page)
         {
+            if (page == 1)
+            {
+                _movies.Clear();
+            }
+
             var movieMapper = new MovieMapper();
 
             return Observable
@@ -38,21 +46,17 @@ namespace Cinelovers.Core.Services
                     GetAndFetchGenres(),
                     (movieInfo, genreInfo) =>
                     {
-                        var result = Enumerable.Empty<Movie>();
-                        if (movieInfo != null)
-                        {
-                            result = movieInfo
-                                .Results
-                                .Select(source => movieMapper
-                                    .ToMovie(source, genreInfo));
-                        }
-                        return result;
+                        AddOrUpdateMovies(movieInfo, genreInfo);
+                        return Unit.Default;
                     });
         }
 
-        public IObservable<IEnumerable<Movie>> GetMovies(string query, int page)
+        public IObservable<Unit> LoadMovies(string query, int page)
         {
-            var movieMapper = new MovieMapper();
+            if (page == 1)
+            {
+                _movies.Clear();
+            }
 
             return Observable
                 .CombineLatest(
@@ -60,56 +64,47 @@ namespace Cinelovers.Core.Services
                     GetAndFetchGenres(),
                     (movieInfo, genreInfo) =>
                     {
-                        var result = Enumerable.Empty<Movie>();
-                        if (movieInfo != null)
-                        {
-                            result = movieInfo
-                                .Results
-                                .Select(source => movieMapper
-                                    .ToMovie(source, genreInfo));
-                        }
-                        return result;
+                        AddOrUpdateMovies(movieInfo, genreInfo);
+                        return Unit.Default;
                     });
-        }
-
-        public IObservable<IEnumerable<Genre>> GetMovieGenres()
-        {
-            var genreMapper = new GenreMapper();
-
-            return GetAndFetchGenres()
-                .Select(genreInfo => genreInfo == null
-                    ? Enumerable.Empty<Genre>()
-                    : genreInfo.Genres.Select(result => genreMapper.ToGenre(result)));
         }
 
         private IObservable<MoviePagingInfo> GetAndFetchUpcomingMovies(int page)
         {
             return _cache
                 .GetAndFetchLatest(
-                    GetUpcomingMoviesCacheKey(page),
-                    () => _client.FetchUpcomingMovies(page, Language));
+                    $"upcoming_movies_{page}",
+                    () => _apiClient.FetchUpcomingMovies(page, Language));
         }
 
         private IObservable<MoviePagingInfo> GetAndFetchMovies(string query, int page)
         {
             return _cache
                 .GetAndFetchLatest(
-                    GetMoviesCacheKey(query, page),
-                    () => _client.FetchMovies(query, page, Language));
+                    $"movies_{query}_{page}",
+                    () => _apiClient.FetchMovies(query, page, Language));
         }
 
         private IObservable<GenreInfo> GetAndFetchGenres()
         {
             return _cache
                 .GetAndFetchLatest(
-                    GetGenresCacheKey(),
-                    () => _client.FetchMovieGenres(Language));
+                    "genres",
+                    () => _apiClient.FetchMovieGenres(Language));
         }
 
-        private string GetUpcomingMoviesCacheKey(int page) => $"upcoming_movies_{page}";
+        private void AddOrUpdateMovies(MoviePagingInfo moviePagingInfo, GenreInfo genreInfo)
+        {
+            var movies = new List<Movie>();
+            if (moviePagingInfo != null && genreInfo != null)
+            {
+                movies = moviePagingInfo
+                    .Results
+                    .Select(source => _movieMapper.ToMovie(source, genreInfo))
+                    .ToList();
+            }
 
-        private string GetGenresCacheKey() => "genres";
-
-        private string GetMoviesCacheKey(string query, int page) => $"movies_{query}_{page}";
+            _movies.AddOrUpdate(movies);
+        }
     }
 }

@@ -44,6 +44,6 @@
     <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.0.2" />
     <PackageReference Include="System.Reactive" Version="4.4.1" />
     <PackageReference Include="System.Reactive.Core" Version="4.4.1" />
-    <PackageReference Include="fusillade" Version="2.0.5" />
+    <PackageReference Include="fusillade" Version="2.1.1" />
   </ItemGroup>
 </Project>
