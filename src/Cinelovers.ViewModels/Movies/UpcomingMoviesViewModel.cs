@@ -7,6 +7,7 @@ using ReactiveUI;
 using System;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
 namespace Cinelovers.ViewModels.Movies
@@ -43,14 +44,16 @@ namespace Cinelovers.ViewModels.Movies
                 .ObserveOn(SchedulerService.MainThread)
                 .Bind(Movies)
                 .DisposeMany()
-                .Subscribe();
+                .Subscribe()
+                .DisposeWith(Disposables);
 
             Observable
                 .Merge(
                     GetUpcomingMovies.IsExecuting,
                     LoadMovies.IsExecuting)
                 .ToProperty(this, x => x.IsLoading, out _isLoading,
-                    scheduler: SchedulerService.MainThread);
+                    scheduler: SchedulerService.MainThread)
+                .DisposeWith(Disposables);
 
             this.WhenAnyValue(x => x.SelectedMovie)
                 .Where(selected => selected != null)
@@ -58,13 +61,15 @@ namespace Cinelovers.ViewModels.Movies
                 .SelectMany(selected => Observable
                     .FromAsync(() => NavigationService
                         .NavigateAsync($"details?id={selected.Id}", useModalNavigation: true)))
-                .Subscribe();
+                .Subscribe()
+                .DisposeWith(Disposables);
 
             this
                 .WhenAnyValue(x => x.SearchTerm)
                 .Throttle(TimeSpan.FromSeconds(2), SchedulerService.TaskPool)
                 .DistinctUntilChanged()
-                .InvokeCommand(LoadMovies);
+                .InvokeCommand(LoadMovies)
+                .DisposeWith(Disposables);
 
             Observable
                 .Merge(
@@ -73,7 +78,8 @@ namespace Cinelovers.ViewModels.Movies
                 .Subscribe(ex =>
                 {
                     Console.WriteLine(ex);
-                });
+                })
+                .DisposeWith(Disposables);
         }
 
         public ReactiveCommand<int, Unit> GetUpcomingMovies { get; protected set; }
