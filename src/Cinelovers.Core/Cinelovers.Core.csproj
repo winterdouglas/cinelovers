@@ -42,7 +42,7 @@
   <ItemGroup>
     <PackageReference Include="akavache" Version="6.7.1" />
     <PackageReference Include="DynamicData" Version="6.13.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="refit" Version="4.7.51" />
     <PackageReference Include="Splat" Version="8.3.1" />
     <PackageReference Include="System.Reactive" Version="4.1.6" />
